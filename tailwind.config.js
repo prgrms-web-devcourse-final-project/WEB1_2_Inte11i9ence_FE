@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'lg-max': { 'max': '1900px' },
+        'xl': '1300px',
       fontFamily: {
         sans: ['Noto Sans KR'], 
         title: ['Righteous'],
