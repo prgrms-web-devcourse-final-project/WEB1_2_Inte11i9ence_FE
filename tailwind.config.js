@@ -9,9 +9,13 @@ module.exports = {
       screens: {
         'lg-max': { 'max': '1900px' },
         'xl': '1300px',
+      },
       fontFamily: {
         sans: ['Noto Sans KR'], 
-        title: ['Righteous'],
+        title: ['Parkinsans'],
+        //Ubuntu
+        //Righteous
+        // Parkinsans
       },
       colors: {
         darkBlue: '#1A2A6C',  // 진한 블루 (버튼 테두리, 문장 포인트)
@@ -23,4 +27,4 @@ module.exports = {
     },
   },
   plugins: [],
-};
+}
