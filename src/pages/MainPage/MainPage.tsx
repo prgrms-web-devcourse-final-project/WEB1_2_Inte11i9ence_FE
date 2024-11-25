@@ -1,10 +1,10 @@
-import RegionCardList from '@/components/RegionCardList';
-import BestCardList from '@/components/BestCardList';
+import RegionCardList from '@/pages/MainPage/components/RegionCardList';
+import BestCardList from '@/pages/MainPage/components/BestCardList';
 import SearchIcon from '@/assets/svg/search.svg?react';
 
 const MainPage = () => {
     return (
-        <div className="h-full border border-black">
+        <div className="h-full">
             <div className="max-w-2xl mx-auto px-4">
                 <form action="#">
                     <div className='relative flex items-center'>

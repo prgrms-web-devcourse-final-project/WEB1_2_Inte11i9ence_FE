@@ -1,5 +1,5 @@
-import BestCardItem from './BestCardItem';
-import { postData } from '@/temporaryData/postData';
+import BestCardItem from '../../../components/BestCardItem';
+import { postData } from '@/temporaryData/allPostData';
 
 const BestCardList = () => {
     const bestPosts = postData.sort((a,b) => b.likes - a.likes).slice(0, 3);

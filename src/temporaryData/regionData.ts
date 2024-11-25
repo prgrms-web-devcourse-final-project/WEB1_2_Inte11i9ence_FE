@@ -4,6 +4,7 @@ import busanImg from '@/assets/jpg/regionImg2_temp.jpg';
 import incheonImg from '@/assets/jpg/regionImg3_temp.jpg';
 import jejuImg from '@/assets/jpg/regionImg4_temp.jpg';
 
+// path와 thumbnail은 임시로 넣어둔 데이터입니다. (현재 API 명세서에 없음)
 export const regionData: RegionData[] = [
   { id: 1, name: '서울', path: '/region/seoul', thumbnail: seoulImg },
   { id: 2, name: '부산', path: '/region/busan', thumbnail: busanImg },
