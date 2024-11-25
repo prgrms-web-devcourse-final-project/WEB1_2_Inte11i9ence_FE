@@ -4,6 +4,7 @@ import { groups } from '../Mypage/mockdata'
 import defaultProfileImage from '@assets/png/default-profile-2.png'
 import CommentIcon from '@assets/svg/Comment.svg?react'
 import LikeIcon from '@assets/svg/Like.svg?react'
+import PlusIcon from '@assets/svg/Plus.svg?react'
 
 const SchedulePage = () => {
   const [selectedView, setSelectedView] = useState('서울')
@@ -20,12 +21,20 @@ const SchedulePage = () => {
   return (
     <div>
       <div>검색박스</div>
-      <div className='flex mx-[70px] bg-white absolute flex-col items-start'>
-        <DropdownSelector
-          options={options}
-          defaultValue='서울'
-          onChange={(selected) => setSelectedView(selected)}
-        />
+      <div className='flex y-[20px] mx-[70px] bg-white items-center justify-between'>
+        <div className='h-[40px]  relative z-1000'>
+          <DropdownSelector
+            options={options}
+            defaultValue='서울'
+            onChange={(selected) => setSelectedView(selected)}
+          />
+        </div>
+        <button>
+          <PlusIcon
+            width={20}
+            height={20}
+          />
+        </button>
       </div>
       <div className='flex flex-wrap mt-12 h-auto w-full justify-center gap-y-12 gap-x-4'>
         {filteredGroups.map((group) => (
