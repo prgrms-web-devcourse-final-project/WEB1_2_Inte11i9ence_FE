@@ -1,11 +1,18 @@
 import './App.css'
 import Container from './layouts/bodyContainer'
+import LoginPage from './components/LoginPage'
+import Profile from './components/Profile'
+import MainLogin from './components/MainLogin'
+
 
 const App = () => {
   return (
     <Container>
     <div className="h-full">
-      <h1>홧팅</h1>
+    {/* <LoginPage/> */}
+   {/* <Profile/> */}
+   <MainLogin/>
+      
     </div>
     </Container>
   )
