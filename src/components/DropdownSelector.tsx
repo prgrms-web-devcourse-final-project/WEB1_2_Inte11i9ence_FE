@@ -15,7 +15,6 @@ const DropdownSelector = ({
   const [isExpanded, setIsExpanded] = useState(false)
   const [selected, setSelected] = useState(defaultValue)
 
-  // Type the ref to HTMLDivElement to avoid type issues
   const dropdownRef = useRef<HTMLDivElement | null>(null)
 
   const toggleExpand = () => {
@@ -28,12 +27,11 @@ const DropdownSelector = ({
     setIsExpanded(false)
   }
 
-  // Click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node) // ensure this check is safe
+        !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsExpanded(false)
       }
@@ -53,7 +51,6 @@ const DropdownSelector = ({
           isExpanded ? 'p-2 gap-2' : 'p-2'
         }`}
       >
-        {/* Default Button */}
         <button
           className='flex items-center gap-1 justify-center'
           onClick={toggleExpand}
@@ -69,7 +66,6 @@ const DropdownSelector = ({
           </p>
         </button>
 
-        {/* Expanded Options */}
         {isExpanded && (
           <div className='flex flex-col'>
             {options
