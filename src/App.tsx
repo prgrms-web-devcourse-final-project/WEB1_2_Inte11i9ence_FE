@@ -7,6 +7,7 @@ import Mypage from './pages/Mypage/Mypage'
 import MypageGather from './pages/Mypage/MypageGather'
 import { Routes, Route } from 'react-router-dom'
 import Container from './layouts/bodyContainer'
+import MainPage from './pages/MainPage/MainPage'
 const App = () => {
   return (
     <div>
@@ -26,6 +27,11 @@ const App = () => {
             path='/schedule/detail'
             element={<ScheduleDetail />}
           ></Route>
+          {/* 메인페이지 */}
+          <Route
+            path='/'
+            element={<MainPage />}
+            ></Route>
           {/* 마이페이지 */}
           <Route
             path='/mypage'
@@ -33,7 +39,7 @@ const App = () => {
           ></Route>
           <Route
             path='/mypage/gather'
-            element={<MypageGather />}
+            element={<MypageGather />}n
           ></Route>
         </Routes>
       </Container>
