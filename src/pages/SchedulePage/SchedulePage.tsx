@@ -5,6 +5,7 @@ import defaultProfileImage from '@assets/png/default-profile-2.png'
 import CommentIcon from '@assets/svg/Comment.svg?react'
 import LikeIcon from '@assets/svg/Like.svg?react'
 import PlusIcon from '@assets/svg/Plus.svg?react'
+import { Link } from 'react-router-dom'
 
 const SchedulePage = () => {
   const [selectedView, setSelectedView] = useState('서울')
@@ -19,7 +20,7 @@ const SchedulePage = () => {
   )
 
   return (
-    <div>
+    <div className='flex-col flex '>
       <div>검색박스</div>
       <div className='flex y-[20px] mx-[70px] bg-white items-center justify-between'>
         <div className='h-[40px]  relative z-1000'>
@@ -29,14 +30,16 @@ const SchedulePage = () => {
             onChange={(selected) => setSelectedView(selected)}
           />
         </div>
-        <button>
-          <PlusIcon
-            width={20}
-            height={20}
-          />
-        </button>
+        <Link to={'/schedule/add'}>
+          <button>
+            <PlusIcon
+              width={20}
+              height={20}
+            />
+          </button>
+        </Link>
       </div>
-      <div className='flex flex-wrap mt-12 h-auto w-full justify-center gap-y-12 gap-x-4'>
+      <div className='flex flex-wrap mt-4 h-auto w-full justify-center gap-y-12 gap-x-4'>
         {filteredGroups.map((group) => (
           <div
             key={group.id}
