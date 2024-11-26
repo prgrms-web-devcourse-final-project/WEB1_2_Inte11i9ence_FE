@@ -24,17 +24,21 @@ const NotiDropdown = ({ setHasUnreadNotifications }: NotiDropdownProps) => {
     switch (type) {
       case 'likes':
         return (
-          <LikeIcon
-            width={18}
-            height={18}
-          />
+          <div className='text-[#1A2A6C]'>
+            <LikeIcon
+              width={18}
+              height={18}
+            />
+          </div>
         )
       case 'comment':
         return (
-          <CommentIcon
-            width={19}
-            height={19}
-          />
+          <div className='text-[#1A2A6C]'>
+            <CommentIcon
+              width={19}
+              height={19}
+            />
+          </div>
         )
       case 'announcement':
         return (
