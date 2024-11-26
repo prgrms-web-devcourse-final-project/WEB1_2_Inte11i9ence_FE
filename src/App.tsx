@@ -1,6 +1,8 @@
 import './App.css'
 import Navigation from './pages/Navigater/Navigater'
 import SchedulePage from './pages/SchedulePage/SchedulePage'
+import ScheduleAdd from './pages/SchedulePage/ScheduleAdd'
+import ScheduleDetail from './pages/SchedulePage/ScheduleDetail'
 import Mypage from './pages/Mypage/Mypage'
 import MypageGather from './pages/Mypage/MypageGather'
 import { Routes, Route } from 'react-router-dom'
@@ -16,6 +18,14 @@ const App = () => {
           <Route
             path='/schedule'
             element={<SchedulePage />}
+          ></Route>
+          <Route
+            path='/schedule/add'
+            element={<ScheduleAdd />}
+          ></Route>
+          <Route
+            path='/schedule/detail'
+            element={<ScheduleDetail />}
           ></Route>
           {/* 메인페이지 */}
           <Route
