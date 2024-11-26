@@ -7,6 +7,7 @@ import Mypage from './pages/Mypage/Mypage'
 import MypageGather from './pages/Mypage/MypageGather'
 import { Routes, Route } from 'react-router-dom'
 import Container from './layouts/bodyContainer'
+
 import MainPage from './pages/MainPage/MainPage'
 const App = () => {
   return (
@@ -43,6 +44,7 @@ const App = () => {
           ></Route>
         </Routes>
       </Container>
+
     </div>
   )
 }
