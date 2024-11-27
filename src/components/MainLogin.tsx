@@ -3,7 +3,11 @@ import AirPlane from '../assets/png/AirPlane.png'
 import Google from '../assets/png/Google.png'
 import Naver from '../assets/png/Naver.png'
 
-const MainLogin: React.FC = () => {
+interface MainLoginProps{
+  closeModal:()=>void;
+}
+
+const MainLogin: React.FC<MainLoginProps> = ({closeModal}) => {
   return (
     <div
       style={{
@@ -96,11 +100,10 @@ const MainLogin: React.FC = () => {
         </button>
 
         {/* 하단 텍스트 */}
-        <p style={{ fontSize: '12px', color: '#555',cursor:'pointer',textDecoration:'underline' }}>
+        <p style={{ fontSize: '12px', color: '#555',cursor:'pointer',textDecoration:'underline' }}
+        onClick={closeModal}
+        >
           조금 더 둘러보고싶어요
-          {/* <Link to="" style={{ color: 'inherit', textDecoration: 'none' }}>
-    조금 더 둘러보고싶어요
-  </Link>   리액트 라우터를 사용할 경우*/}
         </p>
       </div>
     </div>

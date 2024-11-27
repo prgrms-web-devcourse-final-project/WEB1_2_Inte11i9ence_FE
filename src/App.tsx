@@ -5,6 +5,9 @@ import ScheduleAdd from './pages/SchedulePage/ScheduleAdd'
 import ScheduleDetail from './pages/SchedulePage/ScheduleDetail'
 import Mypage from './pages/Mypage/Mypage'
 import MypageGather from './pages/Mypage/MypageGather'
+import PhotoPage from './pages/PhotoPage/PhotoPage'
+import PhotoAdd from './pages/PhotoPage/PhotoAdd'
+
 import { Routes, Route } from 'react-router-dom'
 import Container from './layouts/bodyContainer'
 
@@ -32,7 +35,7 @@ const App = () => {
           <Route
             path='/'
             element={<MainPage />}
-            ></Route>
+          ></Route>
           {/* 마이페이지 */}
           <Route
             path='/mypage'
@@ -40,11 +43,19 @@ const App = () => {
           ></Route>
           <Route
             path='/mypage/gather'
-            element={<MypageGather />}n
+            element={<MypageGather />}
+          ></Route>
+          {/* 사진페이지 */}
+          <Route
+            path='/photo'
+            element={<PhotoPage />}
+          ></Route>
+          <Route
+            path='/photo/add'
+            element={<PhotoAdd />}
           ></Route>
         </Routes>
       </Container>
-
     </div>
   )
 }
