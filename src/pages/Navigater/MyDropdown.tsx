@@ -2,6 +2,7 @@ import AirplainIcon from '@assets/svg/Airplain.svg?react'
 import NoteIcon from '@assets/svg/Note.svg?react'
 import NextIcon from '@assets/svg/NextButton.svg?react'
 import defaultProfileImage from '@assets/png/default-profile-2.png'
+import { Link } from 'react-router-dom'
 
 interface NavigationProps {
   userProfileImage?: string
@@ -30,20 +31,24 @@ const MyDropdown = ({ userProfileImage }: NavigationProps) => {
             height={12}
           />
         </div>
-        <li className='flex items-center gap-2 p-4 cursor-pointer hover:bg-gray-100'>
-          <AirplainIcon
-            width={18}
-            height={18}
-          />
-          내 여행
-        </li>
-        <li className='flex items-center gap-2 p-4 cursor-pointer hover:bg-gray-100'>
-          <NoteIcon
-            width={18}
-            height={18}
-          />
-          내 글 / 스크랩
-        </li>
+        <Link to={'/mypage'}>
+          <li className='flex items-center gap-2 p-4 cursor-pointer hover:bg-gray-100'>
+            <AirplainIcon
+              width={18}
+              height={18}
+            />
+            내 여행
+          </li>
+        </Link>
+        <Link to={'/mypage/gather'}>
+          <li className='flex items-center gap-2 p-4 cursor-pointer hover:bg-gray-100'>
+            <NoteIcon
+              width={18}
+              height={18}
+            />
+            내 글 / 스크랩
+          </li>
+        </Link>
         <li className='flex items-center p-2 cursor-pointer font-normal text-darkGray text-xs '>
           로그아웃
         </li>
