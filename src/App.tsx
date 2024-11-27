@@ -7,6 +7,7 @@ import Mypage from './pages/Mypage/Mypage'
 import MypageGather from './pages/Mypage/MypageGather'
 import PhotoPage from './pages/PhotoPage/PhotoPage'
 import PhotoAdd from './pages/PhotoPage/PhotoAdd'
+import ChatPage from './pages/ChatPage/ChatPage'
 
 import { Routes, Route } from 'react-router-dom'
 import Container from './layouts/bodyContainer'
@@ -53,6 +54,11 @@ const App = () => {
           <Route
             path='/photo/add'
             element={<PhotoAdd />}
+          ></Route>
+          {/* 채팅페이지 */}
+          <Route
+            path='/chat'
+            element={<ChatPage />}
           ></Route>
         </Routes>
       </Container>
