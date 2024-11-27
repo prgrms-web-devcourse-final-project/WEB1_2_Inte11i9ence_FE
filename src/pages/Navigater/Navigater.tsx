@@ -71,7 +71,9 @@ const Navigation = ({ userProfileImage }: NavigationProps) => {
           >
             일정 공유
           </Link>
-          <button className='font-bold'>사진</button>
+          <button className='font-bold'>
+            <Link to='/photo'>사진</Link>
+          </button>
         </div>
 
         {/* 중앙 로고 */}
