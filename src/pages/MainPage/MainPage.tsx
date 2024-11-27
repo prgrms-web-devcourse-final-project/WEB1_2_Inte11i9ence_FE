@@ -18,6 +18,7 @@ const MainPage = () => {
                             type='submit'
                         >
                             <SearchIcon className='w-5 h-5'></SearchIcon>
+                            <button></button>
                         </button>
                     </div>
                 </form>
