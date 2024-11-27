@@ -5,16 +5,16 @@ import NotiIcon from '@assets/svg/NotiIcon.svg?react'
 import MyDropdown from './MyDropdown'
 import NotiDropdown from './NotiDropdown'
 import LiveNotiIcon from '@assets/svg/LiveNotiIcon.svg?react'
-
+import MainLogin from '@/components/MainLogin'//++
 interface NavigationProps {
   userProfileImage?: string
 }
 
 const Navigation = ({ userProfileImage }: NavigationProps) => {
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(true)
-
+  const [isModalOpen, setModalOpen] = useState(false) // 모달 상태 추가 ++
   //로그인 여부 저장 변수
-  const isLogin = true
+  const isLogin = false
   //드롭다운 외 화면 클릭시 드롭다운 닫힐 수 있도록 설정
   const myDropdownRef = useRef<HTMLButtonElement | null>(null)
   const notiDropdownRef = useRef<HTMLButtonElement | null>(null)
@@ -59,6 +59,10 @@ const Navigation = ({ userProfileImage }: NavigationProps) => {
     setMyDropdownOpen(false)
   }
 
+    // 모달 열고 닫는 함수++
+    const openModal = () => setModalOpen(true)
+    const closeModal = () => setModalOpen(false)
+ 
   return (
     <div>
       <div className='fixed bg-white top-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-xl h-16 text-black text-base flex justify-between items-center z-50 px-12'>
@@ -127,10 +131,18 @@ const Navigation = ({ userProfileImage }: NavigationProps) => {
             )}
           </div>
         ) : (
-          <button className='font-bold'>로그인</button>
+          <button onClick={openModal} className='font-bold'>로그인</button>//++
         )}
       </div>
       <div className='fixed top-16 left-0 w-full border-b border-lightGray z-40'></div>
+{/* 모달 ++ */}
+{isModalOpen && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <MainLogin closeModal={closeModal}/>
+         
+        </div>
+      )}
+
     </div>
   )
 }
