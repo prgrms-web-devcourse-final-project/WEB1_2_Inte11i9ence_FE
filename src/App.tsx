@@ -14,6 +14,7 @@ import Container from './layouts/bodyContainer'
 
 import MainPage from './pages/MainPage/MainPage'
 import BestPage from './pages/BestPage/BestPage'
+import PostListPage from './pages/PostListPage/PostListPage'
 const App = () => {
   return (
     <div>
@@ -42,6 +43,11 @@ const App = () => {
           <Route
             path='/bestpage'
             element={<BestPage />}
+          ></Route>
+          {/* 통합 게시판 페이지 */}
+          <Route
+            path='/postlist'
+            element={<PostListPage />}
           ></Route>
           {/* 마이페이지 */}
           <Route
