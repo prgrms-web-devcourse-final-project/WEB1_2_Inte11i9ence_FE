@@ -13,6 +13,7 @@ import { Routes, Route } from 'react-router-dom'
 import Container from './layouts/bodyContainer'
 
 import MainPage from './pages/MainPage/MainPage'
+import BestPage from './pages/BestPage/BestPage'
 const App = () => {
   return (
     <div>
@@ -36,6 +37,11 @@ const App = () => {
           <Route
             path='/'
             element={<MainPage />}
+          ></Route>
+          {/* 베스트 페이지 */}
+          <Route
+            path='/bestpage'
+            element={<BestPage />}
           ></Route>
           {/* 마이페이지 */}
           <Route
