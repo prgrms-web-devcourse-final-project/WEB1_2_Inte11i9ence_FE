@@ -10,6 +10,7 @@ export interface AllPostData {
   views: number
   createdAt: string
   commentCount: number
+  category: string
 }
 
 // 특정 게시글 - 작성자 타입 정의
