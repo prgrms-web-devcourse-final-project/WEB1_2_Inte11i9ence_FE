@@ -75,15 +75,15 @@ const MainPage = () => {
 
     return (
         <div className="h-full">
-            <div className="max-w-2xl mx-auto px-4">
-                <form onSubmit={searchHandler}>
+            <div className="mx-auto px-4 flex flex-col items-center">
+                <form onSubmit={searchHandler} className="w-[55rem]">
                     <div ref={modalRef} className='relative flex items-center'>
                         <input 
                             ref={searchInputRef}
                             type="text" 
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className='w-full h-12 my-12 pl-4 pr-12 border border-darkGray rounded-3xl' 
+                            className='w-full h-14 my-12 pl-6 pr-12 border border-darkGray rounded-3xl' 
                             placeholder='검색어를 입력하세요'
                             onClick={() => setIsModalOpen(true)}
                         />
@@ -91,11 +91,11 @@ const MainPage = () => {
                             type="submit"
                             className='absolute right-4 top-1/2 -translate-y-1/2'
                         >
-                            <SearchIcon className='w-5 h-5' />
+                            <SearchIcon className='w-7 h-6' />
                         </button>
 
                         {isModalOpen && (
-                            <div className="absolute top-24 w-full bg-white rounded-3xl shadow-2xl p-4 z-50">
+                            <div className="absolute top-[8rem] w-full bg-white rounded-3xl shadow-2xl p-4 z-50">
                                 <div className="flex flex-wrap gap-2">
                                     {storedSearches.map((keyword, index) => (
                                         <div 
@@ -130,7 +130,7 @@ const MainPage = () => {
                                     </div>
                                     </div>
                                     <div className='flex flex-col'>
-                                    <div className="flex items-center space-x-2 mb-4">
+                                    <div className="flex items-center space-x-2 mb-8">
                                         <span className="text-lg font-bold ">인기 검색어</span>
                                         <span className="text-xs text-darkGray">
                                         {currentDate()}
