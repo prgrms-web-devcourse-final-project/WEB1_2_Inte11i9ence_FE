@@ -38,17 +38,17 @@ const RegionCardItem = () => {
     const currentItems = regionData.slice(startIndex, startIndex + itemsPerPage);
 
     return (
-        <div className="flex flex-row justify-center items-center w-full">
+        <div className="flex flex-row justify-center items-center my-8 w-full">
             <PrevArrowIcon 
             onClick={prevBtnHandler}
-            className='w-4 h-4 mr-2'></PrevArrowIcon>
-            <div className="flex flex-row space-x-4">
+            className='w-6 h-6 mr-10'></PrevArrowIcon>
+            <div className="flex flex-row space-x-10">
                   {currentItems.map((region)=>(
                     <Link
                     key={region.id}
                     to={region.path}
                     style={{ backgroundImage: `url(${region.thumbnail})` }}
-                    className='font-bold w-28 h-32 text-white rounded-2xl flex items-end justify-center py-4 bg-cover bg-center bg-no-repeat'
+                    className='font-bold text-xl w-44 h-56 text-white rounded-[2rem] flex items-end justify-center py-4 bg-cover bg-center bg-no-repeat'
                     >
                     {region.name}
                   </Link>
@@ -56,7 +56,7 @@ const RegionCardItem = () => {
             </div>
             <NextArrowIcon 
             onClick={nextBtnHandler}
-            className='w-4 h-4 ml-2'></NextArrowIcon>
+            className='w-6 h-6 ml-10'></NextArrowIcon>
         </div>
     );
 };
