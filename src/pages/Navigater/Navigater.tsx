@@ -39,7 +39,7 @@ const Navigation = () => {
       <div className='fixed bg-white top-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-xl h-16 text-black text-base flex justify-between items-center z-50 px-12'>
         {/* 왼쪽 버튼들 */}
         <div className='flex gap-5'>
-          <button className='font-bold'>게시판</button>
+          <Link to='/postlist' className='font-bold'>게시판</Link>
           <Link
             to='/schedule'
             className='font-bold'
