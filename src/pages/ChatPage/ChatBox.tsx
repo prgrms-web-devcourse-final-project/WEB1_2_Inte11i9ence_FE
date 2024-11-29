@@ -1,44 +1,41 @@
+import { useEffect, useRef } from 'react'
+import ScrollableContainer from '@/components/Scroll'
+const messages = [
+  { id: 1, sender: 'user', text: '안녕하세요!', timestamp: '10:00 AM' },
+  {
+    id: 2,
+    sender: 'other',
+    text: '안녕하세요! 반갑습니다.',
+    timestamp: '10:01 AM',
+  },
+  { id: 3, sender: 'user', text: '모하세요', timestamp: '10:02 AM' },
+  { id: 4, sender: 'other', text: '그냥있어요', timestamp: '10:03 AM' },
+  { id: 5, sender: 'user', text: '안녕하세요!', timestamp: '10:03 AM' },
+  {
+    id: 6,
+    sender: 'other',
+    text: '안녕하세요! 반갑습니다.',
+    timestamp: '10:04 AM',
+  },
+  { id: 7, sender: 'user', text: '모하세요?', timestamp: '10:05 AM' },
+  { id: 8, sender: 'other', text: '그냥있어요!', timestamp: '10:06 AM' },
+]
+
 const ChatBox = () => {
-  const messages = [
-    { id: 1, sender: 'user', text: '안녕하세요!', timestamp: '10:00 AM' },
-    {
-      id: 2,
-      sender: 'other',
-      text: '안녕하세요! 반갑습니다.',
-      timestamp: '10:01 AM',
-    },
-    {
-      id: 3,
-      sender: 'user',
-      text: '모하세요',
-      timestamp: '10:02 AM',
-    },
-    {
-      id: 4,
-      sender: 'other',
-      text: '그냥있어요',
-      timestamp: '10:03 AM',
-    },
-    { id: 5, sender: 'user', text: '안녕하세요!', timestamp: '10:03 AM' },
-    {
-      id: 6,
-      sender: 'other',
-      text: '안녕하세요! 반갑습니다.',
-      timestamp: '10:04 AM',
-    },
-    {
-      id: 7,
-      sender: 'user',
-      text: '모하세요?',
-      timestamp: '10:05 AM',
-    },
-    {
-      id: 8,
-      sender: 'other',
-      text: '그냥있어요!',
-      timestamp: '10:06 AM',
-    },
-  ]
+  // 스크롤을 관리할 ref 생성, 스크롤 맨 아래 이동에 사용ㅇ
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop =
+        scrollContainerRef.current.scrollHeight
+    }
+  }, [])
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop =
+        scrollContainerRef.current.scrollHeight
+    }
+  }, [messages])
 
   return (
     <div className='flex flex-col h-[70vh] w-full mx-auto bg-white border shadow'>
@@ -48,33 +45,39 @@ const ChatBox = () => {
           <p className='font-semibold text-black'>채팅 상대 이름</p>
         </div>
       </div>
-      <div className='flex flex-col flex-1 p-4 gap-4 overflow-y-auto'>
-        {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
-            <div>
-              <div
-                className={` px-4 py-2 rounded-lg text-[13px] ${
-                  msg.sender === 'user'
-                    ? 'bg-darkBlue text-white'
-                    : 'bg-gray-200 text-black'
-                }`}
-              >
-                <p>{msg.text}</p>
+      <ScrollableContainer
+        ref={scrollContainerRef}
+        style={{ height: 'calc(100% - 90px)', overflowY: 'auto' }}
+      >
+        <div className='flex flex-col flex-1 p-4 gap-4'>
+          {messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+            >
+              <div>
+                <div
+                  className={`px-4 py-2 rounded-lg text-[13px] ${
+                    msg.sender === 'user'
+                      ? 'bg-darkBlue text-white'
+                      : 'bg-gray-200 text-black'
+                  }`}
+                >
+                  <p>{msg.text}</p>
+                </div>
+                <span
+                  className={`text-xs mt-1 block ${
+                    msg.sender === 'user' ? 'text-right' : 'text-left'
+                  }`}
+                >
+                  {msg.timestamp}
+                </span>
               </div>
-              <span
-                className={`text-xs mt-1 block ${
-                  msg.sender === 'user' ? 'text-right' : 'text-left'
-                }`}
-              >
-                {msg.timestamp}
-              </span>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </ScrollableContainer>
+
       <div className='flex items-center gap-2 p-4 border-t bg-gray-50'>
         <input
           type='text'

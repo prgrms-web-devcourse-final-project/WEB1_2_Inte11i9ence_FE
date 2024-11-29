@@ -1,5 +1,7 @@
 import defaultProfileImage from '@assets/png/default-profile-2.png'
 import ChatBox from './ChatBox'
+import ScrollableContainer from '@/components/Scroll'
+
 const ChatPage = () => {
   const chats = [
     {
@@ -48,32 +50,33 @@ const ChatPage = () => {
               DM <span className='font-bold'>3</span>개
             </p>
           </div>
-          <div className='flex flex-col gap-4 overflow-y-auto h-full w-full'>
-            {chats.map((chat) => (
-              <button
-                key={chat.id}
-                className='flex border-b pb-3  w-full'
-              >
-                <div className='w-8 h-8 rounded-full overflow-hidden'>
-                  <img
-                    src={defaultProfileImage}
-                    alt='Profile'
-                    className='w-full h-full object-cover'
-                  />
-                </div>{' '}
-                <div className='ml-4'>
-                  <p className='flex items-start text-sm font-bold'>
-                    {chat.title}
-                  </p>
-                  <p className=' flex items-start text-xs text-darkGray truncate'>
-                    {chat.nickname}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
+          <ScrollableContainer style={{ height: 'calc(100% - 40px)' }}>
+            <div className='flex flex-col gap-4'>
+              {chats.map((chat) => (
+                <button
+                  key={chat.id}
+                  className='flex border-b pb-3  w-full'
+                >
+                  <div className='w-8 h-8 rounded-full overflow-hidden'>
+                    <img
+                      src={defaultProfileImage}
+                      alt='Profile'
+                      className='w-full h-full object-cover'
+                    />
+                  </div>{' '}
+                  <div className='ml-4'>
+                    <p className='flex items-start text-sm font-bold'>
+                      {chat.title}
+                    </p>
+                    <p className=' flex items-start text-xs text-darkGray truncate'>
+                      {chat.nickname}
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </ScrollableContainer>
         </div>
-        <div className='w-1 bg-lightGray h-full'></div>
         <div className='flex-[7]'>
           <ChatBox />
         </div>

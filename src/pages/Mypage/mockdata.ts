@@ -4,6 +4,31 @@ export const mockMypage = [
   },
 ]
 
+export const myPosts = [
+  {
+    postId: 1,
+    title: 'summer vacation in busan',
+    content: 'dynamic busan',
+    nickname: 'Jason Martinez',
+    imageUrl: null,
+    commentCount: 20,
+    likes: 15,
+    views: 40,
+    createdAt: '2024-11-19T10:15:30',
+  },
+  {
+    postId: 1,
+    title: 'summer vacation in busan',
+    content: 'dynamic busan',
+    nickname: 'Jason Martinez',
+    imageUrl: null,
+    commentCount: 20,
+    likes: 15,
+    views: 40,
+    createdAt: '2024-11-19T10:15:30',
+  },
+]
+
 export const groups = [
   {
     groupId: 1,
