@@ -19,7 +19,7 @@ interface PostItemProps {
 const BestCardItem = ({ post }: PostItemProps) => {
     return (
         <Link 
-        to='#'
+        to='/postpage'
         style={{ backgroundImage: `url(${post.imageUrl})` }}
         className="font-bold h-36 rounded-3xl flex items-center justify-end"
       >
