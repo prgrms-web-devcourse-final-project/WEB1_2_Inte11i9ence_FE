@@ -13,6 +13,8 @@ import { Routes, Route } from 'react-router-dom'
 import Container from './layouts/bodyContainer'
 
 import MainPage from './pages/MainPage/MainPage'
+// import PostPage from './components/PostPage'
+import PostPage from './pages/postDetail/PostPage'
 const App = () => {
   return (
     <div>
@@ -60,6 +62,12 @@ const App = () => {
             path='/chat'
             element={<ChatPage />}
           ></Route>
+          {/* {포스트상세페이지} */}
+            <Route
+            path='/postpage'
+            element={<PostPage/>}
+          ></Route>
+
         </Routes>
       </Container>
     </div>

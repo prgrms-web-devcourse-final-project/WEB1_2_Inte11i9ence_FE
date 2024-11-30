@@ -1,8 +1,8 @@
 import RegionData from "@/typings/region";
-import seoulImg from '@/assets/jpg/regionImg1_temp.jpg';
-import busanImg from '@/assets/jpg/regionImg2_temp.jpg';
-import incheonImg from '@/assets/jpg/regionImg3_temp.jpg';
-import jejuImg from '@/assets/jpg/regionImg4_temp.jpg';
+import seoulImg from '@/assets/png/jpg/regionImg1_temp.jpg';
+import busanImg from '@/assets/png/jpg/regionImg2_temp.jpg';
+import incheonImg from '@/assets/png/jpg/regionImg3_temp.jpg';
+import jejuImg from '@/assets/png/jpg/regionImg4_temp.jpg';
 
 // path와 thumbnail은 임시로 넣어둔 데이터입니다. (현재 API 명세서에 없음)
 export const regionData: RegionData[] = [
