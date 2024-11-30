@@ -13,8 +13,13 @@ import { Routes, Route } from 'react-router-dom'
 import Container from './layouts/bodyContainer'
 
 import MainPage from './pages/MainPage/MainPage'
+
 // import PostPage from './components/PostPage'
 import PostPage from './pages/postDetail/PostPage'
+
+import BestPage from './pages/BestPage/BestPage'
+import PostListPage from './pages/PostListPage/PostListPage'
+
 const App = () => {
   return (
     <div>
@@ -38,6 +43,16 @@ const App = () => {
           <Route
             path='/'
             element={<MainPage />}
+          ></Route>
+          {/* 베스트 페이지 */}
+          <Route
+            path='/bestpage'
+            element={<BestPage />}
+          ></Route>
+          {/* 통합 게시판 페이지 */}
+          <Route
+            path='/postlist'
+            element={<PostListPage />}
           ></Route>
           {/* 마이페이지 */}
           <Route
