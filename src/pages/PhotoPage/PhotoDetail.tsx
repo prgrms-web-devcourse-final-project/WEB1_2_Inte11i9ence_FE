@@ -1,15 +1,50 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import defaultProfileImage from '@assets/png/default-profile-2.png'
 import defaultProfileImageOne from '@assets/png/default-profile-1.png'
 import NextIcon from '@assets/svg/nextArrow.svg?react'
 import PrevIcon from '@assets/svg/prevArrow.svg?react'
 import VoteResults from './vote'
 import PinIcon from '@assets/svg/Pin.svg?react'
+import axios from 'axios'
 
-const PhotoDetail = () => {
+interface PhotoDetailProps {
+  photoId: number
+  onClose: () => void
+}
+
+const PhotoDetail = ({ photoId, onClose }: PhotoDetailProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [hasVoted, setHasVoted] = useState(false)
+  const [photoDetail,setPhotoDetail] = useState(null)
+  const [voteResults,setVoteResults] = useState(null)
 
+useEffect(()=>{
+  const fetchPhotoDetail = async()=>{
+    try{
+      const response = await axios.get(`api/photos/${photoId}`)
+      setPhotoDetail(response.data)
+    }catch(error){
+      console.error('Error',error)
+    }
+  }
+  fetchPhotoDetail()
+},[photoId])
+
+const handleVote = async (photoId:string) => {
+  try {
+    const response = await axios.post('/api/vote', {
+      photoId, // 투표된 사진 ID
+      userId: 'user123', // 사용자 ID (로그인 사용자 기준)
+    })
+    if (response.data.success) {
+      console.log('투표 성공:', response.data.voteResults)
+      setHasVoted(true) // 투표 상태 업데이트
+      setVoteResults(response.data.voteResults) // 결과 UI 업데이트
+    }
+  } catch (error) {
+    console.error('투표 실패:', error)
+  }
+}
   const images = [defaultProfileImage, defaultProfileImageOne]
 
   const handlePrev = () => {
@@ -24,9 +59,7 @@ const PhotoDetail = () => {
     )
   }
 
-  const handleVote = () => {
-    setHasVoted(true)
-  }
+  
 
   return (
     <div>
@@ -40,13 +73,13 @@ const PhotoDetail = () => {
               width={20}
               height={20}
             />
-            <p className='font-bold text-lg'>서울</p>
+            <p className='font-bold text-lg'>{photoDetail.regionName}</p>
           </div>
           <div className='flex justify-between  py-3 items-center'>
             <div className='flex items-center gap-2'>
               <div className='w-8 h-8 rounded-full overflow-hidden'>
                 <img
-                  src={defaultProfileImage}
+                  src={photoDetail.profileImg || defaultProfileImage}
                   alt='Profile'
                   className='w-full h-full object-cover'
                 />
@@ -54,8 +87,8 @@ const PhotoDetail = () => {
               <div className='flex flex-col justify-start items-start'>
                 <p className='text-sm font-bold text-black'>닉네임</p>
                 <div className='flex text-[10px] text-darkGray gap-2'>
-                  <p>1시간 전</p>
-                  <p>100</p>
+                  <p>{photoDetail.createAt}</p>
+                  <p>{photoDetail.views}}</p>
                 </div>
               </div>
             </div>
@@ -75,7 +108,7 @@ const PhotoDetail = () => {
               />
             </button>
             <img
-              src={images[currentIndex]}
+              src={images[currentIndex]} //api로 오는 사진으로 변경 
               alt={`Photo ${currentIndex + 1}`}
               className='w-full h-full object-cover rounded-md'
             />
@@ -90,8 +123,7 @@ const PhotoDetail = () => {
             </button>
           </div>
           <p className='font-bold text-sm text-black mt-4'>
-            어디어디 놀러가서 찍은 첫 번째 사진이랑 두 번째 사진 중에 뭐가 더 잘
-            나왔는지 투표해주세요ㅠㅠㅠ
+           {photoDetail.content}
           </p>
           {/* 투표 UI */}
           <div className='mt-4  p-2'>
@@ -101,22 +133,22 @@ const PhotoDetail = () => {
                 <div className='flex gap-4 items-center'>
                   <button
                     className='bg-darkBlue text-white py-2 px-2 text-sm rounded-lg hover:bg-blue-600'
-                    onClick={handleVote}
-                  >
+                    onClick={() => handleVote(photo1Id)}
+                    >
                     첫 번째 사진
                   </button>
                   <p className='font-bold text-lg'>VS</p>
                   <button
                     className='bg-darkBlue text-white py-2 px-2 text-sm rounded-lg hover:bg-blue-600'
-                    onClick={handleVote}
-                  >
+                    onClick={() => handleVote(photo2Id)}
+                    >
                     두 번째 사진
                   </button>
                 </div>
               </div>
             ) : (
-              // 투표 후 UI
-              <VoteResults />
+              // 투표 후 UI, 글의 작성자인지, 투표를 한 사람인ㅇ지에 대한 정보랑, 투표수 전달해서 보여주기 
+              <VoteResults voteResults={voteResults}/>
             )}
           </div>
         </div>
