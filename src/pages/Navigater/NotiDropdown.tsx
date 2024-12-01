@@ -7,9 +7,13 @@ import formatTime from '@/utils/formatTime'
 
 interface NotiDropdownProps {
   setHasUnreadNotifications: (value: boolean) => void
+  onClose: () => void
 }
 
-const NotiDropdown = ({ setHasUnreadNotifications }: NotiDropdownProps) => {
+const NotiDropdown = ({
+  setHasUnreadNotifications,
+  onClose,
+}: NotiDropdownProps) => {
   const [notifications, setNotifications] = useState(mockNotifications)
   const [filter, setFilter] = useState<'all' | 'unread'>('all')
   // 읽지 않은 알림 여부를 부모에게 전달
@@ -116,7 +120,10 @@ const NotiDropdown = ({ setHasUnreadNotifications }: NotiDropdownProps) => {
         {filteredNotifications.map((notification) => (
           <div
             key={notification.id}
-            onClick={() => markNotificationAsRead(notification.id)}
+            onClick={() => {
+              markNotificationAsRead(notification.id)
+              onClose()
+            }}
             className={`flex w-full justify-between items-center gap-2 p-4 cursor-pointer 
               ${notification.viewed === 0 ? 'bg-gray-100' : 'bg-white'} 
               `}

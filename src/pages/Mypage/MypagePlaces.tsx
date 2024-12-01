@@ -19,7 +19,7 @@ const MypagePlaces = ({ onRegionSelect }: MypagePlacesProps) => {
 
   return (
     <div className='relative flex flex-col flex-[4] gap-16 justify-center items-center'>
-      <div className='w-[130px] h-[130px] bg-white absolute top-[27px] z-50'>
+      <div className='w-[130px] h-[130px] bg-white absolute top-[27px] z-20'>
         <LocationIcon
           width={130}
           height={130}

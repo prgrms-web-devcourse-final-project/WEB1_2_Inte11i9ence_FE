@@ -1,6 +1,7 @@
-import { AllPostData } from '../typings/post';
-
+import { AllPostData } from '../typings/post'
+import SeoulImg from '@assets/jpg/서울.jpg'
 export const postData: AllPostData[] = [
+
        // "전체 게시글 조회" 데이터
         {
         id: 1,
@@ -256,3 +257,4 @@ export const postData: AllPostData[] = [
     }
 
 ];
+
