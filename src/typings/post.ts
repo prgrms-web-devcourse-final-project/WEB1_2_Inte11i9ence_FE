@@ -11,6 +11,7 @@ export interface AllPostData {
   createdAt: string
   commentCount: number
   category: string
+  rating?: string
 }
 
 // 특정 게시글 - 작성자 타입 정의
