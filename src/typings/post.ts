@@ -4,13 +4,24 @@ export interface AllPostData {
   id: number
   title: string
   content: string
-  imageUrl: string
-  nickname: string
+  photoUrl: string | null
+  author: {
+    nickname: string
+    profileUrl: string | null
+  }
+
   likes: number
   views: number
-  createdAt: string
-  commentCount: number
+  postedAt: string
+  replies: number
   category: string
+  rating: number
+}
+// API 응답 타입 정의
+export interface PostApiResponse {
+  message: string
+  result: AllPostData[] // result는 AllPostData 배열
+  nextPostUrl: string | null
 }
 
 // 특정 게시글 - 작성자 타입 정의
