@@ -15,13 +15,14 @@ export interface AllPostData {
   postedAt: string
   replies: number
   category: string
-  rating: number
+  rating?: number
 }
 // API 응답 타입 정의
 export interface PostApiResponse {
   message: string
   result: AllPostData[] // result는 AllPostData 배열
   nextPostUrl: string | null
+
 }
 
 // 특정 게시글 - 작성자 타입 정의

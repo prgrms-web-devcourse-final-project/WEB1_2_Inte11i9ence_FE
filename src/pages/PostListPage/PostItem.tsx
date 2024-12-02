@@ -11,6 +11,20 @@ interface PostItemProps {
 }
 
 const PostItem = ({ post }: PostItemProps) => {
+  
+    // 카테고리별 색상 지정
+    const getCategoryColor = (category: string) => {
+        switch(category) {
+            case '자유':
+                return 'text-lightBlue border-lightBlue';
+            case '리뷰':
+                return 'text-yellow-500 border-yellow-500';
+            case '공지':
+                return 'text-pink-500 border-pink-500';
+            default:
+                return 'text-darkBlue border-darkBlue';
+        }
+    };
   return (
     <div>
       <Link
@@ -35,7 +49,10 @@ const PostItem = ({ post }: PostItemProps) => {
                   </div>
                   <div className='flex border rounded-lg border-lightBlue p-[2px] px-1'>
                     <p className='text-lightBlue font-bold text-[14px]'>
-                      {post.category}
+                       {post.category === '리뷰'?
+                            (<span className={`border-2 rounded-xl mx-2 px-1 mt-0.5 ${getCategoryColor(post.category)}`}>{post.rating}</span>)
+                            :(<span className={`border-2 rounded-xl mx-2 px-1 mt-0.5 ${getCategoryColor(post.category)}`}>{post.category}</span>)
+                            }
                     </p>
                   </div>
                 </div>
@@ -55,14 +72,14 @@ const PostItem = ({ post }: PostItemProps) => {
                     height={13}
                   />
                 </div>
-                <span className='text-darkGray text-[14px]'>10</span>
+                <span className='text-darkGray text-[14px]'>{post.likes}</span>
                 <div className='text-darkGray'>
                   <CommentIcon
                     width={14}
                     height={14}
                   />
                 </div>
-                <span className='text-darkGray text-[14px]'>10</span>
+                <span className='text-darkGray text-[14px]'>{post.replies}</span>
               </div>
               <p className='text-darkGray text-[14px]'>
                 {formatTime(post.postedAt)}
