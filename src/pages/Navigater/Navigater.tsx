@@ -63,6 +63,12 @@ const Navigation = () => {
         {/* 로그인 여부에 따른 오른쪽 버튼들 */}
         {isLogin ? (
           <div className='flex gap-5 items-center relative'>
+            <Link
+            to='#'
+            className='font-bold'
+          >
+            글쓰기
+          </Link>
             <button
               className='w-8 h-8 rounded-full overflow-hidden'
               onClick={toggleMyDropdown}
