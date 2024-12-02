@@ -19,6 +19,8 @@ import PostPage from './pages/postDetail/PostPage'
 
 import BestPage from './pages/BestPage/BestPage'
 import PostListPage from './pages/PostListPage/PostListPage'
+import RegionPostListPage from './pages/PostListPage/RegionPostListPage'
+import SelectedRegionPostList from './pages/PostListPage/SelectedRegionPostList'
 
 const App = () => {
   return (
@@ -53,6 +55,18 @@ const App = () => {
           <Route
             path='/postlist'
             element={<PostListPage />}
+          ></Route>
+          <Route
+            path='/postlist/region'
+            element={<RegionPostListPage />}
+          ></Route>
+          <Route
+            path='/postlist/region/:id'
+            element={<SelectedRegionPostList />}
+          ></Route>
+          <Route
+            path='/postlist/region/:id'
+            element={<SelectedRegionPostList />}
           ></Route>
           {/* 마이페이지 */}
           <Route
