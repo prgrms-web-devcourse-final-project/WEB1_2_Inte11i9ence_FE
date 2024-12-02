@@ -1,15 +1,13 @@
 import React from 'react';
 import DropdownSelector from './DropdownSelector';
 
-interface DetailDropdownProps {
-    isVisible: boolean;
+interface RegionDropdownProps {
     options: Array<{ value: string; label: string }>;
     defaultValue: string;
     onChange: (selected: string) => void;
   }
 
-const RegionDropdown = ({ isVisible, options, defaultValue, onChange }: DetailDropdownProps) => {
-    if (!isVisible) {return null};
+const RegionDropdown = ({ options, defaultValue, onChange }: RegionDropdownProps) => {
     
     return (
         <div className='h-[40px] relative z-1000'>
