@@ -43,11 +43,11 @@ const DropdownSelector = ({
 
   return (
     <div
-      className='flex bg-white flex-col items-end'
+      className='flex bg-white flex-col items-end text-[12px]'
       ref={dropdownRef}
     >
       <div
-        className={`border w-auto rounded-lg text-sm font-bold shadow-md text-black flex flex-col items-stretch transition-all ${
+        className={`border w-auto rounded-lg text-[12px] font-bold shadow-md text-black flex flex-col items-stretch transition-all ${
           isExpanded ? 'p-2 gap-2' : 'p-2'
         }`}
       >
@@ -61,7 +61,7 @@ const DropdownSelector = ({
             height={10}
             className={`transition-transform ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
           />
-          <p className='flex justify-center items-center'>
+          <p className='flex justify-center items-center text-[12px]'>
             {options.find((opt) => opt.value === selected)?.label}
           </p>
         </button>
@@ -73,7 +73,7 @@ const DropdownSelector = ({
               .map((opt) => (
                 <button
                   key={opt.value}
-                  className='flex justify-center bg-white items-center p-2 hover:bg-gray-100'
+                  className='flex justify-center bg-white items-center p-2 hover:bg-gray-100 '
                   onClick={() => handleSelection(opt.value)}
                 >
                   {opt.label}

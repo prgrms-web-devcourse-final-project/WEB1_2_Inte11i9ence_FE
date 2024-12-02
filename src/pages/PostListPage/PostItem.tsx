@@ -1,15 +1,17 @@
-import { AllPostData } from '@/typings/post';
-import React from 'react';
-import { Link } from 'react-router-dom';
-import CommentIcon from '@/assets/svg/Comment.svg?react';
-import LikeIcon from '@/assets/svg/Like.svg?react';
+import { AllPostData } from '@/typings/post'
+import { Link } from 'react-router-dom'
+import CommentIcon from '@/assets/svg/Comment.svg?react'
+import LikeIcon from '@/assets/svg/Like.svg?react'
+import defaultProfileImage from '@assets/png/default-profile-2.png'
+import formatTime from '@/utils/formatTime'
+import noPhoto from '@assets/png/noPhoto.png'
 
 interface PostItemProps {
-    post: AllPostData;
+  post: AllPostData
 }
 
 const PostItem = ({ post }: PostItemProps) => {
-
+  
     // 카테고리별 색상 지정
     const getCategoryColor = (category: string) => {
         switch(category) {
@@ -23,45 +25,78 @@ const PostItem = ({ post }: PostItemProps) => {
                 return 'text-darkBlue border-darkBlue';
         }
     };
-
-    return (
-        <div>
-            <div className="flex justify-center w-full">
-        <Link 
-                to='#'
-                className="flex justify-between px-4 border-b-2 font-bold h-[12rem] w-[66rem]  flex items-center"
-            >
-                <div className='flex flex-col justify-around w-[48rem] h-[10rem] px-8 py-4 mr-4'>
-                    <div className='flex flex-col space-y-3'>
-                        <div className='flex'>
-                            {post.category === '리뷰'?
+  return (
+    <div>
+      <Link
+        to='#' // 실제 링크로 변경
+      >
+        <div className='flex justify-between align-center px-16 py-2 w-full position gap-16 '>
+          <div className='flex flex-col justify-between  gap-2 w-[70%]'>
+            <div className='flex-col flex gap-2 '>
+              <div className='flex gap-2 align-center'>
+                <div className='flex items-center gap-2'>
+                  <div className='w-8 h-8 rounded-full overflow-hidden'>
+                    <img
+                      src={post.author.profileUrl || defaultProfileImage}
+                      alt='Profile'
+                      className='w-full h-full object-cover'
+                    />
+                  </div>
+                  <div className='flex'>
+                    <p className='text-darkGray font-bold text-[14px]'>
+                      {post.author.nickname}
+                    </p>
+                  </div>
+                  <div className='flex border rounded-lg border-lightBlue p-[2px] px-1'>
+                    <p className='text-lightBlue font-bold text-[14px]'>
+                       {post.category === '리뷰'?
                             (<span className={`border-2 rounded-xl mx-2 px-1 mt-0.5 ${getCategoryColor(post.category)}`}>{post.rating}</span>)
                             :(<span className={`border-2 rounded-xl mx-2 px-1 mt-0.5 ${getCategoryColor(post.category)}`}>{post.category}</span>)
                             }
-                             {/* <span className={`border-2 rounded-xl mx-2 px-1 mt-0.5 ${getCategoryColor(post.category)}`}>{post.category}</span> */}
-                        <span className='text-2xl font-bold'>{post.title}</span>
-                        </div>
-                        <span className='text-ml text-left text-darkGray overflow-hidden h-[3.2em] line-clamp-2'>{post.content}</span>
-                        <div className='flex items-center space-x-2'>
-                            <div className='flex items-center'>
-                                <CommentIcon className='w-5 h-5 mr-1' />
-                                <span className='text-ml'>{post.commentCount}</span>
-                            </div>
-                            <div className='flex items-center'>
-                                <LikeIcon className='w-5 h-5 mx-1' />
-                                <span className='text-ml'>{post.likes}</span>
-                            </div>
-                        </div>
-                    </div>
+                    </p>
+                  </div>
                 </div>
-                <div>
-                    <img src="src\assets\jpg\postThumbnail.jpg" alt="게시글 썸네일" 
-                    className='w-40 h-36 mr-2'/>
+              </div>
+              <span className='flex justify-start text-[18px] text-left font-bold overflow-hidden'>
+                <span className='line-clamp-1'>{post.title}</span>
+              </span>
+            </div>
+            <span className='text-ml text-left text-[14px] text-darkGray overflow-hidden line-clamp-2'>
+              {post.content}
+            </span>
+            <div className='flex gap-2'>
+              <div className='flex items-center gap-1'>
+                <div className='text-darkGray'>
+                  <LikeIcon
+                    width={13}
+                    height={13}
+                  />
                 </div>
-            </Link>
-      </div>
+                <span className='text-darkGray text-[14px]'>{post.likes}</span>
+                <div className='text-darkGray'>
+                  <CommentIcon
+                    width={14}
+                    height={14}
+                  />
+                </div>
+                <span className='text-darkGray text-[14px]'>{post.replies}</span>
+              </div>
+              <p className='text-darkGray text-[14px]'>
+                {formatTime(post.postedAt)}
+              </p>
+            </div>
+          </div>
+          <div className='rounded-lg overflow-hidden'>
+            <img
+              src={post.photoUrl || noPhoto} // photoUrl이 없으면 기본 이미지 사용
+              alt='게시글 썸네일'
+              className='w-36 h-36 object-cover rounded-lg' // 부모 div에 꽉 차게 설정
+            />
+          </div>
         </div>
-    );
-};
+      </Link>
+    </div>
+  )
+}
 
-export default PostItem;
+export default PostItem
