@@ -46,5 +46,4 @@ const BestCardItem = ({ post }: PostItemProps) => {
     );
 };
 
-
 export default BestCardItem
