@@ -91,7 +91,7 @@ const PostListPage = () => {
         
         if (sortType === '최신순') {
             return sorted.sort((a, b) => {
-                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                return new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime();
             });
         } 
             return sorted.sort((a, b) => b.likes - a.likes);

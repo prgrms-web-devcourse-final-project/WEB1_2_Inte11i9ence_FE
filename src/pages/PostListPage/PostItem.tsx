@@ -25,10 +25,30 @@ const PostItem = ({ post }: PostItemProps) => {
                 return 'text-darkBlue border-darkBlue';
         }
     };
+
+    // 숫자로 받은 평점 데이터를 별로 표시하기 위해 변환
+    const numToStar = (num: number | undefined) => {
+        switch(num) {
+            case 1:
+                return '★☆☆☆☆';
+            // case 1.5:
+            //     return '★½☆☆☆';
+            case 2:
+                return '★★☆☆☆';
+            case 3:
+                return '★★★☆☆';
+            case 4:
+                return '★★★★☆';
+            case 5:
+                return '★★★★★';
+            default:
+                return '평점 없음';
+        }
+    }
   return (
     <div>
       <Link
-        to='#' // 실제 링크로 변경
+        to='/postpage' // 실제 링크로 변경
       >
         <div className='flex justify-between align-center px-16 py-2 w-full position gap-16 '>
           <div className='flex flex-col justify-between  gap-2 w-[70%]'>
@@ -47,14 +67,12 @@ const PostItem = ({ post }: PostItemProps) => {
                       {post.author.nickname}
                     </p>
                   </div>
-                  <div className='flex border rounded-lg border-lightBlue p-[2px] px-1'>
                     <p className='text-lightBlue font-bold text-[14px]'>
                        {post.category === '리뷰'?
-                            (<span className={`border-2 rounded-xl mx-2 px-1 mt-0.5 ${getCategoryColor(post.category)}`}>{post.rating}</span>)
-                            :(<span className={`border-2 rounded-xl mx-2 px-1 mt-0.5 ${getCategoryColor(post.category)}`}>{post.category}</span>)
+                            (<span className={`border-2 rounded-[0.7rem] mx-2 px-1 pb-0.5 my-0.5 ${getCategoryColor(post.category)}`}>{numToStar(post.rating)}</span>)
+                            :(<span className={`border-2 rounded-[0.7rem] mx-2 px-1 pb-0.5 my-0.5 ${getCategoryColor(post.category)}`}>{post.category}</span>)
                             }
                     </p>
-                  </div>
                 </div>
               </div>
               <span className='flex justify-start text-[18px] text-left font-bold overflow-hidden'>

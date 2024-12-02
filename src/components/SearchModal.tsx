@@ -1,13 +1,19 @@
 import React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import SearchIcon from '@/assets/svg/search.svg?react';
+import { useNavigate } from 'react-router-dom';
 
-const SearchModal = () => {
+interface SearchModalProps {
+    initialSearchTerm?: string;
+}
+
+const SearchModal = ({ initialSearchTerm = '' }: SearchModalProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [storedSearches, setStoredSearches] = useState<string[]>([]);
-    const modalRef = useRef<HTMLDivElement>(null);
-    const searchInputRef = useRef<HTMLInputElement>(null);
+    const [searchTerm, setSearchTerm] = useState(initialSearchTerm);    // 최초 검색어
+    const [storedSearches, setStoredSearches] = useState<string[]>([]); // 최근 검색어
+    const modalRef = useRef<HTMLDivElement>(null);                
+    const searchInputRef = useRef<HTMLInputElement>(null);              
+    const navigate = useNavigate();
 
     // 로컬스토리지에서 검색어 불러오기
     useEffect(() => {
@@ -16,6 +22,11 @@ const SearchModal = () => {
             setStoredSearches(JSON.parse(savedSearches));
         }
     }, []);
+
+    // initialSearchTerm이 변경될 때마다 검색어 초기화
+    useEffect(() => {
+        setSearchTerm(initialSearchTerm);
+    }, [initialSearchTerm]);
 
     // 모달창 외부 클릭 시 모달창 닫기
     useEffect(() => {
@@ -33,8 +44,9 @@ const SearchModal = () => {
     }, []);
 
     // 검색창 제출 핸들러
-    const searchHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setIsModalOpen(false);
         if (!searchTerm.trim()) {
             return
         };
@@ -47,8 +59,7 @@ const SearchModal = () => {
         // 로컬스토리지에 검색어 저장
         setStoredSearches(newSearches);
         localStorage.setItem('storedSearches', JSON.stringify(newSearches));
-        setSearchTerm('');
-        // setIsModalOpen(false);
+        navigate(`/search?keyword=${encodeURIComponent(searchTerm)}`);
     };
 
     // 검색어 삭제
@@ -75,7 +86,7 @@ const SearchModal = () => {
     return (
         <div>
             <div className="mx-auto px-4 flex flex-col items-center">
-                <form onSubmit={searchHandler} className="w-[55rem]">
+                <form onSubmit={submitHandler} className="w-[55rem]">
                     <div ref={modalRef} className='relative flex items-center'>
                         <input 
                             ref={searchInputRef}

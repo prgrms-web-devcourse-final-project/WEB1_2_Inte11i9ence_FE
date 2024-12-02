@@ -21,6 +21,7 @@ import BestPage from './pages/BestPage/BestPage'
 import PostListPage from './pages/PostListPage/PostListPage'
 import RegionPostListPage from './pages/PostListPage/RegionPostListPage'
 import SelectedRegionPostList from './pages/PostListPage/SelectedRegionPostList'
+import SearchResultPage from './pages/PostListPage/SearchResultPage'
 
 const App = () => {
   return (
@@ -45,6 +46,11 @@ const App = () => {
           <Route
             path='/'
             element={<MainPage />}
+          ></Route>
+          {/* 검색 결과 페이지 */}
+          <Route
+            path='/search'
+            element={<SearchResultPage />}
           ></Route>
           {/* 베스트 페이지 */}
           <Route
