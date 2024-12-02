@@ -28,7 +28,7 @@ const PostItem = ({ post }: PostItemProps) => {
         <div>
             <div className="flex justify-center w-full">
         <Link 
-                to='#'
+                to='/postpage'
                 className="flex justify-between px-4 border-b-2 font-bold h-[12rem] w-[66rem]  flex items-center"
             >
                 <div className='flex flex-col justify-around w-[48rem] h-[10rem] px-8 py-4 mr-4'>
