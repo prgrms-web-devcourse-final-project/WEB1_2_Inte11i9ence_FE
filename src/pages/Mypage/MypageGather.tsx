@@ -30,7 +30,7 @@ const MypageGather = () => {
 
   return (
     <div className='flex flex-col items-end'>
-      <div className='h-[40px] relative z-1000 px-16'>
+      <div className='h-[60px] relative z-1000 px-16'>
         <DropdownSelector
           options={options}
           defaultValue='posts'
