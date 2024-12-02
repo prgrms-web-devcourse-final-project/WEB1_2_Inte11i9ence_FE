@@ -26,7 +26,7 @@ const MypagePlaces = ({ uniqueRegions, onRegionSelect }: MypagePlacesProps) => {
         />
       </div>
       <div className='font-bold text-lg z-10'>
-        <span className='text-lightBlue'>{닉네임}}</span>님은{' '}
+        <span className='text-lightBlue'>{닉네임}</span>님은{' '}
         <span className='text-lightBlue'>{uniqueRegions.length}</span>개의 지역을
         여행했어요!
       </div>
