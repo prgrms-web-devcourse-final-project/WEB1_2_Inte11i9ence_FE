@@ -27,7 +27,8 @@ import ChungnamImg from '@/assets/jpg/충청남도.jpg';
 const SelectedRegionPostList = () => {
     const { id } = useParams();
     const [selectedCategory, setSelectedCategory] = useState('지역')
-    const [selectedDetailCategory, setSelectedDetailCategory] = useState('지역 전체')
+    // id가 있을 경우 decodeURIComponent(id)로 디코딩하여 상세 지역 선택되도록 설정 (지역 카드 클릭하여 들어왔을 경우)
+    const [selectedDetailCategory, setSelectedDetailCategory] = useState(id ? decodeURIComponent(id) : '지역 전체');
 
     const [isDetailCategoryOpen, setIsDetailCategoryOpen] = useState(true)
     const [sortType, setSortType] = useState('최신순');
@@ -36,7 +37,11 @@ const SelectedRegionPostList = () => {
 
     useEffect(() => {
         if (id) {
-            setSelectedDetailCategory(decodeURIComponent(id));
+            // 디코딩한 id를 상세 지역 선택 카테고리로 설정
+            const decodedRegion = decodeURIComponent(id);
+            setSelectedDetailCategory(decodedRegion);
+            setSelectedCategory('지역');
+            setIsDetailCategoryOpen(true);
         }
     }, [id]);
 
