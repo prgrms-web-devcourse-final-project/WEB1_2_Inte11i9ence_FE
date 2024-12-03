@@ -5,52 +5,31 @@ import LikeIcon from '@/assets/svg/Like.svg?react'
 import defaultProfileImage from '@assets/png/default-profile-2.png'
 import formatTime from '@/utils/formatTime'
 import noPhoto from '@assets/png/noPhoto.png'
+import StarIcon from '@assets/svg/star.svg?react'
 
 interface PostItemProps {
   post: AllPostData
 }
 
 const PostItem = ({ post }: PostItemProps) => {
-  
-    // 카테고리별 색상 지정
-    const getCategoryColor = (category: string) => {
-        switch(category) {
-            case '자유':
-                return 'text-lightBlue border-lightBlue';
-            case '리뷰':
-                return 'text-yellow-500 border-yellow-500';
-            case '공지':
-                return 'text-pink-500 border-pink-500';
-            default:
-                return 'text-darkBlue border-darkBlue';
-        }
-    };
-
-    // 숫자로 받은 평점 데이터를 별로 표시하기 위해 변환
-    const numToStar = (num: number | undefined) => {
-        switch(num) {
-            case 1:
-                return '★☆☆☆☆';
-            // case 1.5:
-            //     return '★½☆☆☆';
-            case 2:
-                return '★★☆☆☆';
-            case 3:
-                return '★★★☆☆';
-            case 4:
-                return '★★★★☆';
-            case 5:
-                return '★★★★★';
-            default:
-                return '평점 없음';
-        }
+  // 카테고리별 색상 지정
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case '자유':
+        return 'text-lightBlue border-lightBlue'
+      case '리뷰':
+        return 'text-yellow-500 border-yellow-500'
+      case '공지':
+        return 'text-pink-500 border-pink-500'
+      default:
+        return 'text-darkBlue border-darkBlue'
     }
+  }
+
   return (
     <div>
-      <Link
-        to='/postpage' // 실제 링크로 변경
-      >
-        <div className='flex justify-between align-center px-16 py-2 w-full position gap-16 '>
+      <Link to={`/post/${post.id}`}>
+        <div className='flex justify-between align-center px-36 py-2 w-full position gap-16 '>
           <div className='flex flex-col justify-between  gap-2 w-[70%]'>
             <div className='flex-col flex gap-2 '>
               <div className='flex gap-2 align-center'>
@@ -67,12 +46,25 @@ const PostItem = ({ post }: PostItemProps) => {
                       {post.author.nickname}
                     </p>
                   </div>
-                    <p className='text-lightBlue font-bold text-[14px]'>
-                       {post.category === '리뷰'?
-                            (<span className={`border-2 rounded-[0.7rem] mx-2 px-1 pb-0.5 my-0.5 ${getCategoryColor(post.category)}`}>{numToStar(post.rating)}</span>)
-                            :(<span className={`border-2 rounded-[0.7rem] mx-2 px-1 pb-0.5 my-0.5 ${getCategoryColor(post.category)}`}>{post.category}</span>)
-                            }
-                    </p>
+                  <p className='text-lightBlue font-bold text-[14px]'>
+                    {post.category === '리뷰' ? (
+                      <div
+                        className={` flex gap-1 justify-center align-center border-2 rounded-[0.7rem] mx-2 px-1 pb-0.5 my-0.5 ${getCategoryColor(post.category)}`}
+                      >
+                        <StarIcon
+                          width={14}
+                          height={20}
+                        />
+                        <p>{post.rating?.toFixed(1)}</p>
+                      </div>
+                    ) : (
+                      <span
+                        className={`border-2 rounded-[0.7rem] mx-2 px-1 pb-0.5 my-0.5 ${getCategoryColor(post.category)}`}
+                      >
+                        {post.category}
+                      </span>
+                    )}
+                  </p>
                 </div>
               </div>
               <span className='flex justify-start text-[18px] text-left font-bold overflow-hidden'>
@@ -97,7 +89,9 @@ const PostItem = ({ post }: PostItemProps) => {
                     height={14}
                   />
                 </div>
-                <span className='text-darkGray text-[14px]'>{post.replies}</span>
+                <span className='text-darkGray text-[14px]'>
+                  {post.replies}
+                </span>
               </div>
               <p className='text-darkGray text-[14px]'>
                 {formatTime(post.postedAt)}
