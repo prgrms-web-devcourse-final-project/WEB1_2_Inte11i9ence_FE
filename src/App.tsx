@@ -102,7 +102,11 @@ const App = () => {
             path='/postpage'
             element={<PostPage/>}
           ></Route>
-
+          {/* 작서페이지 */}
+            <Route
+            path='/WritePage'
+            element={<WritePage/>}
+          ></Route>
         </Routes>
       </Container>
     </div>
