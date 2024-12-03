@@ -5,11 +5,11 @@ import Gangwondo from '@/assets/png/Gangwondo.png';
 import CommentSection from './CommentSection';
 
 const PostPage = ({
-  login,     //임시로 true
+  login =true,     //임시로
   boardType = '리뷰게시판',// 임시
 }: {
   login: boolean;
-  boardType: '지역게시판' | '리뷰게시판';
+  boardType : '지역게시판' | '리뷰게시판';
 }) => {
   const rating = 4;
   const region = '강원도';

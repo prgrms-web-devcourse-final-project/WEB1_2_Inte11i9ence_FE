@@ -19,6 +19,7 @@ import PostPage from './pages/postDetail/PostPage'
 
 import BestPage from './pages/BestPage/BestPage'
 import PostListPage from './pages/PostListPage/PostListPage'
+import WritePage from './pages/WritePage/WritePage'
 
 const App = () => {
   return (
@@ -26,63 +27,66 @@ const App = () => {
       <Container>
         <Navigation />
         <Routes>
-          {/* 일정 공유 페이지 */}
-          <Route
-            path='/schedule'
-            element={<SchedulePage />}
-          ></Route>
-          <Route
-            path='/schedule/add'
-            element={<ScheduleAdd />}
-          ></Route>
-          <Route
-            path='/schedule/detail'
-            element={<ScheduleDetail />}
-          ></Route>
-          {/* 메인페이지 */}
-          <Route
-            path='/'
-            element={<MainPage />}
-          ></Route>
-          {/* 베스트 페이지 */}
-          <Route
-            path='/bestpage'
-            element={<BestPage />}
-          ></Route>
-          {/* 통합 게시판 페이지 */}
-          <Route
-            path='/postlist'
-            element={<PostListPage />}
-          ></Route>
-          {/* 마이페이지 */}
-          <Route
-            path='/mypage'
-            element={<Mypage />}
-          ></Route>
-          <Route
-            path='/mypage/gather'
-            element={<MypageGather />}
-          ></Route>
-          {/* 사진페이지 */}
-          <Route
-            path='/photo'
-            element={<PhotoPage />}
-          ></Route>
-          <Route
-            path='/photo/add'
-            element={<PhotoAdd />}
-          ></Route>
-          {/* 채팅페이지 */}
-          <Route
-            path='/chat'
-            element={<ChatPage />}
-          ></Route>
-          {/* {포스트상세페이지} */}
-            <Route
-            path='/postpage'
-            element={<PostPage/>}
-          ></Route>
-
+{/* 일정 공유 페이지 */}
+<Route
+  path='/schedule'
+  element={<SchedulePage />}
+></Route>
+<Route
+  path='/schedule/add'
+  element={<ScheduleAdd />}
+></Route>
+<Route
+  path='/schedule/detail'
+  element={<ScheduleDetail />}
+></Route>
+{/* 메인페이지 */}
+<Route
+  path='/'
+  element={<MainPage />}
+></Route>
+{/* 베스트 페이지 */}
+<Route
+  path='/bestpage'
+  element={<BestPage />}
+></Route>
+{/* 통합 게시판 페이지 */}
+<Route
+  path='/postlist'
+  element={<PostListPage />}
+></Route>
+{/* 마이페이지 */}
+<Route
+  path='/mypage'
+  element={<Mypage />}
+></Route>
+<Route
+  path='/mypage/gather'
+  element={<MypageGather />}
+></Route>
+{/* 사진페이지 */}
+<Route
+  path='/photo'
+  element={<PhotoPage />}
+></Route>
+<Route
+  path='/photo/add'
+  element={<PhotoAdd />}
+></Route>
+{/* 채팅페이지 */}
+<Route
+  path='/chat'
+  element={<ChatPage />}
+></Route>
+{/* {포스트상세페이지} */}
+  <Route
+  path='/postpage'
+  element={<PostPage/>}
+></Route>
+    <Route
+  path='/WritePage'
+  element={<WritePage/>}
+></Route>
         </Routes>
       </Container>
     </div>
