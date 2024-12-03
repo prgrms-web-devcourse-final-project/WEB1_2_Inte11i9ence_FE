@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 import DropdownSelector from '@/components/DropdownSelector'
-import { groups } from '../Mypage/mockdata'
 import defaultProfileImage from '@assets/png/default-profile-2.png'
 import CommentIcon from '@assets/svg/Comment.svg?react'
 import LikeIcon from '@assets/svg/Like.svg?react'
@@ -8,26 +8,58 @@ import PlusIcon from '@assets/svg/Plus.svg?react'
 import { Link } from 'react-router-dom'
 
 const SchedulePage = () => {
-  const [selectedView, setSelectedView] = useState('서울')
+  const [regions, setRegions] = useState<{ id: number; name: string }[]>([])
+  const [groups, setGroups] = useState<any[]>([]) // 일정 그룹 데이터
+  const [selectedRegionId, setSelectedRegionId] = useState<number | null>(null) // 선택된 지역 ID
 
-  const options = [
-    { value: '서울', label: '서울' },
-    { value: '오사카', label: '오사카' },
-  ]
+  // 지역 목록 가져오기
+  const fetchRegions = async () => {
+    try {
+      const response = await axios.get('/api/v1/region')
+      setRegions(response.data)
+    } catch (error) {
+      console.error('Error fetching regions:', error)
+    }
+  }
 
-  const filteredGroups = groups.filter(
-    (group) => group.regionId === selectedView,
-  )
+  // 일정 그룹 가져오기 (모든 그룹 또는 특정 지역 그룹)
+  const fetchGroups = async (regionId: number | null = null) => {
+    try {
+      const response = regionId
+        ? await axios.get(`/api/v1/plan-group/${regionId}`)
+        : await axios.get('/api/v1/plan-group')
+      setGroups(response.data)
+    } catch (error) {
+      console.error('Error fetching groups:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchRegions() // 지역 목록 호출
+    fetchGroups() // 모든 일정 그룹 호출
+  }, [])
+
+  // 지역 선택 핸들러
+  const handleRegionChange = (selectedRegionId: number | null) => {
+    setSelectedRegionId(selectedRegionId)
+    fetchGroups(selectedRegionId) // 선택된 지역에 따라 그룹 데이터 호출
+  }
 
   return (
-    <div className='flex-col flex '>
+    <div className='flex-col flex'>
       <div>검색박스</div>
       <div className='flex y-[20px] mx-[70px] bg-white items-center justify-between'>
-        <div className='h-[40px]  relative z-1000'>
+        <div className='h-[40px] relative z-1000'>
           <DropdownSelector
-            options={options}
-            defaultValue='서울'
-            onChange={(selected) => setSelectedView(selected)}
+            options={[
+              { value: null, label: '모든 지역' }, // '모든 지역' 옵션 추가
+              ...regions.map((region) => ({
+                value: region.id,
+                label: region.name,
+              })),
+            ]}
+            defaultValue={null}
+            onChange={(selected) => handleRegionChange(selected)}
           />
         </div>
         <Link to={'/schedule/add'}>
@@ -40,8 +72,11 @@ const SchedulePage = () => {
         </Link>
       </div>
       <div className='flex flex-wrap mt-4 h-auto w-full justify-center gap-y-12 gap-x-4'>
-        {filteredGroups.map((group) => (
-          <div className='flex flex-col justify-between p-4 w-[45%] sm:w-[25%] lg:w-[20%] mx-2 bg-white shadow-lg rounded-lg border border-lightGray transition-transform hover:scale-105 hover:shadow-xl gap-8 aspect-[4/5]'>
+        {groups.map((group) => (
+          <div
+            key={group.groupId}
+            className='flex flex-col justify-between p-4 w-[45%] sm:w-[25%] lg:w-[20%] mx-2 bg-white shadow-lg rounded-lg border border-lightGray transition-transform hover:scale-105 hover:shadow-xl gap-8 aspect-[4/5]'
+          >
             <div className='flex flex-col gap-4'>
               <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-2'>
@@ -55,7 +90,8 @@ const SchedulePage = () => {
                   <p className='text-xs font-bold text-black'>닉네임</p>
                 </div>
                 <button className='border px-2 py-1 rounded-lg text-xs font-normal bg-[#ecf4f9]'>
-                  서울{' '}
+                  {regions.find((region) => region.id === group.regionId)
+                    ?.name || '지역 정보 없음'}
                 </button>
               </div>
               <div className='h-[20vh]'>

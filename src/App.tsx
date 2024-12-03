@@ -19,7 +19,10 @@ import PostPage from './pages/postDetail/PostPage'
 
 import BestPage from './pages/BestPage/BestPage'
 import PostListPage from './pages/PostListPage/PostListPage'
-
+import RegionPostListPage from './pages/PostListPage/RegionPostListPage'
+import SelectedRegionPostList from './pages/PostListPage/SelectedRegionPostList'
+import SearchResultPage from './pages/PostListPage/SearchResultPage'
+import PostCreatePage from './pages/WritePage/PostCreatePage'
 const App = () => {
   return (
     <div>
@@ -44,6 +47,11 @@ const App = () => {
             path='/'
             element={<MainPage />}
           ></Route>
+          {/* 검색 결과 페이지 */}
+          <Route
+            path='/search'
+            element={<SearchResultPage />}
+          ></Route>
           {/* 베스트 페이지 */}
           <Route
             path='/bestpage'
@@ -53,6 +61,18 @@ const App = () => {
           <Route
             path='/postlist'
             element={<PostListPage />}
+          ></Route>
+          <Route
+            path='/postlist/region'
+            element={<RegionPostListPage />}
+          ></Route>
+          <Route
+            path='/postlist/region/:id'
+            element={<SelectedRegionPostList />}
+          ></Route>
+          <Route
+            path='/postlist/region/:id'
+            element={<SelectedRegionPostList />}
           ></Route>
           {/* 마이페이지 */}
           <Route
@@ -82,7 +102,11 @@ const App = () => {
             path='/postpage'
             element={<PostPage/>}
           ></Route>
-
+          {/* 작서페이지 */}
+            <Route
+            path='/WritePage'
+            element={<PostCreatePage/>}
+          ></Route>
         </Routes>
       </Container>
     </div>

@@ -1,9 +1,14 @@
 import { useState } from 'react'
 import DropdownSelector from '@/components/DropdownSelector'
+import axios from 'axios'
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024
 
 const PhotoAdd = () => {
   const [selectedView, setSelectedView] = useState('서울')
   const [selectedType, setSelectedType] = useState('인물')
+  const [photos, setPhotos] = useState([null, null]) // 사진 파일 저장
+  const [uploadStatus, setUploadStatus] = useState(['', ''])
 
   const options = [
     { value: '서울', label: '서울' },
@@ -14,6 +19,72 @@ const PhotoAdd = () => {
     { value: '인물', label: '인물' },
     { value: '배경', label: '배경' },
   ]
+  const getPresignedUrls = async () => {
+    try {
+      const response = await axios.post('/api/v1/photo', [
+        {
+          originalFileName: photos[0]?.name,
+          contentType: photos[0]?.type,
+        },
+        {
+          originalFileName: photos[1]?.name,
+          contentType: photos[1]?.type,
+        },
+      ])
+      return response.data
+    } catch (error) {
+      console.error('Failed to get presigned URLs:', error)
+      alert('Presigned URL 발급에 실패했습니다.')
+      return []
+    }
+  }
+
+  const handleUpload = async () => {
+    if (!photos[0] || !photos[1]) {
+      alert('사진 2장을 모두 선택해주세요.')
+      return
+    }
+
+    const presignedUrls = await getPresignedUrls()
+    if (presignedUrls.length !== 2) {
+      alert('Presigned URL 발급에 실패했습니다.')
+      return
+    }
+
+    const uploadPromises = photos.map((photo, index) =>
+      axios
+        .put(presignedUrls[index], photo, {
+          headers: {
+            'Content-Type': photo.type,
+          },
+        })
+        .then(() => {
+          const newStatus = [...uploadStatus]
+          newStatus[index] = `${photo.name} 업로드 성공`
+          setUploadStatus(newStatus)
+        })
+        .catch((error) => {
+          console.error(`Failed to upload ${photo.name}:`, error)
+          const newStatus = [...uploadStatus]
+          newStatus[index] = `${photo.name} 업로드 실패`
+          setUploadStatus(newStatus)
+        }),
+    )
+
+    await Promise.all(uploadPromises)
+    alert('사진 업로드가 완료되었습니다.')
+  }
+
+  const handleFileChange = (index: number, file: File | null) => {
+    if (file && file.size > MAX_FILE_SIZE) {
+      alert('파일 크기가 너무 큽니다. 10MB 이하의 파일을 선택해주세요.')
+      return
+    }
+
+    const newPhotos = [...photos]
+    newPhotos[index] = file
+    setPhotos(newPhotos)
+  }
 
   return (
     <div className='flex flex-col gap-4'>
@@ -38,12 +109,19 @@ const PhotoAdd = () => {
             </div>
             <p className='font-bold text-lg'>사진 2장을 선택해주세요</p>
             <div className='flex gap-8 justify-center w-[90%] h-[30vh] '>
-              <div className='flex  align-center justify-center bg-lightGray w-[80%] rounded-lg '>
-                <button className=' '>썸네일 사진 추가</button>
-              </div>
-              <div className='flex align-center justify-center bg-lightGray w-[80%] rounded-lg '>
-                <button className=' '>썸네일 사진 추가</button>
-              </div>
+              {photos.map((_, index) => (
+                <div className='flex  align-center justify-center bg-lightGray w-[80%] rounded-lg '>
+                  <input
+                    type='file'
+                    accept='image/*'
+                    onChange={(e) =>
+                      handleFileChange(index, e.target.files?.[0] || null)
+                    }
+                  >
+                    썸네일 사진 추가
+                  </input>
+                </div>
+              ))}
             </div>
             <p className='font-bold text-lg'>내용을 입력하세요</p>
 
@@ -53,10 +131,10 @@ const PhotoAdd = () => {
       </div>
       <div className='flex gap-4 justify-center'>
         <button className='bg-darkBlue text-white text-sm py-2 px-2 rounded-lg '>
-          나가기
+          취소
         </button>
         <button className='bg-darkBlue text-white  text-sm py-2 px-2 rounded-lg '>
-          발행하기
+          완료
         </button>
       </div>
     </div>
