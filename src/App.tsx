@@ -22,7 +22,7 @@ import PostListPage from './pages/PostListPage/PostListPage'
 import RegionPostListPage from './pages/PostListPage/RegionPostListPage'
 import SelectedRegionPostList from './pages/PostListPage/SelectedRegionPostList'
 import SearchResultPage from './pages/PostListPage/SearchResultPage'
-
+import PostCreatePage from './pages/WritePage/PostCreatePage'
 const App = () => {
   return (
     <div>
@@ -102,7 +102,11 @@ const App = () => {
             path='/postpage'
             element={<PostPage/>}
           ></Route>
-
+          {/* 작서페이지 */}
+            <Route
+            path='/WritePage'
+            element={<PostCreatePage/>}
+          ></Route>
         </Routes>
       </Container>
     </div>

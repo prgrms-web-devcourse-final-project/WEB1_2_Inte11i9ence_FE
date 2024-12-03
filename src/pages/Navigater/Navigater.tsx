@@ -64,7 +64,7 @@ const Navigation = () => {
         {isLogin ? (
           <div className='flex gap-5 items-center relative'>
             <Link
-            to='#'
+            to='/WritePage'
             className='font-bold'
           >
             글쓰기
