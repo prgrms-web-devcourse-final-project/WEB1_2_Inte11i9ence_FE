@@ -46,7 +46,7 @@ const MypageGather = () => {
             {myPost?.result?.map((post) => (
               <div
                 key={post.id}
-                className='relative z-1000'
+                className='relative z-1000 mx-12'
               >
                 <PostItem post={post} />
               </div>
@@ -58,7 +58,7 @@ const MypageGather = () => {
             {myPost?.result?.map((post) => (
               <div
                 key={post.id}
-                className='relative z-1000'
+                className='relative z-1000 mx-12'
               >
                 <PostItem post={post} />
               </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
+import axios from 'axios'
 import defaultProfileImage from '@assets/png/default-profile-2.png'
 
 interface ProfileProps {
@@ -15,8 +16,7 @@ const Profile: React.FC<ProfileProps> = ({
   username,
   onClose,
 }) => {
-  const [nickname, setNickname] = useState('')
-  const [error, setError] = useState(false)
+  const [nickname, setNickname] = useState(username)
   const [newProfileImage, setNewProfileImage] = useState<File | null>(null)
   const [previewImage, setPreviewImage] = useState<string | null>(
     userProfileImage,
@@ -31,40 +31,44 @@ const Profile: React.FC<ProfileProps> = ({
     }
   }
 
-  // 완료 버튼
-  const handleSave = () => {
+  // 닉네임 중복 체크
+  const handleNicknameChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const value = e.target.value
+    setNickname(value)
+  }
+
+  // 완료 버튼 클릭
+  const handleSave = async () => {
     const formData = new FormData()
-    if (username !== username) {
-      formData.append('username', username)
+    if (nickname !== username) {
+      formData.append('username', nickname) // 닉네임 변경
     }
     if (newProfileImage) {
-      formData.append('profileImage', newProfileImage)
+      formData.append('profileImage', newProfileImage) // 프로필 이미지 변경
     }
 
-    //  // API 연동 시 주석 해제
-    //  axios.put('http://localhost:8080/api/v1/member/me', formData, {
-    //   headers: {
-    //     Authorization: `Bearer ${yourToken}`, // JWT 토큰 추가
-    //   },
-    // })
-    //   .then((response) => {
-    //     console.log('Updated user info:', response.data);
-    //     onClose(); // 닫기
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error updating profile:', error);
-    //   });
+    try {
+      const response = await axios.put(
+        'https://f7c2d6d8-6cd5-46ec-b36b-d4496b4280c6.mock.pstmn.io/api/v1/member/me',
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer 123`, // JWT 토큰 추가
+          },
+        },
+      )
+      console.log('Updated user info:', response.data)
+      onClose() // 프로필 업데이트 후 모달 닫기
+    } catch (error) {
+      console.error('Error updating profile:', error)
+    }
   }
 
   useEffect(() => {
     setNickname(username)
   }, [username])
-
-  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setNickname(value)
-    setError(value === '중복된닉네임')
-  }
 
   const handleModalClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -181,11 +185,6 @@ const Profile: React.FC<ProfileProps> = ({
               outline: 'none',
             }}
           />
-          {error && (
-            <p style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>
-              중복된 닉네임입니다.
-            </p>
-          )}
         </div>
 
         {/* 버튼 */}
