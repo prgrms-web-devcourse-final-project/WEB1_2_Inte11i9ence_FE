@@ -11,7 +11,7 @@ const BestCardItem = ({ post }: PostItemProps) => {
   return (
     <div className='flex justify-center w-full'>
       <Link
-        to='/postpage'
+        to={`/post/${post.id}`}
         style={{ backgroundImage: `url(${post.photoUrl})` }}
         className='font-bold h-[12rem] w-[55rem] rounded-xl flex items-center justify-end bg-cover bg-center relative'
       >
