@@ -39,7 +39,12 @@ const Navigation = () => {
       <div className='fixed bg-white top-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-xl h-16 text-black text-base flex justify-between items-center z-50 px-12'>
         {/* 왼쪽 버튼들 */}
         <div className='flex gap-5'>
-          <Link to='/postlist' className='font-bold'>게시판</Link>
+          <Link
+            to='/postlist'
+            className='font-bold'
+          >
+            게시판
+          </Link>
           <Link
             to='/schedule'
             className='font-bold'
@@ -64,11 +69,11 @@ const Navigation = () => {
         {isLogin ? (
           <div className='flex gap-5 items-center relative'>
             <Link
-            to='/WritePage'
-            className='font-bold'
-          >
-            글쓰기
-          </Link>
+              to='/WritePage'
+              className='font-bold'
+            >
+              글쓰기
+            </Link>
             <button
               className='w-8 h-8 rounded-full overflow-hidden'
               onClick={toggleMyDropdown}
