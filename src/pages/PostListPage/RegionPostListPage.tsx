@@ -4,33 +4,51 @@ import { useState } from 'react';
 import { postData } from '@/temporaryData/allPostData';
 import DropdownSelector from '@/components/DropdownSelector';
 import RegionDropdown from '@/components/RegionDropdown';
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const PostListPage = () => {
-    const [selectedCategory, setSelectedCategory] = useState('전체')
+const RegionPostListPage = () => {
+    const [selectedCategory, setSelectedCategory] = useState('지역')
     const [selectedDetailCategory, setSelectedDetailCategory] = useState('지역 전체')
-    const [isDetailCategoryOpen, setIsDetailCategoryOpen] = useState(false)
+
+    const [isDetailCategoryOpen, setIsDetailCategoryOpen] = useState(true)
     const [sortType, setSortType] = useState('최신순');
+    
     const navigate = useNavigate();
 
-    const handleRegionCategory = (selected: string) => {
-        setSelectedCategory(selected);
-
-        // '지역' 카테고리 선택 시 상세 지역 선택 드롭다운 표시 및 postlist/region 라우터로 이동
-        if (selected === '지역') {
+    useEffect(() => {
+        // 컴포넌트 마운트 시 지역 카테고리가 선택된 상태라면 드롭다운 표시
+        if (selectedCategory === '지역') {
             setIsDetailCategoryOpen(true);
-            navigate('/postlist/region');
-            console.log(isDetailCategoryOpen)
-        } else {
+        }
+    }, []);
+
+    // 1번 드롭다운 change 이벤트 핸들러
+    const handleCategory = (selected: string) => {
+        setSelectedCategory(selected);
+        // 카테고리 '지역' 이외 선택 시 상세 지역 선택 드롭다운 미표시 및 postlist 라우터로 이동
+        if (selected !== '지역') {
             setIsDetailCategoryOpen(false);
-            setSelectedDetailCategory('지역 전체');
             navigate('/postlist');
         }
     };
 
+    // 2번 드롭다운 change 이벤트 핸들러
+    const handleRegionCategory = (selected: string) => {
+        setSelectedCategory(selected);
+
+        // '지역 전체' 선택 시 2번 카테고리 표시
+        if (selected === '지역 전체') {
+            setIsDetailCategoryOpen(true);
+        } else {
+            setSelectedDetailCategory(selected);
+            navigate(`/postlist/region/${selected}`);
+        }
+    }
+
     const options = [
         { value: '전체', label: '전체' },
+        // { value: '공지', label: '공지' },
         { value: '자유', label: '자유' },
         { value: '지역', label: '지역' },
         { value: '리뷰', label: '리뷰' },
@@ -65,10 +83,10 @@ const PostListPage = () => {
     const ExceptRegionOptions = ['공지', '자유', '리뷰']
 
     const filteredGroups = postData.filter((post) => {
-        // 전체 카테고리 선택 시 모든 포스트 표시
+        // 전체 카테고리 선택시 모든 포스트 표시
         if (selectedCategory === '전체') {return true};
         
-        // 지역 카테고리 선택 시 상세 지역 필터링
+        // 지역 카테고리 선택시 상세 지역 필터링
         if (selectedCategory === '지역') {
             // ExceptRegionOptions에 포함되지 않은 카테고리만 표시
             if (selectedDetailCategory === '지역 전체') {
@@ -87,7 +105,7 @@ const PostListPage = () => {
 
     // 정렬 방식
     const sortedPosts = useMemo(() => {
-        const sorted = [...filteredGroups];
+        const sorted = [...filteredGroups]; // 필터링된 결과 복사
         
         if (sortType === '최신순') {
             return sorted.sort((a, b) => {
@@ -100,9 +118,10 @@ const PostListPage = () => {
 
     return (
         <div>
-            { notice.map((post) => (
+            {notice.map((post) => (
                 <PostItem key={post.id} post={post} />
-              )) }
+              )) 
+              }
 
             {/* 카테고리 선택 드롭다운 */}
             <div className='flex justify-between mt-10'>
@@ -111,17 +130,16 @@ const PostListPage = () => {
                     <DropdownSelector
                     options={options}
                     defaultValue={selectedCategory}
-                    onChange={handleRegionCategory}
+                    onChange={handleCategory}
                     />
                 </div>
-                {/* 카테고리 '지역' 선택 시 표시되는 상세 지역 선택 드롭다운 */}
-                {isDetailCategoryOpen && (
-                <RegionDropdown
-                    options={regionOptions}
-                    defaultValue={selectedDetailCategory}
-                    onChange={setSelectedDetailCategory}
-                />
-    )}
+                {/* 지역 카테고리 선택 시 상세 지역 선택 드롭다운 */}
+                {isDetailCategoryOpen &&(
+                    <RegionDropdown
+                            options={regionOptions}
+                            defaultValue={selectedDetailCategory}
+                            onChange={handleRegionCategory}
+                />)}
                 </div>
                 <div className='h-[40px] relative z-1000'>
                     <DropdownSelector
@@ -148,4 +166,4 @@ const PostListPage = () => {
     );
 };
 
-export default PostListPage;
+export default RegionPostListPage;

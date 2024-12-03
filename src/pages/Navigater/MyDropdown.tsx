@@ -3,56 +3,83 @@ import NoteIcon from '@assets/svg/Note.svg?react'
 import NextIcon from '@assets/svg/NextButton.svg?react'
 import defaultProfileImage from '@assets/png/default-profile-2.png'
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import Profile from '@/components/Profile'
+import { onLogout } from './LogOut'
 
 interface NavigationProps {
-  userProfileImage?: string
+  onClose: () => void
+  username: string
+  userProfileImage: string | null
 }
 
-const MyDropdown = ({ userProfileImage }: NavigationProps) => {
+const MyDropdown = ({
+  onClose,
+  username,
+  userProfileImage,
+}: NavigationProps) => {
+  //프로필 수정
+  const [ProfileEdit, setProfileEdit] = useState(false)
   return (
-    <div className='absolute top-12 right-1  w-60 bg-white shadow-lg rounded-lg border border-lightGray z-50 p-4 font-bold'>
-      <ul className='text-xs text-black'>
-        {/* 프로필 정보 */}
-        <div className='flex items-center justify-between p-2 cursor-pointer'>
-          <div className='flex items-center gap-2'>
-            <div className='w-8 h-8 rounded-full overflow-hidden'>
-              <img
-                src={userProfileImage || defaultProfileImage}
-                alt='Profile'
-                className='w-full h-full object-cover'
-              />
-            </div>
-            <div className='flex-1'>
-              <p className='text-black'>닉네임</p>
-            </div>
+    <div className='absolute top-12 right-1 w-60 text-xs text-black bg-white shadow-lg rounded-lg border border-lightGray z-10 p-4 font-bold'>
+      <div className=' flex items-center justify-between p-2 cursor-pointer'>
+        <div className='flex items-center gap-2'>
+          <div className='w-8 h-8 rounded-full overflow-hidden'>
+            <img
+              src={userProfileImage || defaultProfileImage}
+              alt='Profile'
+              className='w-full h-full object-cover'
+            />
           </div>
+          <div className='flex-1'>
+            <p className='text-black'>{username}</p>
+          </div>
+        </div>
+        <button onClick={() => setProfileEdit(true)}>
           <NextIcon
             width={12}
             height={12}
           />
+        </button>
+      </div>
+      <Link
+        to={'/mypage'}
+        onClick={() => onClose()}
+      >
+        <div className='flex items-center gap-2 p-4 cursor-pointer hover:bg-gray-100'>
+          <AirplainIcon
+            width={18}
+            height={18}
+          />
+          내 여행
         </div>
-        <Link to={'/mypage'}>
-          <li className='flex items-center gap-2 p-4 cursor-pointer hover:bg-gray-100'>
-            <AirplainIcon
-              width={18}
-              height={18}
-            />
-            내 여행
-          </li>
-        </Link>
-        <Link to={'/mypage/gather'}>
-          <li className='flex items-center gap-2 p-4 cursor-pointer hover:bg-gray-100'>
-            <NoteIcon
-              width={18}
-              height={18}
-            />
-            내 글 / 스크랩
-          </li>
-        </Link>
-        <li className='flex items-center p-2 cursor-pointer font-normal text-darkGray text-xs '>
-          로그아웃
-        </li>
-      </ul>
+      </Link>
+      <Link
+        to={'/mypage/gather'}
+        onClick={() => onClose()}
+      >
+        <div className='flex items-center gap-2 p-4 cursor-pointer hover:bg-gray-100'>
+          <NoteIcon
+            width={18}
+            height={18}
+          />
+          내 글 / 스크랩
+        </div>
+      </Link>
+      <button
+        onClick={onLogout}
+        className='flex items-center p-2 cursor-pointer font-normal text-darkGray text-xs '
+      >
+        로그아웃
+      </button>
+      {ProfileEdit && (
+        <Profile
+          onClose={() => setProfileEdit(false)}
+          title={'수정'}
+          userProfileImage={userProfileImage}
+          username={username}
+        />
+      )}
     </div>
   )
 }
