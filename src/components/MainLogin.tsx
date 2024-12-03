@@ -1,13 +1,16 @@
 import React from 'react'
-import AirPlane from '../assets/png/AirPlane.png'
+import axios from 'axios'
 import Google from '../assets/png/Google.png'
 import Naver from '../assets/png/Naver.png'
 
-interface MainLoginProps{
-  closeModal:()=>void;
+interface MainLoginProps {
+  closeModal: () => void
 }
 
-const MainLogin: React.FC<MainLoginProps> = ({closeModal}) => {
+const MainLogin: React.FC<MainLoginProps> = ({ closeModal }) => {
+  const onLogin = (platform: 'google' | 'naver') => {
+    window.location.href = `http://43.200.20.28:8080/oauth2/code/${platform}`
+  }
   return (
     <div
       style={{
@@ -27,29 +30,33 @@ const MainLogin: React.FC<MainLoginProps> = ({closeModal}) => {
           padding: '30px',
           boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
           textAlign: 'center',
-       
         }}
       >
-        {/* 상단 텍스트 */}
-        <h2 style={{ fontSize: '25px', fontWeight:  'bold', marginBottom: '10px',color:'#1C2B59' }}>
-          나의 여행 기록을 남기고<br />
+        <h2
+          style={{
+            fontSize: '25px',
+            fontWeight: 'bold',
+            marginBottom: '10px',
+            color: '#1C2B59',
+          }}
+        >
+          나의 여행 기록을 남기고
+          <br />
           경험을 나누는 공간
         </h2>
-
-        {/* 비행기 이미지 */}
-        <img
-          src={AirPlane}
-          alt="Airplane"
-          style={{ marginBottom: '-50px' ,height:'150px', marginLeft:'-40px' }}
-        />
-
-        {/* 로고  */}
-        <h1 style={{ fontSize: '40px', fontWeight: 'bold', color: '#1C2B59', marginBottom: '100px' }}>
+        <h1
+          style={{
+            fontSize: '40px',
+            fontWeight: 'bold',
+            color: '#1C2B59',
+            marginBottom: '100px',
+          }}
+        >
           Logo
         </h1>
-
         {/* 구글 로그인 버튼 */}
         <button
+          onClick={() => onLogin('google')}
           style={{
             width: '100%',
             height: '50px',
@@ -60,20 +67,20 @@ const MainLogin: React.FC<MainLoginProps> = ({closeModal}) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            cursor: 'pointer',  
+            cursor: 'pointer',
           }}
         >
           <img
-            src={Google} // 구글 아이콘 
-            alt="Google Icon"
-            style={{ marginRight: '10px',height:'40px' }}
-           
+            src={Google}
+            alt='Google Icon'
+            style={{ marginRight: '10px', height: '40px' }}
           />
-          <span style={{}}>Google로 시작하기</span>
+          <span>Google로 시작하기</span>
         </button>
 
         {/* 네이버 로그인 버튼 */}
         <button
+          onClick={() => onLogin('naver')}
           style={{
             width: '100%',
             height: '50px',
@@ -85,29 +92,34 @@ const MainLogin: React.FC<MainLoginProps> = ({closeModal}) => {
             fontSize: '16px',
             fontWeight: 'bold',
             cursor: 'pointer',
-            display:'flex',
-            alignItems:'center',
-            justifyContent:'center',
-            gap:'10px'
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '10px',
           }}
         >
           <img
-            src={Naver} // 네이버 아이콘 
-            alt="Naver Icon"
-            style={{ marginRight: '10px' , height:'40px'}}
+            src={Naver}
+            alt='Naver Icon'
+            style={{ marginRight: '10px', height: '40px' }}
           />
           네이버로 시작하기
         </button>
 
-        {/* 하단 텍스트 */}
-        <p style={{ fontSize: '12px', color: '#555',cursor:'pointer',textDecoration:'underline' }}
-        onClick={closeModal}
+        <p
+          style={{
+            fontSize: '12px',
+            color: '#555',
+            cursor: 'pointer',
+            textDecoration: 'underline',
+          }}
+          onClick={closeModal}
         >
           조금 더 둘러보고싶어요
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MainLogin;
+export default MainLogin

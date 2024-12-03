@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import Profile from '@/components/Profile'
 import { onLogout } from './LogOut'
-
 interface NavigationProps {
   onClose: () => void
   username: string

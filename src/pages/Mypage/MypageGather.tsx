@@ -18,8 +18,11 @@ const MypageGather = () => {
     const fetchMyPost = async () => {
       try {
         const response = await axios.get(
-          'https://f7c2d6d8-6cd5-46ec-b36b-d4496b4280c6.mock.pstmn.io/api/v1/posts/chaejeong',
+          selectedView === 'posts'
+            ? 'https://f7c2d6d8-6cd5-46ec-b36b-d4496b4280c6.mock.pstmn.io/api/v1/posts/chaejeong'
+            : 'https://f7c2d6d8-6cd5-46ec-b36b-d4496b4280c6.mock.pstmn.io/api/v1/posts/scrap',
         )
+
         setMyPost(response.data)
       } catch (error) {
         console.error('error', error)
@@ -43,7 +46,7 @@ const MypageGather = () => {
             {myPost?.result?.map((post) => (
               <div
                 key={post.id}
-                className='relative z-1000'
+                className='relative z-1000 mx-12'
               >
                 <PostItem post={post} />
               </div>
@@ -55,7 +58,7 @@ const MypageGather = () => {
             {myPost?.result?.map((post) => (
               <div
                 key={post.id}
-                className='relative z-1000'
+                className='relative z-1000 mx-12'
               >
                 <PostItem post={post} />
               </div>
