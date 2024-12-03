@@ -47,7 +47,7 @@ const RegionCardItem = () => {
         {currentItems.map((region) => (
           <Link
             key={region.id}
-            to={region.path}
+            to={`/postlist/region/${encodeURIComponent(region.name)}`}
             style={{ backgroundImage: `url(${region.thumbnail})` }}
             className='font-bold text-xl w-44 h-56 text-white rounded-xl flex items-end justify-center py-4 bg-cover bg-center bg-no-repeat relative'
           >
