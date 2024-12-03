@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import ReactDOM from 'react-dom'
 import defaultProfileImage from '@assets/png/default-profile-2.png'
 
 interface ProfileProps {
@@ -30,7 +31,7 @@ const Profile: React.FC<ProfileProps> = ({
     }
   }
 
-  //완료 버튼
+  // 완료 버튼
   const handleSave = () => {
     const formData = new FormData()
     if (username !== username) {
@@ -54,6 +55,7 @@ const Profile: React.FC<ProfileProps> = ({
     //     console.error('Error updating profile:', error);
     //   });
   }
+
   useEffect(() => {
     setNickname(username)
   }, [username])
@@ -70,14 +72,14 @@ const Profile: React.FC<ProfileProps> = ({
     }
   }
 
-  return (
+  const modalContent = (
     <div
       onClick={handleModalClick}
       style={{
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '100vw',
+        width: '100%',
         height: '100vh',
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         display: 'flex',
@@ -100,10 +102,6 @@ const Profile: React.FC<ProfileProps> = ({
           textAlign: 'center',
           boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)', // 약간의 그림자 추가
           zIndex: 1001, // 모달 자체가 배경보다 위에 보이도록 설정
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)', // 화면 중앙으로 위치 이동
         }}
       >
         <h1
@@ -208,6 +206,8 @@ const Profile: React.FC<ProfileProps> = ({
       </div>
     </div>
   )
+
+  return ReactDOM.createPortal(modalContent, document.body)
 }
 
 export default Profile

@@ -43,7 +43,7 @@ const PostItem = ({ post }: PostItemProps) => {
                   </div>
                   <div className='flex'>
                     <p className='text-darkGray font-bold text-[14px]'>
-                      {post.author.nickname}
+                      {post.author.username}
                     </p>
                   </div>
                   <p className='text-lightBlue font-bold text-[14px]'>
