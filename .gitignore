@@ -25,3 +25,5 @@ dist-ssr
 
 #env
 .env
+src/components/SearchModal.tsx
+src/components/SearchModal.tsx
