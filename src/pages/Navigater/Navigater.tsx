@@ -6,16 +6,20 @@ import MyDropdown from './MyDropdown'
 import NotiDropdown from './NotiDropdown'
 import LiveNotiIcon from '@assets/svg/LiveNotiIcon.svg?react'
 import MainLogin from '@/components/MainLogin'
-import { mockMember } from './mockdata'
-import { MemberProps } from '@/typings/member'
+import useProfile from '@/hooks/useProfile'
 
 const Navigation = () => {
-  const [memberData, setMemberData] = useState<MemberProps>(mockMember)
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(true)
   const [isModalOpen, setModalOpen] = useState(false)
 
   // 로그인 여부 저장 변수, 나중에 수정
   const isLogin = true
+
+  // token을 localStorage에서 가져오는 예시
+  const token = localStorage.getItem('authToken')
+
+  // useProfile 훅을 사용하여 profile 데이터 가져오기
+  const { profile } = useProfile(token || '')
 
   const [isMyDropdownOpen, setMyDropdownOpen] = useState(false)
   const [isNotiDropdownOpen, setNotiDropdownOpen] = useState(false)
@@ -66,7 +70,7 @@ const Navigation = () => {
         </div>
 
         {/* 로그인 여부에 따른 오른쪽 버튼들 */}
-        {isLogin ? (
+        {isLogin && profile ? (
           <div className='flex gap-5 items-center relative'>
             <Link
               to='/WritePage'
@@ -79,7 +83,7 @@ const Navigation = () => {
               onClick={toggleMyDropdown}
             >
               <img
-                src={memberData.profileImage || defaultProfileImage}
+                src={profile.profileUrl || defaultProfileImage}
                 alt='Profile'
                 className='w-full h-full object-cover'
               />
@@ -102,8 +106,8 @@ const Navigation = () => {
             {isMyDropdownOpen && (
               <MyDropdown
                 onClose={() => setMyDropdownOpen(false)}
-                username={memberData.username}
-                userProfileImage={memberData.profileImage}
+                username={profile.username}
+                userProfileImage={profile.profileUrl}
               />
             )}
             {isNotiDropdownOpen && (

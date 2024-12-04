@@ -6,7 +6,7 @@ export interface AllPostData {
   content: string
   photoUrl: string | null
   author: {
-    nickname: string
+    username: string
     profileUrl: string | null
   }
 
@@ -22,7 +22,6 @@ export interface PostApiResponse {
   message: string
   result: AllPostData[] // result는 AllPostData 배열
   nextPostUrl: string | null
-
 }
 
 // 특정 게시글 - 작성자 타입 정의

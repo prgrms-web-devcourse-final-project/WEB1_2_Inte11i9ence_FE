@@ -9,4 +9,5 @@ export interface MemberProps {
   profileImage: string | null
   createdAt: string
   updatedAt: string
+  profileUrl: string | null
 }
