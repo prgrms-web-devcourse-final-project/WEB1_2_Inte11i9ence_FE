@@ -16,9 +16,6 @@ const Mypage = () => {
       // 일정 그룹 데이터 가져오기
       const groupResponse = await axios.get('/api/v1/plangroup/chaejeong')
 
-      // 응답 데이터 확인
-      console.log(groupResponse.data)
-
       // 만약 groupResponse.data가 객체라면, 배열로 접근
       const groups = groupResponse.data
 
