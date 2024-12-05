@@ -14,7 +14,7 @@ const Navigation = () => {
   const [isModalOpen, setModalOpen] = useState(false)
 
   // 로그인 여부 저장 변수, 나중에 수정
-  const isLogin = true
+  const isLogin = false
 
   const token = localStorage.getItem('authToken')
 
