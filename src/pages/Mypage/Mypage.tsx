@@ -14,9 +14,7 @@ const Mypage = () => {
   const fetchData = async () => {
     try {
       // 일정 그룹 데이터 가져오기
-      const groupResponse = await axios.get(
-        'https://a4ef6617-d28c-435f-b0f1-7444257e8f56.mock.pstmn.io/api/v1/plangroup/chaejeong',
-      )
+      const groupResponse = await axios.get('/api/v1/plangroup/chaejeong')
 
       // 응답 데이터 확인
       console.log(groupResponse.data)
@@ -32,9 +30,7 @@ const Mypage = () => {
         : []
 
       const regionPromises = uniqueRegionIds.map(async (regionId) => {
-        const regionResponse = await axios.get(
-          `https://a4ef6617-d28c-435f-b0f1-7444257e8f56.mock.pstmn.io/api/v1/region/${regionId}`,
-        )
+        const regionResponse = await axios.get(`/api/v1/region/${regionId}`)
         return { regionId, regionName: regionResponse.data.name }
       })
 

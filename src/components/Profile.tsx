@@ -50,15 +50,11 @@ const Profile: React.FC<ProfileProps> = ({
     }
 
     try {
-      const response = await axios.put(
-        'https://f7c2d6d8-6cd5-46ec-b36b-d4496b4280c6.mock.pstmn.io/api/v1/member/me',
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer 123`, // JWT 토큰 추가 근데 이거 로직짜여있다고 하셔서 나중에 뺄수도
-          },
+      const response = await axios.put('/api/v1/member/me', formData, {
+        headers: {
+          Authorization: `Bearer 123`, // JWT 토큰 추가 근데 이거 로직짜여있다고 하셔서 나중에 뺄수도
         },
-      )
+      })
       console.log('Updated user info:', response.data)
       onClose() // 프로필 업데이트 후 모달 닫기
     } catch (error) {
