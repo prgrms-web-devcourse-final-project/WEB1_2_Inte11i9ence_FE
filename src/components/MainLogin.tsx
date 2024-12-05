@@ -1,4 +1,5 @@
 import React from 'react'
+// import axios from 'axios'
 import Google from '../assets/png/Google.png'
 import Naver from '../assets/png/Naver.png'
 
@@ -7,25 +8,9 @@ interface MainLoginProps {
 }
 
 const MainLogin: React.FC<MainLoginProps> = ({ closeModal }) => {
-  const onLogin = async (platform: 'google' | 'naver') => {
-    try {
-      const response = await fetch(
-        `http://www.skypedia.shop:80/oauth2/code/${platform}`,
-        {
-          method: 'GET',
-          credentials: 'include', // 쿠키를 포함하도록 설정
-        },
-      )
-      if (response.ok) {
-        console.log('로그인 성공:', await response.json())
-      } else {
-        console.error('로그인 실패:', response.status)
-      }
-    } catch (error) {
-      console.error('에러 발생:', error)
-    }
+  const onLogin = (platform: 'google' | 'naver') => {
+    window.location.href = `https://www.skypedia.shop/oauth2/authorization/${platform}`
   }
-
   return (
     <div
       style={{

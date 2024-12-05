@@ -1,4 +1,3 @@
-// path와 thumbnail은 임시로 넣어둔 데이터입니다. (현재 API 명세서에 없음)
 export interface RegionData {
   id: number
   name: string
@@ -19,9 +18,14 @@ export interface Plan {
   updatedAt: string
 }
 
+interface Author {
+  username: string
+  profileUrl: null | string
+}
+
 export interface Group {
   groupId: number
-  memberId: number
+  author: Author
   regionId: number
   title: string
   groupImgUrl: string

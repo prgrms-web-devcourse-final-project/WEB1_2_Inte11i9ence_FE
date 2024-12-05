@@ -1,4 +1,4 @@
-import { planArray } from '../mockData'
+import { planArray } from './mockData'
 import ScheduleBox from './ScheduleBox'
 
 const SchedulePlan = () => {
