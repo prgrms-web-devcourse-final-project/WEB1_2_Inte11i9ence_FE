@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import DropdownSelector from '@/components/DropdownSelector'
 import { PostApiResponse } from '@/typings/post'
 import axios from 'axios'
-import PostItem from '../PostListPage/PostItem'
+import PostItem from '../../PostListPage/PostItem'
 
 const MypageGather = () => {
   // 상태 타입을 PostApiResponse로 설정
@@ -19,8 +19,8 @@ const MypageGather = () => {
       try {
         const response = await axios.get(
           selectedView === 'posts'
-            ? 'https://f7c2d6d8-6cd5-46ec-b36b-d4496b4280c6.mock.pstmn.io/api/v1/posts/chaejeong'
-            : 'https://f7c2d6d8-6cd5-46ec-b36b-d4496b4280c6.mock.pstmn.io/api/v1/posts/scrap',
+            ? '/api/v1/posts/chaejeong'
+            : '/api/v1/posts/scrap',
         )
 
         setMyPost(response.data)

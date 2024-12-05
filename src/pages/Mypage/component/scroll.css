@@ -1,0 +1,20 @@
+/* 스크롤바 전체 영역 */
+::-webkit-scrollbar {
+  width: 8px; /* 너비를 8px로 설정 */
+}
+
+/* 스크롤바 트랙 */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* 스크롤바 핸들 (슬라이더) */
+::-webkit-scrollbar-thumb {
+  background: #eeeeee; /* 핸들의 색상 */
+  border-radius: 10px;
+}
+
+/* 스크롤바 핸들 (슬라이더) 호버 상태 */
+::-webkit-scrollbar-thumb:hover {
+  background: #807e7e; /* 호버 시 색상 */
+}

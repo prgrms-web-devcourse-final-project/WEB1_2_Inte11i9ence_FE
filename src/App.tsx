@@ -4,7 +4,7 @@ import SchedulePage from './pages/SchedulePage/SchedulePage'
 import ScheduleAdd from './pages/SchedulePage/ScheduleAdd'
 import ScheduleDetail from './pages/SchedulePage/ScheduleDetail'
 import Mypage from './pages/Mypage/Mypage'
-import MypageGather from './pages/Mypage/MypageGather'
+import MypageGather from './pages/Mypage/component/MypageGather'
 import PhotoPage from './pages/PhotoPage/PhotoPage'
 import PhotoAdd from './pages/PhotoPage/PhotoAdd'
 import ChatPage from './pages/ChatPage/ChatPage'
@@ -98,14 +98,14 @@ const App = () => {
             element={<ChatPage />}
           ></Route>
           {/* {포스트상세페이지} */}
-            <Route
+          <Route
             path='/postpage'
-            element={<PostPage/>}
+            element={<PostPage />}
           ></Route>
           {/* 작서페이지 */}
-            <Route
+          <Route
             path='/WritePage'
-            element={<PostCreatePage/>}
+            element={<PostCreatePage />}
           ></Route>
         </Routes>
       </Container>
