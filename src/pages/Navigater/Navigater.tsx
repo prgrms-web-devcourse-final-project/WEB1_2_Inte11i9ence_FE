@@ -2,23 +2,23 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import defaultProfileImage from '@assets/png/default-profile-2.png'
 import NotiIcon from '@assets/svg/NotiIcon.svg?react'
-import MyDropdown from './MyDropdown'
-import NotiDropdown from './NotiDropdown'
+import MyDropdown from './component/MyDropdown'
+import NotiDropdown from './component/NotiDropdown'
 import LiveNotiIcon from '@assets/svg/LiveNotiIcon.svg?react'
 import MainLogin from '@/components/MainLogin'
 import useProfile from '@/hooks/useProfile'
+import { onLogout } from './component/LogOut'
 
 const Navigation = () => {
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(true)
   const [isModalOpen, setModalOpen] = useState(false)
 
   // 로그인 여부 저장 변수, 나중에 수정
-  const isLogin = true
+  const isLogin = false
 
-  // token을 localStorage에서 가져오는 예시
   const token = localStorage.getItem('authToken')
 
-  // useProfile 훅을 사용하여 profile 데이터 가져오기
+  // useProfile 훅 만든 거 사용, profile 데이터 가져오기
   const { profile } = useProfile(token || '')
 
   const [isMyDropdownOpen, setMyDropdownOpen] = useState(false)
@@ -40,6 +40,13 @@ const Navigation = () => {
 
   return (
     <div>
+      <button
+        onClick={onLogout}
+        className='flex items-center p-2 cursor-pointer font-normal text-darkGray text-xs '
+      >
+        로그아웃
+      </button>
+
       <div className='fixed bg-white top-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-xl h-16 text-black text-base flex justify-between items-center z-50 px-12'>
         {/* 왼쪽 버튼들 */}
         <div className='flex gap-5'>

@@ -8,14 +8,11 @@ const useProfile = (token: string) => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(
-          'https://f7c2d6d8-6cd5-46ec-b36b-d4496b4280c6.mock.pstmn.io/api/v1/member/me',
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        const response = await axios.get('/api/v1/member/me', {
+          headers: {
+            Authorization: `Bearer ${token}`, // JWT 토큰 추가 근데 이거 로직짜여있다고 하셔서 나중에 뺄수도
           },
-        )
+        })
         setProfile(response.data)
       } catch (error) {
         console.error('error', error)
