@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 import ToggleIcon from '@assets/svg/Toggle.svg?react'
 
 interface DropdownSelectorProps {
-  options: { value: string; label: string }[]
-  defaultValue: string
+  options: { value: string | number; label: string }[]
+  defaultValue: string | number
   onChange: (selected: string) => void
 }
 

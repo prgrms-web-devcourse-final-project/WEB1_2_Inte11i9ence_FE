@@ -13,7 +13,7 @@ const Navigation = () => {
   const [isModalOpen, setModalOpen] = useState(false)
 
   // 로그인 여부 저장 변수, 나중에 수정
-  const isLogin = true
+  const isLogin = false
 
   // token을 localStorage에서 가져오는 예시
   const token = localStorage.getItem('authToken')

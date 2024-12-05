@@ -1,5 +1,5 @@
 import React from 'react'
-import axios from 'axios'
+// import axios from 'axios'
 import Google from '../assets/png/Google.png'
 import Naver from '../assets/png/Naver.png'
 
@@ -9,7 +9,7 @@ interface MainLoginProps {
 
 const MainLogin: React.FC<MainLoginProps> = ({ closeModal }) => {
   const onLogin = (platform: 'google' | 'naver') => {
-    window.location.href = `http://43.200.20.28:8080/oauth2/code/${platform}`
+    window.location.href = `https://www.skypedia.shop/oauth2/authorization/${platform}`
   }
   return (
     <div

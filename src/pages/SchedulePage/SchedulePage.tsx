@@ -6,44 +6,59 @@ import CommentIcon from '@assets/svg/Comment.svg?react'
 import LikeIcon from '@assets/svg/Like.svg?react'
 import PlusIcon from '@assets/svg/Plus.svg?react'
 import { Link } from 'react-router-dom'
-
+import { Group } from '@/typings/region'
+import noPhoto from '@assets/png/noPhoto.png'
+import formatTime from '@/utils/formatTime'
 const SchedulePage = () => {
   const [regions, setRegions] = useState<{ id: number; name: string }[]>([])
-  const [groups, setGroups] = useState<any[]>([]) // 일정 그룹 데이터
-  const [selectedRegionId, setSelectedRegionId] = useState<number | null>(null) // 선택된 지역 ID
+  const [groups, setGroups] = useState<Group[]>([]) // 일정 그룹 데이터
+  // const [selectedRegionId, setSelectedRegionId] = useState<number | string>() // 선택된 지역 ID
 
   // 지역 목록 가져오기
   const fetchRegions = async () => {
     try {
-      const response = await axios.get('/api/v1/region')
-      setRegions(response.data)
+      const response = await axios.get(
+        'https://fed8aa8a-b229-4c7b-ba68-4a6376b3ab56.mock.pstmn.io/api/v1/region',
+      )
+      const regionsData = response.data
+      const allRegions = [{ id: 0, name: '지역 전체' }, ...regionsData]
+      setRegions(allRegions)
     } catch (error) {
-      console.error('Error fetching regions:', error)
+      console.error('Error', error)
     }
   }
 
   // 일정 그룹 가져오기 (모든 그룹 또는 특정 지역 그룹)
-  const fetchGroups = async (regionId: number | null = null) => {
+  const fetchGroups = async (regionId: number | string | null = null) => {
     try {
       const response = regionId
-        ? await axios.get(`/api/v1/plan-group/${regionId}`)
-        : await axios.get('/api/v1/plan-group')
+        ? await axios.get(
+            `https://fed8aa8a-b229-4c7b-ba68-4a6376b3ab56.mock.pstmn.io/api/v1/plangroup/${regionId}`,
+          )
+        : await axios.get(
+            'https://fed8aa8a-b229-4c7b-ba68-4a6376b3ab56.mock.pstmn.io/api/v1/plangroup',
+          )
       setGroups(response.data)
+      console.log(`그룹${response.data}`)
     } catch (error) {
-      console.error('Error fetching groups:', error)
+      console.error('Error', error)
     }
   }
 
   useEffect(() => {
-    fetchRegions() // 지역 목록 호출
-    fetchGroups() // 모든 일정 그룹 호출
+    fetchRegions()
+    fetchGroups()
   }, [])
 
   // 지역 선택 핸들러
-  const handleRegionChange = (selectedRegionId: number | null) => {
-    setSelectedRegionId(selectedRegionId)
-    fetchGroups(selectedRegionId) // 선택된 지역에 따라 그룹 데이터 호출
+  const handleRegionChange = (selected: number | string) => {
+    fetchGroups(selected) // 선택된 지역에 따라 그룹 데이터 호출
   }
+
+  const options = regions.map((region) => ({
+    value: region.id,
+    label: region.name,
+  }))
 
   return (
     <div className='flex-col flex'>
@@ -51,14 +66,8 @@ const SchedulePage = () => {
       <div className='flex y-[20px] mx-[70px] bg-white items-center justify-between'>
         <div className='h-[40px] relative z-1000'>
           <DropdownSelector
-            options={[
-              { value: null, label: '모든 지역' }, // '모든 지역' 옵션 추가
-              ...regions.map((region) => ({
-                value: region.id,
-                label: region.name,
-              })),
-            ]}
-            defaultValue={null}
+            options={options}
+            defaultValue={0}
             onChange={(selected) => handleRegionChange(selected)}
           />
         </div>
@@ -71,7 +80,7 @@ const SchedulePage = () => {
           </button>
         </Link>
       </div>
-      <div className='flex flex-wrap mt-4 h-auto w-full justify-center gap-y-12 gap-x-4'>
+      <div className='flex flex-wrap mx-16 mt-4 h-auto w-full justify-start gap-y-12 gap-x-4'>
         {groups.map((group) => (
           <div
             key={group.groupId}
@@ -82,12 +91,14 @@ const SchedulePage = () => {
                 <div className='flex items-center gap-2'>
                   <div className='w-6 h-6 rounded-full overflow-hidden'>
                     <img
-                      src={defaultProfileImage}
+                      src={group.author.profileUrl || defaultProfileImage}
                       alt='Profile'
                       className='w-full h-full object-cover'
                     />
                   </div>
-                  <p className='text-xs font-bold text-black'>닉네임</p>
+                  <p className='text-xs font-bold text-black'>
+                    {group.author.username}
+                  </p>
                 </div>
                 <button className='border px-2 py-1 rounded-lg text-xs font-normal bg-[#ecf4f9]'>
                   {regions.find((region) => region.id === group.regionId)
@@ -96,7 +107,7 @@ const SchedulePage = () => {
               </div>
               <div className='h-[20vh]'>
                 <img
-                  src={group.groupImgUrl}
+                  src={group.groupImgUrl || noPhoto}
                   alt='Group'
                   className='w-full h-full object-cover rounded-md'
                 />
@@ -114,9 +125,9 @@ const SchedulePage = () => {
                   width={13}
                   height={13}
                 />
-                <span>{group.comments}</span>
+                <span>{group.replies}</span>
               </div>
-              <p>{group.createdAt}</p>
+              <p>{formatTime(group.createdAt)}</p>
             </div>
           </div>
         ))}

@@ -7,7 +7,7 @@ export const onLogout = async () => {
 
     if (response.ok) {
       // 로그아웃 성공 시 처리 (예: 로그인 페이지로 이동)
-      window.location.href = '/login'
+      window.location.href = '/'
     } else {
       // 로그아웃 실패 시 처리
       const errorData = await response.json()
