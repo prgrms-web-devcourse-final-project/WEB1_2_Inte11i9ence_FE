@@ -7,7 +7,7 @@ import NotiDropdown from './component/NotiDropdown'
 import LiveNotiIcon from '@assets/svg/LiveNotiIcon.svg?react'
 import MainLogin from '@/components/MainLogin'
 import useProfile from '@/hooks/useProfile'
-import { onLogout } from './component/LogOut'
+// import { onLogout } from './component/LogOut'
 
 const Navigation = () => {
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(true)
@@ -40,12 +40,12 @@ const Navigation = () => {
 
   return (
     <div>
-      <button
+      {/* <button
         onClick={onLogout}
         className='flex items-center p-2 cursor-pointer font-normal text-darkGray text-xs '
       >
         로그아웃
-      </button>
+      </button> */}
 
       <div className='fixed bg-white top-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-xl h-16 text-black text-base flex justify-between items-center z-50 px-12'>
         {/* 왼쪽 버튼들 */}

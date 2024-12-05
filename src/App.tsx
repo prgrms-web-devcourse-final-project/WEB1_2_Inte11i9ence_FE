@@ -23,6 +23,8 @@ import RegionPostListPage from './pages/PostListPage/RegionPostListPage'
 import SelectedRegionPostList from './pages/PostListPage/SelectedRegionPostList'
 import SearchResultPage from './pages/PostListPage/SearchResultPage'
 import PostCreatePage from './pages/WritePage/PostCreatePage'
+
+import OAuthCallback from './components/OAuthCallback'
 const App = () => {
   return (
     <div>
@@ -47,6 +49,11 @@ const App = () => {
             path='/'
             element={<MainPage />}
           ></Route>
+          <Route
+            path='/oauth/callback'
+            element={<OAuthCallback />}
+          />
+
           {/* 검색 결과 페이지 */}
           <Route
             path='/search'

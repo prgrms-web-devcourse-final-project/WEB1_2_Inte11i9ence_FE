@@ -1,16 +1,16 @@
-import { planArray } from './mockData'
 import ScheduleBox from './ScheduleBox'
+import { Plan } from '@/typings/region'
 
-const SchedulePlan = () => {
+const SchedulePlan = ({ details }: { details: Plan[] }) => {
   // 날짜별 중복 제거 및 정렬
-  const sortedPlans = planArray
-    .slice()
-    .sort(
+  const sortedPlans = details
+    ?.slice()
+    ?.sort(
       (a, b) => new Date(a.planDate).getTime() - new Date(b.planDate).getTime(),
     )
 
   const uniqueDates = Array.from(
-    new Set(sortedPlans.map((plan) => plan.planDate)),
+    new Set(sortedPlans?.map((plan) => plan.planDate)),
   )
   return (
     <div className='p-4'>
@@ -25,7 +25,8 @@ const SchedulePlan = () => {
               .map((plan, idx) => (
                 <ScheduleBox
                   key={idx}
-                  regionName={plan.regionName}
+                  regionName={plan.location}
+                  content={plan.content}
                 />
               ))}
           </div>
