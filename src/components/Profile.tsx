@@ -55,7 +55,7 @@ const Profile: React.FC<ProfileProps> = ({
         formData,
         {
           headers: {
-            Authorization: `Bearer 123`, // JWT 토큰 추가
+            Authorization: `Bearer 123`, // JWT 토큰 추가 근데 이거 로직짜여있다고 하셔서 나중에 뺄수도
           },
         },
       )

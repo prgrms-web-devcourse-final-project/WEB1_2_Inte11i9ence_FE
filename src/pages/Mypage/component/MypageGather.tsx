@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import DropdownSelector from '@/components/DropdownSelector'
 import { PostApiResponse } from '@/typings/post'
 import axios from 'axios'
-import PostItem from '../PostListPage/PostItem'
+import PostItem from '../../PostListPage/PostItem'
 
 const MypageGather = () => {
   // 상태 타입을 PostApiResponse로 설정

@@ -1,5 +1,4 @@
 import React from 'react'
-import axios from 'axios'
 import Google from '../assets/png/Google.png'
 import Naver from '../assets/png/Naver.png'
 
@@ -9,7 +8,10 @@ interface MainLoginProps {
 
 const MainLogin: React.FC<MainLoginProps> = ({ closeModal }) => {
   const onLogin = (platform: 'google' | 'naver') => {
-    window.location.href = `http://43.200.20.28:8080/oauth2/code/${platform}`
+    window.location.href = `http://www.skypedia.shop:80/oauth2/code/${platform}`
+    setTimeout(() => {
+      console.log('쿠키 값:', document.cookie)
+    }, 3000) // 리다이렉트 후 잠시 대기
   }
   return (
     <div
