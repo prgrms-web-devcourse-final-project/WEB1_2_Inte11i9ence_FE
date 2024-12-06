@@ -8,9 +8,9 @@ export const postData: AllPostData[] = [
         content: '제주도 여행 후기입니다. 저는 지난 주에 제주도 여행을 다녀왔어요! 맛있는 음식도 많이 먹고 정말 행복했던 제주여행이었는데요 제주여행 시에 이색 디저트로 즐겨도 좋고, 그리고 제주여행 기념선물로도 정말 좋은 제라헌 크림떡 후기를 가',
         photoUrl: 'https://picsum.photos/1100/200',
         likes: 44,
-        category: '제주',
+        category: '제주도',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -25,7 +25,7 @@ export const postData: AllPostData[] = [
         likes: 20,
         category: '자유',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -40,7 +40,7 @@ export const postData: AllPostData[] = [
         likes: 30,
         category: '부산',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -56,7 +56,7 @@ export const postData: AllPostData[] = [
         category: '리뷰',
         rating: 4,
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -71,7 +71,7 @@ export const postData: AllPostData[] = [
         likes: 43,
         category: '충청남도',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -86,7 +86,7 @@ export const postData: AllPostData[] = [
         likes: 22,
         category: '자유',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -101,7 +101,7 @@ export const postData: AllPostData[] = [
         likes: 35,
         category: '자유',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -116,7 +116,7 @@ export const postData: AllPostData[] = [
         likes: 41,
         category: '자유',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -131,7 +131,7 @@ export const postData: AllPostData[] = [
         likes: 31,
         category: '자유',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -146,7 +146,7 @@ export const postData: AllPostData[] = [
         likes: 26,
         category: '강원도',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -161,7 +161,7 @@ export const postData: AllPostData[] = [
         likes: 10,
         category: '제주도',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -177,7 +177,7 @@ export const postData: AllPostData[] = [
         category: '리뷰',
         rating: 5,
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -192,7 +192,7 @@ export const postData: AllPostData[] = [
         likes: 50,
         category: '자유',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -207,7 +207,7 @@ export const postData: AllPostData[] = [
         likes: 35,
         category: '전라남도',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -222,7 +222,7 @@ export const postData: AllPostData[] = [
         likes: 42,
         category: '자유',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -237,7 +237,7 @@ export const postData: AllPostData[] = [
         likes: 22,
         category: '경상남도',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -252,7 +252,7 @@ export const postData: AllPostData[] = [
         likes: 35,
         category: '광주',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -267,7 +267,7 @@ export const postData: AllPostData[] = [
         likes: 45,
         category: '충청북도',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -282,7 +282,7 @@ export const postData: AllPostData[] = [
         likes: 31,
         category: '경상북도',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -297,7 +297,7 @@ export const postData: AllPostData[] = [
         likes: 26,
         category: '자유',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -312,7 +312,7 @@ export const postData: AllPostData[] = [
         likes: 26,
         category: '세종',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -327,7 +327,7 @@ export const postData: AllPostData[] = [
         likes: 26,
         category: '대전',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -342,7 +342,7 @@ export const postData: AllPostData[] = [
         likes: 26,
         category: '울산',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -357,7 +357,7 @@ export const postData: AllPostData[] = [
         likes: 26,
         category: '인천',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -372,7 +372,7 @@ export const postData: AllPostData[] = [
         likes: 26,
         category: '경기도',
         author: {
-        nickname: '김코딩',
+        username: '김코딩',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 100,
@@ -387,7 +387,7 @@ export const postData: AllPostData[] = [
         likes: 30,
         category: '공지',
         author: {
-        nickname: '관리자',
+        username: '관리자',
         profileUrl: 'https://picsum.photos/1100/200',
         },
         views: 300,
