@@ -3,27 +3,91 @@ import defaultProfileImage from '@assets/png/default-profile-2.png'
 import LikeIcon from '@assets/svg/Like.svg?react'
 import CommentIcon from '@assets/svg/Comment.svg?react'
 import axios from 'axios'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Group } from '@/typings/region'
 import formatTime from '@/utils/formatTime'
 import { Eye } from 'lucide-react'
 
 const ScheduleDetail = () => {
   const [groupDetail, setGroupDetail] = useState<Group>({} as Group)
+  const mapRef = useRef<HTMLDivElement | null>(null)
+
+  const initializeMap = () => {
+    if (mapRef.current && groupDetail.details) {
+      const map = new google.maps.Map(mapRef.current, {
+        center: { lat: 37.5665, lng: 126.978 }, // 기본 좌표: 서울
+        zoom: 10,
+      })
+
+      groupDetail.details.forEach((detail) => {
+        const location = detail.location
+        const geocoder = new google.maps.Geocoder()
+
+        geocoder.geocode({ address: location }, (results, status) => {
+          if (
+            status === google.maps.GeocoderStatus.OK &&
+            results &&
+            results[0]
+          ) {
+            const position = results[0].geometry.location
+            new google.maps.Marker({
+              position,
+              map,
+              title: location,
+            })
+          } else {
+            console.error(`Geocoding failed for ${location}: ${status}`)
+          }
+        })
+      })
+    }
+  }
+
   useEffect(() => {
+    const loadGoogleMaps = () => {
+      if (typeof google === 'undefined') {
+        const script = document.createElement('script')
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_API}`
+
+        script.async = true
+        script.defer = true
+        script.onload = () => initializeMap()
+        document.body.appendChild(script)
+        script.onerror = () => {
+          console.error('Google Maps script failed to load')
+        }
+        console.log(
+          'Google API Key:',
+          process.env.NEXT_PUBLIC_GOOGLE_API ||
+            import.meta.env.VITE_GOOGLE_API ||
+            process.env.REACT_APP_GOOGLE_API,
+        )
+      } else {
+        initializeMap()
+      }
+    }
+    //https://fed8aa8a-b229-4c7b-ba68-4a6376b3ab56.mock.pstmn.io/
     const fetchGroupDetail = async () => {
       try {
-        //1부분 그룹아이디 url에서 받아와야함
         const response = await axios.get(
-          'https://fed8aa8a-b229-4c7b-ba68-4a6376b3ab56.mock.pstmn.io/api/v1/plangroup/1',
+          'api/v1/plangroup/1', // 실제 API URL로 변경
         )
         setGroupDetail(response.data)
+        loadGoogleMaps()
       } catch (error) {
         console.error('error', error)
       }
     }
+
     fetchGroupDetail()
+
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.innerHTML = '' // 기존 지도 제거
+      }
+    }
   }, [])
+
   return (
     <div className='flex-col flex gap-12'>
       <div className='flex h-[70vh] '>
@@ -73,7 +137,11 @@ const ScheduleDetail = () => {
             <SchedulePlan details={groupDetail.details} />
           </div>
         </div>
-        <div className='flex flex-[5]  bg-darkGray'>오른쪽 지도</div>
+        <div
+          ref={mapRef}
+          className='flex flex-[5] bg-darkGray'
+          style={{ height: '100%', width: '100%' }}
+        />
       </div>
       <div className='w-full '>
         <div className='flex items-center gap-1'>
@@ -96,6 +164,5 @@ const ScheduleDetail = () => {
     </div>
   )
 }
+
 export default ScheduleDetail
-//필요한 거: 지역, 제목, 글쓴 날짜, 조회수, 좋아요, 댓글
-//수정 삭제 대신 상세설명 보기 ->> 나중에 지도에서 버튼 눌러서 모달로 봐도 좋ㅇ르듯
