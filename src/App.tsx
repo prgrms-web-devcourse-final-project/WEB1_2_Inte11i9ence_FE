@@ -70,10 +70,6 @@ const App = () => {
             path='/postlist/region/:id'
             element={<SelectedRegionPostList />}
           ></Route>
-          <Route
-            path='/postlist/region/:id'
-            element={<SelectedRegionPostList />}
-          ></Route>
           {/* 마이페이지 */}
           <Route
             path='/mypage'
