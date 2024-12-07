@@ -29,7 +29,6 @@ const PostListPage = () => {
         try {
             const response = await axios.get(`https://83c7c11d-0a32-4b7b-9db8-6f828abf0474.mock.pstmn.io/api/v1/posts`)
             if(mounted && response.data.posts){
-              console.log("response.data.posts:",response.data.posts)
               setResultPosts(response.data.posts)
             }
         }catch (error) {
