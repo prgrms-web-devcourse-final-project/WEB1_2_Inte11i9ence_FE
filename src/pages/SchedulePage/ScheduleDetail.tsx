@@ -7,10 +7,32 @@ import { useState, useEffect, useRef } from 'react'
 import { Group } from '@/typings/region'
 import formatTime from '@/utils/formatTime'
 import { Eye } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 const ScheduleDetail = () => {
   const [groupDetail, setGroupDetail] = useState<Group>({} as Group)
   const mapRef = useRef<HTMLDivElement | null>(null)
+  const navigate = useNavigate()
+
+  //수정페이지로이동하는거
+  const handleEdit = () => {
+    if (groupDetail.groupId) {
+      navigate(`/schedule/add?groupId=${groupDetail.groupId}`)
+    } else {
+      console.error('그룹 ID가 없습니다.')
+    }
+  }
+
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(
+        `api/v1/plan-group/${groupDetail.groupId}`,
+      )
+      alert(response.data.message)
+    } catch (error) {
+      console.error('error', error)
+    }
+  }
 
   const initializeMap = () => {
     if (mapRef.current && groupDetail.details) {
@@ -126,8 +148,8 @@ const ScheduleDetail = () => {
               </span>
               <div className='flex justify-center items-center align-center gap-2 text-darkGray text-xs mx-2'>
                 <div className='flex  justify-center align-center gap-1'>
-                  <button>수정</button>
-                  <button>삭제</button>
+                  <button onClick={handleEdit}>수정</button>
+                  <button onClick={handleDelete}>삭제</button>
                 </div>
               </div>
             </div>
