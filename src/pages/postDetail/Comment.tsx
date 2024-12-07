@@ -56,7 +56,7 @@ const Comment: React.FC<CommentProps> = ({
         {replies && replies.length > 0 && (
           <div className='flex flex-col'>
             {replies.map((reply, index) => (
-              <div className='flex mt-4 pl-8 bg-gray-100 rounded-lg'>
+              <div className='flex mt-4 pl-8 bg-gray-100 rounded-2xl'>
                 <Comment
                   key={index}
                   {...reply}

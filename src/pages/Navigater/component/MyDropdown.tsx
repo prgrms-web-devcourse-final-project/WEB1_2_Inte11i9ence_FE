@@ -34,7 +34,11 @@ const MyDropdown = ({
             <p className='text-black'>{username}</p>
           </div>
         </div>
-        <button onClick={() => setProfileEdit(true)}>
+        <button
+          onClick={() => {
+            setProfileEdit(true)
+          }}
+        >
           <NextIcon
             width={12}
             height={12}
@@ -73,7 +77,7 @@ const MyDropdown = ({
       </button>
       {ProfileEdit && (
         <Profile
-          onClose={() => setProfileEdit(false)}
+          onClose={() => onClose()}
           title={'수정'}
           userProfileImage={userProfileImage}
           username={username}

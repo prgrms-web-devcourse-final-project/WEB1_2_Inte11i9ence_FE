@@ -30,11 +30,11 @@ const CommentSection = () => {
   ])
 
   return (
-    <div className='mt-10'>
+    <div className='mt-10 w-9/12 mx-auto'>
       {/* 댓글 입력 */}
-      <h2 className='text-xl font-bold mb-4 text-left'>댓글달기</h2>
+      <h2 className='text-xl font-bold mb-4 text-left'>댓글 달기</h2>
       <div className='relative'>
-        <textarea className='w-full h-20 p-3 pr-12 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500'></textarea>
+        <textarea className='w-full h-28 p-3 pr-12 border border-gray-300 rounded-2xl mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500'></textarea>
         <button className='absolute bottom-7 right-3 bg-transparent border-none'>
           <img
             src={Send}

@@ -36,7 +36,6 @@ const BestCardList = () => {
 
       }catch (error) {
         if (mounted) {
-        console.log("bestPostsInAPI:", bestPostsInAPI)
         console.error('인기 포스트 조회 실패:', error)
         setError('인기 포스트 조회 실패')
         }

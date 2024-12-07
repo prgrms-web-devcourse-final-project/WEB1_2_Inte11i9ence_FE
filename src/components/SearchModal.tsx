@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react'
 import SearchIcon from '@/assets/svg/search.svg?react'
 import { useNavigate } from 'react-router-dom'
 import SearchArrow from '@assets/svg/searcharrow.svg?react'
+import axios from 'axios'
 
 interface SearchModalProps {
   initialSearchTerm?: string
@@ -15,6 +16,37 @@ const SearchModal = ({ initialSearchTerm = '' }: SearchModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
   const navigate = useNavigate()
+  const [category, setCategory] = useState<string[]>([])
+  const [recommendedCategories, setRecommendedCategories] = useState<string[]>([]);
+  const [popularCategories, setPopularCategories] = useState<string[]>([]);
+
+  // 컴포넌트 마운트 시 카테고리 가져오기
+  useEffect(() => {
+    const getCategory = async () => {
+      try {
+        const response = await axios.get('https://83c7c11d-0a32-4b7b-9db8-6f828abf0474.mock.pstmn.io/api/v1/category')
+        const filteredCategory = response.data.map((item: any) => item.name)
+        setCategory(filteredCategory)
+      } catch (error) {
+        console.error('에러 발생',error)
+      }
+    }
+    getCategory()
+  }, [isModalOpen])
+
+  // 컴포넌트 마운트 시 랜덤 카테고리 생성
+  useEffect(() => {
+    if (category.length > 0) {
+        // 10개의 랜덤 카테고리 생성
+        const shuffledCategories = [...category]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 10);
+    
+        // 5개씩 분배
+        setRecommendedCategories(shuffledCategories.slice(0, 5));
+        setPopularCategories(shuffledCategories.slice(5, 10));
+    }
+  }, [category]);
 
   // 로컬스토리지에서 검색어 불러오기
   useEffect(() => {
@@ -47,24 +79,30 @@ const SearchModal = ({ initialSearchTerm = '' }: SearchModalProps) => {
     }
   }, [])
 
-  // 검색창 제출 핸들러
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsModalOpen(false)
-    if (!searchTerm.trim()) {
-      return
-    }
+  // 검색어 저장 및 이동 처리하는 공통 함수
+  const handleSearch = (searchKeyword: string) => {
+    if (!searchKeyword.trim()) {return};
+
     // 중복 검색어 제거 및 최근 검색어 5개로 제한
     const newSearches = [
-      searchTerm,
-      ...storedSearches.filter((search) => search !== searchTerm),
-    ].slice(0, 5)
+        searchKeyword,
+        ...storedSearches.filter((search) => search !== searchKeyword),
+    ].slice(0, 5);
 
     // 로컬스토리지에 검색어 저장
-    setStoredSearches(newSearches)
-    localStorage.setItem('storedSearches', JSON.stringify(newSearches))
-    navigate(`/search?keyword=${encodeURIComponent(searchTerm)}`)
-  }
+    setStoredSearches(newSearches);
+    localStorage.setItem('storedSearches', JSON.stringify(newSearches));
+    
+    // 모달 닫기 및 페이지 이동
+    setIsModalOpen(false);
+    navigate(`/search?keyword=${encodeURIComponent(searchKeyword)}`);
+};
+
+  // 검색창 제출 핸들러
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSearch(searchTerm);
+};
 
   // 검색어 삭제
   const removeSearchTerm = (termToRemove: string) => {
@@ -76,10 +114,14 @@ const SearchModal = ({ initialSearchTerm = '' }: SearchModalProps) => {
   // 최근 검색어 클릭 시 검색어 입력창에 검색어 입력
   const storedTermSearch = (term: string) => {
     setSearchTerm(term)
-    if (searchInputRef.current) {
-      searchInputRef.current.value = term
-    }
+    handleSearch(term);
   }
+
+  // 카테고리 클릭 핸들러
+  const categoryClickHandler = (selectedCategory: string) => {
+      setSearchTerm(selectedCategory);
+      handleSearch(selectedCategory);
+  };
 
   // 현재 날짜 반환
   const currentDate = () => {
@@ -161,46 +203,16 @@ const SearchModal = ({ initialSearchTerm = '' }: SearchModalProps) => {
                       추천 여행지
                     </span>
                     <div className='flex flex-col gap-1'>
-                      <div className=' flex  align-center'>
-                        <SearchArrow
-                          width={20}
-                          height={20}
-                          className='pt-2'
-                        />
-                        <p>추천 여행지 1</p>
-                      </div>
-                      <div className=' flex  align-center'>
-                        <SearchArrow
-                          width={20}
-                          height={20}
-                          className='pt-2'
-                        />
-                        <p>추천 여행지 1</p>
-                      </div>
-                      <div className=' flex   align-center'>
-                        <SearchArrow
-                          width={20}
-                          height={20}
-                          className='pt-2'
-                        />
-                        <p>추천 여행지 1</p>
-                      </div>
-                      <div className=' flex  align-center'>
-                        <SearchArrow
-                          width={20}
-                          height={20}
-                          className='pt-2'
-                        />
-                        <p>추천 여행지 1</p>
-                      </div>
-                      <div className=' flex align-center'>
-                        <SearchArrow
-                          width={20}
-                          height={20}
-                          className='pt-2'
-                        />
-                        <p>추천 여행지 1</p>
-                      </div>
+                      {recommendedCategories.map((categoryName, index) => (
+                        <div 
+                            key={index} 
+                            className='flex align-center cursor-pointer hover:text-blue-500'
+                            onClick={() => categoryClickHandler(categoryName)}
+                        >
+                            <SearchArrow width={20} height={20} className='pt-2' />
+                            <p>{categoryName}</p>
+                        </div>
+                      ))}
                     </div>
                   </div>
                   <div className='flex  flex-[4] flex-col gap-4'>
@@ -211,26 +223,16 @@ const SearchModal = ({ initialSearchTerm = '' }: SearchModalProps) => {
                       </span>
                     </div>
                     <div className='flex flex-col gap-1 text-left'>
-                      <div className='flex gap-1'>
-                        <p className='text-darkGray'>1</p>
-                        <p>인기 검색어</p>
+                    {popularCategories.map((categoryName, index) => (
+                      <div 
+                          key={index} 
+                          className='flex align-center cursor-pointer hover:text-blue-500'
+                          onClick={() => categoryClickHandler(categoryName)}
+                      >
+                          <SearchArrow width={20} height={20} className='pt-2' />
+                          <p>{categoryName}</p>
                       </div>
-                      <div className='flex gap-1'>
-                        <p className='text-darkGray'>2</p>
-                        <p>인기 검색어</p>
-                      </div>
-                      <div className='flex gap-1'>
-                        <p className='text-darkGray'>3</p>
-                        <p>인기 검색어</p>
-                      </div>
-                      <div className='flex gap-1'>
-                        <p className='text-darkGray'>4</p>
-                        <p>인기 검색어</p>
-                      </div>
-                      <div className='flex gap-1'>
-                        <p className='text-darkGray'>5</p>
-                        <p>인기 검색어</p>
-                      </div>
+                    ))}
                     </div>
                   </div>
                 </div>
