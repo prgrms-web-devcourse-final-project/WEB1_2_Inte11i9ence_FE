@@ -13,12 +13,11 @@ const Navigation = () => {
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(true)
   const [isModalOpen, setModalOpen] = useState(false)
 
-  // 로그인 여부 저장 변수, 나중에 수정
-  const isLogin = false
+  // 로컬스토리지에서 토큰 확인
+  const token = localStorage.getItem('access_token')
+  const isLogin = Boolean(token) // 토큰이 있으면 로그인 상태
 
-  const token = localStorage.getItem('authToken')
-
-  // useProfile 훅 만든 거 사용, profile 데이터 가져오기
+  // useProfile 훅 사용
   const { profile } = useProfile(token || '')
 
   const [isMyDropdownOpen, setMyDropdownOpen] = useState(false)
@@ -40,13 +39,6 @@ const Navigation = () => {
 
   return (
     <div>
-      {/* <button
-        onClick={onLogout}
-        className='flex items-center p-2 cursor-pointer font-normal text-darkGray text-xs '
-      >
-        로그아웃
-      </button> */}
-
       <div className='fixed bg-white top-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-xl h-16 text-black text-base flex justify-between items-center z-50 px-12'>
         {/* 왼쪽 버튼들 */}
         <div className='flex gap-5'>

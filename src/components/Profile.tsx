@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
 import defaultProfileImage from '@assets/png/default-profile-2.png'
+import useProfile from '@/hooks/useProfile'
 
 interface ProfileProps {
   title: string
@@ -21,6 +22,9 @@ const Profile: React.FC<ProfileProps> = ({
   const [previewImage, setPreviewImage] = useState<string | null>(
     userProfileImage,
   )
+  const token = localStorage.getItem('access_token')
+  // useProfile 훅 사용
+  const { setProfile } = useProfile(token || '')
 
   // 이미지 업로드
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,23 +43,131 @@ const Profile: React.FC<ProfileProps> = ({
     setNickname(value)
   }
 
-  // 완료 버튼 클릭
+  // 'File'을 배열로 수정
   const handleSave = async () => {
-    const formData = new FormData()
+    const requestBody: { username?: string; profileURL?: string } = {}
+
+    // 닉네임 변경
     if (nickname !== username) {
-      formData.append('username', nickname) // 닉네임 변경
+      requestBody.username = nickname
     }
+
+    // 프로필 이미지 변경 (Base64로 변환하여 전송)
     if (newProfileImage) {
-      formData.append('profileImage', newProfileImage) // 프로필 이미지 변경
+      // 1. S3 Presigned URL 요청 (newProfileImage를 배열로 전달)
+      const presignedUrls = await fetchPresignedUrl([newProfileImage]) // 배열로 전달
+
+      // 2. 이미지 업로드
+      const uploadSuccess = await uploadImageToS3(
+        presignedUrls[0],
+        newProfileImage,
+      ) // 첫 번째 URL 사용
+
+      if (uploadSuccess) {
+        requestBody.profileURL = presignedUrls[0] // 프로필 이미지 URL 업데이트
+        sendRequest(requestBody)
+      } else {
+        console.error('Image upload failed')
+      }
+    } else {
+      await sendRequest(requestBody)
+      setProfile(undefined)
+      onClose()
+    }
+  }
+
+  // S3에 이미지 업로드
+  const uploadImageToS3 = async (presignedUrl: string, file: File) => {
+    if (!presignedUrl) {
+      return false
     }
 
     try {
-      const response = await axios.put('/api/v1/member/me', formData, {
+      const response = await fetch(presignedUrl, {
+        method: 'PUT',
         headers: {
-          Authorization: `Bearer 123`, // JWT 토큰 추가 근데 이거 로직짜여있다고 하셔서 나중에 뺄수도
+          'Content-Type': file.type, // 파일 타입 설정
         },
+        body: file, // 업로드할 파일
       })
+
+      return response.ok
+    } catch (error) {
+      console.error('Error uploading image to S3:', error)
+      return false
+    }
+  }
+
+  // fetchPresignedUrl 함수는 이미 올바르게 배열을 반환하는 코드로 수정됨
+  const fetchPresignedUrl = async (files: File[]): Promise<string[]> => {
+    // Validate MIME type (image validation)
+    const validMimeTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/gif',
+      'image/webp',
+    ] // Add more MIME types as necessary
+    const invalidFiles = files.filter(
+      (file) => !validMimeTypes.includes(file.type),
+    )
+
+    if (invalidFiles.length > 0) {
+      console.error('Invalid file types detected')
+      throw new Error('Invalid file types')
+    }
+
+    // Prepare the form data for the presigned URL request
+    const formData = files.map((file) => ({
+      originalFileName: file.name,
+      contentType: file.type,
+    }))
+
+    try {
+      const response = await axios.post(
+        'https://www.skypedia.shop/api/v1/photo',
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      )
+
+      const presignedUrls: string[] = response.data
+
+      if (!Array.isArray(presignedUrls)) {
+        throw new Error(
+          'Invalid response format: Expected an array of presigned URLs',
+        )
+      }
+
+      return presignedUrls
+    } catch (error) {
+      console.error('Error fetching presigned URL:', error)
+      throw new Error('Image upload failed')
+    }
+  }
+
+  // 요청 보내기
+  const sendRequest = async (requestBody: {
+    username?: string
+    profileURL?: string
+  }) => {
+    try {
+      const response = await axios.put(
+        'https://www.skypedia.shop/api/v1/member/me',
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      )
       console.log('Updated user info:', response.data)
+      console.log(response.data) // 응답 본문 확인
+      setProfile(response.data) // 프로필 정보 업데이트
       onClose() // 프로필 업데이트 후 모달 닫기
     } catch (error) {
       console.error('Error updating profile:', error)

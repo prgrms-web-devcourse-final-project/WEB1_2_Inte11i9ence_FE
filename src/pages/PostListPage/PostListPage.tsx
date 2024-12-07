@@ -1,19 +1,49 @@
 import React from 'react'
 import PostItem from './PostItem'
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { postData } from '@/temporaryData/allPostData'
 import DropdownSelector from '@/components/DropdownSelector'
 import RegionDropdown from '@/components/RegionDropdown'
-import { useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import axios from 'axios'
+import { AllPostData } from '@/typings/post'
 
 const PostListPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState('전체')
+  const location = useLocation();
+  const initCategory = location.state?.selectedCategory || '전체'
+  const [selectedCategory, setSelectedCategory] = useState(initCategory)
   const [selectedDetailCategory, setSelectedDetailCategory] =
     useState('지역 전체')
   const [isDetailCategoryOpen, setIsDetailCategoryOpen] = useState(false)
-  const [sortType, setSortType] = useState('최신순')
+  const [sortType, setSortType] = useState('latest')
   const navigate = useNavigate()
+  const [error, setError] = useState<string | null>(null) // 에러 메시지
+  const {id} = useParams();
+  const [resultPosts, setResultPosts] = useState<AllPostData[]>([])
+
+   // 게시글 필터링 - 마운트 시 전체 게시글, 최신순으로 조회 (옵션 없는 경우)
+   useEffect(() => {
+    let mounted = true;
+
+    const getFilteredPosts = async () => {
+        try {
+            const response = await axios.get(`https://83c7c11d-0a32-4b7b-9db8-6f828abf0474.mock.pstmn.io/api/v1/posts`)
+            if(mounted && response.data.posts){
+              setResultPosts(response.data.posts)
+            }
+        }catch (error) {
+            if (mounted) {
+            console.error('게시글 조회 실패:', error)
+            setError('게시글 조회 실패')
+            }
+        }    
+    }
+    getFilteredPosts();
+
+    return () => {
+        mounted = false;
+    }
+}, [])
 
   const handleRegionCategory = (selected: string) => {
     setSelectedCategory(selected)
@@ -22,7 +52,6 @@ const PostListPage = () => {
     if (selected === '지역') {
       setIsDetailCategoryOpen(true)
       navigate('/postlist/region')
-      console.log(isDetailCategoryOpen)
     } else {
       setIsDetailCategoryOpen(false)
       setSelectedDetailCategory('지역 전체')
@@ -59,13 +88,18 @@ const PostListPage = () => {
   ]
 
   const sortingOptions = [
-    { value: '최신순', label: '최신순' },
-    { value: '인기순', label: '인기순' },
+    { value: 'latest', label: '최신순' },
+    { value: 'likes', label: '인기순' },
+    { value: 'title', label: '제목순' },
+    { value: 'rating', label: '별점순' }
   ]
 
   const ExceptRegionOptions = ['공지', '자유', '리뷰']
 
-  const filteredGroups = postData.filter((post) => {
+  const filteredGroups = resultPosts.filter((post) => {
+    // 공지사항은 제외
+    if (post.category === '공지') {return false};
+
     // 전체 카테고리 선택 시 모든 포스트 표시
     if (selectedCategory === '전체') {
       return true
@@ -84,19 +118,35 @@ const PostListPage = () => {
     return post.category === selectedCategory
   })
 
-  const notice = postData.filter((post) => post.category === '공지')
+  const notice = resultPosts.filter((post) => post.category === '공지');
 
-  // 정렬 방식
+  // 클라이언트 정렬 로직 (API 실패 시)
   const sortedPosts = useMemo(() => {
-    const sorted = [...filteredGroups]
-
-    if (sortType === '최신순') {
-      return sorted.sort((a, b) => {
-        return new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()
-      })
+    const sorted = [...filteredGroups];
+    
+    switch(sortType) {
+        case 'latest':
+            return sorted.sort((a, b) => 
+                new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()
+            );
+        case 'likes':
+            return sorted.sort((a, b) => b.likes - a.likes);
+        case 'title':
+            return sorted.sort((a, b) => 
+                a.title.localeCompare(b.title)
+            );
+        case 'rating':
+            return sorted.sort((a, b) => 
+                (b.rating || 0) - (a.rating || 0)
+            );
+        default:
+            return sorted;
     }
-    return sorted.sort((a, b) => b.likes - a.likes)
-  }, [filteredGroups, sortType])
+}, [filteredGroups, sortType]);
+
+const sortHandler = (selected: string) => {
+  setSortType(selected);  // 정렬 타입 상태 업데이트
+};
 
   return (
     <div>
@@ -133,8 +183,8 @@ const PostListPage = () => {
         <div className='h-[40px] relative z-1000 mx-24'>
           <DropdownSelector
             options={sortingOptions}
-            defaultValue='최신순'
-            onChange={setSortType}
+            defaultValue='latest'
+            onChange={sortHandler}
           />
         </div>
       </div>

@@ -1,39 +1,19 @@
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom' // React Router 사용 시
+import { useEffect } from 'react'
 
-const OAuthCallback: React.FC = () => {
-  const navigate = useNavigate()
-
+const OAuthCallback = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
-    const code = params.get('code')
-    const state = params.get('state')
+    const token = params.get('token')
+    const refreshToken = params.get('refreshToken')
 
-    if (code && state) {
-      // 받은 코드를 서버로 전달하여 토큰 요청
-      fetch('https://www.skypedia.shop/api/auth/callback', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ code, state }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // 로그인 성공 시 토큰 저장 및 메인 페이지로 이동
-          localStorage.setItem('token', data.token)
-          navigate('/postlist/region') // 메인 페이지로 이동
-        })
-        .catch((error) => {
-          console.error('Error during OAuth callback:', error)
-          navigate('/login') // 에러 시 로그인 페이지로 이동
-        })
-    } else {
-      navigate('/login') // 필요한 정보가 없을 경우 로그인 페이지로 이동
+    if (token && refreshToken) {
+      localStorage.setItem('access_token', token)
+      localStorage.setItem('refresh_token', refreshToken)
+      window.location.replace('/') // replace를 사용하여 이전 페이지로 돌아가지 않게 함
     }
-  }, [navigate])
+  }, [])
 
-  return <div>로그인 처리 중...</div>
+  return null // UI를 렌더링하지 않음
 }
 
 export default OAuthCallback
