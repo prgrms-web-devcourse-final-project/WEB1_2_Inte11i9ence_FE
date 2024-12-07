@@ -1,15 +1,25 @@
+import React, { useState, useRef } from 'react'
+import { GoogleMap, LoadScript, Autocomplete } from '@react-google-maps/api'
 import ScheduleAdd from '../ScheduleAdd'
-import { useState } from 'react'
 import PlusIcon from '@assets/svg/Plus.svg?react'
 import SchedulePlan from './SchedulePlan'
-const PlanAdd = () => {
-  const [openAddModal, setOpenAddModal] = useState(false)
 
+type PlanAddProps = {
+  onPlaceSelect: (place: google.maps.places.PlaceResult) => void // 장소 선택 시 상위 컴포넌트에 전달할 콜백
+}
+const PlanAdd = ({ onPlaceSelect }: PlanAddProps) => {
+  const [openAddModal, setOpenAddModal] = useState(false)
   const [date, setDate] = useState('') // 날짜 상태
   const [memo, setMemo] = useState('') // 메모 상태
+  const [place, setPlace] = useState<string | undefined>('') // 장소 상태
+
+  // useRef의 타입을 Autocomplete 객체로 지정
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
+
   const clickPlus = () => {
     setOpenAddModal(!openAddModal)
   }
+
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDate(event.target.value)
   }
@@ -17,6 +27,17 @@ const PlanAdd = () => {
   const handleMemoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMemo(event.target.value)
   }
+
+  // 장소 선택 시
+  const handlePlaceSelect = () => {
+    const autocomplete = autocompleteRef.current
+    if (autocomplete) {
+      const place = autocomplete.getPlace()
+      setPlace(place.name || '') // place.name이 undefined일 경우 빈 문자열로 처리
+      onPlaceSelect(place) // 상위 컴포넌트에 선택한 장소 전달
+    }
+  }
+
   return (
     <div>
       <div className='flex mx-4 justify-between'>
@@ -33,12 +54,28 @@ const PlanAdd = () => {
         <div className='absolute top-[8%] left-[10%] w-[80%] h-[90%] flex justify-center items-start z-50 bg-white shadow-lg rounded-lg border border-lightGray'>
           <div className='flex flex-col h-full w-full justify-between'>
             <div className='flex flex-col gap-4 p-4'>
-              <div>검색컴포넌트</div>
+              <div>
+                <LoadScript
+                  googleMapsApiKey={import.meta.env.VITE_GOOGLE_API}
+                  libraries={['places']}
+                >
+                  <Autocomplete
+                    onPlaceChanged={handlePlaceSelect}
+                    ref={autocompleteRef} // ref를 사용하여 Autocomplete에 접근
+                  >
+                    <input
+                      type='text'
+                      placeholder='장소 검색'
+                      className='p-2 text-sm w-full border h-[5vh] text-darkGray'
+                    />
+                  </Autocomplete>
+                </LoadScript>
+              </div>
               <div className='flex flex-col gap-4'>
                 <div className='flex flex-col items-start gap-4'>
                   <p className='font-bold'>추가된 장소</p>
                   <div className='flex w-full border h-[5vh] p-2 text-gray-400 text-sm'>
-                    검색을 통해 장소를 추가해보세요
+                    {place ? place : '검색을 통해 장소를 추가해보세요'}
                   </div>
                 </div>
                 <div className='flex flex-col items-start gap-4'>
@@ -72,4 +109,5 @@ const PlanAdd = () => {
     </div>
   )
 }
+
 export default PlanAdd
