@@ -1,9 +1,57 @@
 import { Link } from 'react-router-dom'
 import BestCardItem from '../../../components/BestCardItem'
 import { postData } from '@/temporaryData/allPostData'
-
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { AllPostData } from '@/typings/post'
+  
 const BestCardList = () => {
-  const bestPosts = postData.sort((a, b) => b.likes - a.likes).slice(0, 3)
+
+  const [bestPostsInAPI, setBestPostsInAPI] = useState<AllPostData[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
+
+   // 인기 게시글 표시 위한 게시글 인기순 조회
+   useEffect(() => {
+    let mounted = true;
+
+    const getBestPosts = async () => {
+      if (!mounted) {return};
+      setIsLoading(true)
+      setError(null)
+      // 목 서버, 실제 서버로 수정 필요
+      try {
+      const response = await axios.get(
+        'https://83c7c11d-0a32-4b7b-9db8-6f828abf0474.mock.pstmn.io/api/v1/posts')
+  
+      if(!response.data) {
+          throw new Error('데이터 형식이 올바르지 않습니다.')
+        }
+        if (mounted) {
+          const sortedPosts = response.data.posts
+            .sort((a: AllPostData, b: AllPostData) => b.likes - a.likes)
+            .slice(0, 3);
+          setBestPostsInAPI(sortedPosts);
+        }
+
+      }catch (error) {
+        if (mounted) {
+        console.log("bestPostsInAPI:", bestPostsInAPI)
+        console.error('인기 포스트 조회 실패:', error)
+        setError('인기 포스트 조회 실패')
+        }
+      } finally {
+        if(mounted) {
+        setIsLoading(false)
+        }
+      }
+    }
+    getBestPosts();
+    return () => { mounted = false;}
+  }, [])
+
+  // const bestPosts = postData.sort((a, b) => b.likes - a.likes).slice(0, 3)
+  
   return (
     <div className='flex flex-col w-full px-16'>
       <header className='flex justify-between items-center mb-4 px-10 w-full'>
@@ -16,7 +64,7 @@ const BestCardList = () => {
         </Link>
       </header>
       <div className='flex flex-col gap-12 my-8 mx-12 '>
-        {bestPosts.map((post) => (
+        {bestPostsInAPI.map((post) => (
           <BestCardItem
             key={post.id}
             post={post}

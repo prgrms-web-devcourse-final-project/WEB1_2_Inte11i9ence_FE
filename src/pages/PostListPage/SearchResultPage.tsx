@@ -1,53 +1,107 @@
 import DropdownSelector from '@/components/DropdownSelector';
 import SearchModal from '@/components/SearchModal';
 import PostItem from './PostItem';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { postData } from '@/temporaryData/allPostData';
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import axios from 'axios';
+import { AllPostData } from '@/typings/post';
 
 const SearchResultPage = () => {
     // 쿼리 파라미터 읽어오기
     const [searchParams] = useSearchParams();
     const keyword = searchParams.get('keyword')|| '';
-    const [sortType, setSortType] = useState('최신순');
+    const [sortType, setSortType] = useState('latest');
+    const [allPosts, setAllPosts] = useState<AllPostData[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const sortingOptions = [
-        { value: '최신순', label: '최신순' },
-        { value: '인기순', label: '인기순' },
-    ]
+    useEffect(() => {
+        const getPosts = async () => {
+            if (!keyword.trim()) {return};
+            
+            setIsLoading(true);
+            setError(null);
+            
+            try {
+                const response = await axios.get(
+                    `https://83c7c11d-0a32-4b7b-9db8-6f828abf0474.mock.pstmn.io/api/v1/posts`
+                    // 실제 엔드포인트 : ABCD를 제목으로 갖는 게시글 목록 조회
+                    // `/api/v1/posts/search?keyword=ABCD&target=title`
+                );
 
-    // 검색어 기반 포스트 필터링
-    const filteredPosts = postData.filter((post) => {
+                if (!response.data || !response.data.posts) {
+                    throw new Error('검색 결과를 불러오는데 실패했습니다.');
+                }
+
+                setAllPosts(response.data.posts);
+            } catch (error) {
+                console.error('검색 결과 조회 실패:', error);
+                setError('검색 결과를 불러오는데 실패했습니다.');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        getPosts();
+    }, [keyword]);
+
+    // 검색어 기반 필터링
+    const filteredPosts = useMemo(() => {
+        if (!keyword.trim()) {return allPosts};
+        
         const searchLower = keyword.toLowerCase();
-        return (
+        return allPosts.filter((post) => 
             // 제목 또는 내용에 검색어가 포함된 경우 필터링
             post.title.toLowerCase().includes(searchLower) ||
             post.content.toLowerCase().includes(searchLower)
         );
-    });
+    }, [allPosts, keyword]);
 
-    // 정렬 방식
-    const sortedPosts = useMemo(() => {
-        const sorted = [...filteredPosts];
-        
-        if (sortType === '최신순') {
-            return sorted.sort((a, b) => {
-                return new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime();
-            });
-        } 
+    const sortingOptions = [
+        { value: 'latest', label: '최신순' },
+        { value: 'likes', label: '인기순' },
+        { value: 'title', label: '제목순' },
+        { value: 'rating', label: '별점순' }
+    ]
+
+    // 클라이언트 정렬 로직 (API 실패 시)
+  const sortedPosts = useMemo(() => {
+    const sorted = [...filteredPosts];
+    
+    switch(sortType) {
+        case 'latest':
+            return sorted.sort((a, b) => 
+                new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()
+            );
+        case 'likes':
             return sorted.sort((a, b) => b.likes - a.likes);
-        
-    }, [filteredPosts, sortType]);
+        case 'title':
+            return sorted.sort((a, b) => 
+                a.title.localeCompare(b.title)
+            );
+        case 'rating':
+            return sorted.sort((a, b) => 
+                (b.rating || 0) - (a.rating || 0)
+            );
+        default:
+            return sorted;
+    }
+}, [filteredPosts, sortType]);
+
+const sortHandler = (selected: string) => {
+  setSortType(selected);  // 정렬 타입 상태 업데이트
+};
 
     return (
         <div>
             <SearchModal initialSearchTerm={keyword}  />
-            <div className='h-[40px] relative z-1000 mb-10'>
+            <div className='h-[40px] relative z-1000 mb-40 mr-24 pt-10'>
                     <DropdownSelector
                         options={sortingOptions}
-                        defaultValue='최신순'
-                        onChange={setSortType}
+                        defaultValue='latest'
+                        onChange={sortHandler}
                     />
                 </div>
                 {sortedPosts.length === 0 ? (
