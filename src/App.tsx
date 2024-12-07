@@ -23,12 +23,24 @@ import RegionPostListPage from './pages/PostListPage/RegionPostListPage'
 import SelectedRegionPostList from './pages/PostListPage/SelectedRegionPostList'
 import SearchResultPage from './pages/PostListPage/SearchResultPage'
 import PostCreatePage from './pages/WritePage/PostCreatePage'
+import OAuthCallback from './components/OAuthCallback'
+
 const App = () => {
   return (
     <div>
       <Container>
         <Navigation />
         <Routes>
+          {/* OAuth 콜백 라우트 */}
+          <Route
+            path='/oauth/callback'
+            element={
+              <>
+                <MainPage />
+                <OAuthCallback />
+              </>
+            }
+          />
           {/* 일정 공유 페이지 */}
           <Route
             path='/schedule'
