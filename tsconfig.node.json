@@ -5,6 +5,7 @@
     "lib": ["ES2023"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "typeRoots": ["node_modules/@types",],
 
     /* Bundler mode */
     "moduleResolution": "Bundler",
@@ -25,7 +26,7 @@
       "@typings/*": ["src/typings/*"],
       "@utils/*": ["src/utils/*"]
     },
-    "types": ["vite-plugin-svgr/client"],
+    "types": ["vite-plugin-svgr/client","node","google.maps"],
 
     /* Linting */
     "strict": true,

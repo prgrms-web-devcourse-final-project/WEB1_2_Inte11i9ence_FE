@@ -17,9 +17,7 @@ const SchedulePage = () => {
   // 지역 목록 가져오기
   const fetchRegions = async () => {
     try {
-      const response = await axios.get(
-        'https://fed8aa8a-b229-4c7b-ba68-4a6376b3ab56.mock.pstmn.io/api/v1/region',
-      )
+      const response = await axios.get('/api/v1/region')
       const regionsData = response.data
       const allRegions = [{ id: 0, name: '지역 전체' }, ...regionsData]
       setRegions(allRegions)
@@ -32,12 +30,8 @@ const SchedulePage = () => {
   const fetchGroups = async (regionId: number | string | null = null) => {
     try {
       const response = regionId
-        ? await axios.get(
-            `https://fed8aa8a-b229-4c7b-ba68-4a6376b3ab56.mock.pstmn.io/api/v1/plangroup/${regionId}`,
-          )
-        : await axios.get(
-            'https://fed8aa8a-b229-4c7b-ba68-4a6376b3ab56.mock.pstmn.io/api/v1/plangroup',
-          )
+        ? await axios.get(`/api/v1/plangroup/region/${regionId}`)
+        : await axios.get('/api/v1/plangroup')
       setGroups(response.data)
       console.log(`그룹${response.data}`)
     } catch (error) {
