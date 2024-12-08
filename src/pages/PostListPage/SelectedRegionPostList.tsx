@@ -54,8 +54,16 @@ const SelectedRegionPostList = () => {
             try {
                 // 병렬로 API 호출
                 const [postsResponse, regionResponse] = await Promise.all([
-                    axios.get(`https://83c7c11d-0a32-4b7b-9db8-6f828abf0474.mock.pstmn.io/api/v1/posts`),
-                    axios.get(`https://83c7c11d-0a32-4b7b-9db8-6f828abf0474.mock.pstmn.io/api/v1/category`)
+                    axios.get(
+                        'api/v1/posts'
+                        // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
+                        // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/posts`
+                    ),
+                    axios.get(
+                        'api/v1/category'
+                        // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
+                        // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/category`
+                    )
                 ]);
         
                 // 지역 정보 설정
@@ -70,8 +78,8 @@ const SelectedRegionPostList = () => {
                 }
         
                 // 포스트 데이터 필터링 및 설정
-                if (postsResponse.data.posts) {
-                    const filteredPosts = postsResponse.data.posts.filter(
+                if (postsResponse.data) {
+                    const filteredPosts = postsResponse.data.filter(
                         (post: { category: string }) => 
                             post.category === category
                     );

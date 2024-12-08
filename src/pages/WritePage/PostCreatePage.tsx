@@ -59,7 +59,7 @@ const PostCreatePage: React.FC = () => {
 
   return (
     <div className="p-4 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">게시글 만들기</h1>
+      <h1 className="text-2xl font-bold mb-6">게시글 작성하기</h1>
 
       {/* 조건부 렌더링: 별점 에디터 */}
       {selectedCategory === '리뷰' && (
@@ -125,15 +125,15 @@ const PostCreatePage: React.FC = () => {
         <div className="border-b border-gray-400 mt-2"></div>
       </div>
 
-      <div className="mb-6">
+      <div className="mb-2">
         <textarea
           id="content"
           className="w-full border rounded-lg px-3 py-2 h-80 shadow-lg resize-none"
           placeholder="내용을 입력하세요"
         />
 
-        <div className="mt-4">
-          <label htmlFor="image-upload" className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg">
+        <div className="mt-10">
+          <label htmlFor="image-upload" className="cursor-pointer bg-darkBlue font-bold shadow-md text-white px-4 py-2 rounded-lg">
             이미지 업로드
           </label>
           <input
@@ -163,15 +163,15 @@ const PostCreatePage: React.FC = () => {
   </div>
 )}
 
-        <div className="mt-4">
-          <div className="mb-2">
+        <div className="mt-10">
+          <div className="my-2 flex flex-wrap gap-2">
             {tags.map((tag, index) => (
               <span
                 key={index}
-                className="inline-block bg-gray-200  px-3 py-1 rounded-full text-sm mr-2 mb-2 "
+                className="inline-block text-gray-500 bg-blue-100 px-3 py-1 rounded-full text-sm mr-2 my-2 "
               >
                 #{tag}
-                <button onClick={() => removeTag(index)} className="ml-2 text-red-500">
+                <button onClick={() => removeTag(index)} className="ml-2 text-red-400">
                   ×
                 </button>
               </span>
@@ -180,7 +180,7 @@ const PostCreatePage: React.FC = () => {
           <input
             id="tags"
             type="text"
-            placeholder="#태그 입력,여행"
+            placeholder="# 태그를 입력하세요"
             className="w-full border rounded px-3 py-2 text-gray-600 focus:outline-none border-0"
             value={inputValue}
             onChange={handleInputChange}
@@ -189,12 +189,12 @@ const PostCreatePage: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between border-t-2 pt-6">
         <button className="hover:underline flex items-center">
           <img src={Out} alt="나가기버튼" className="w-5 h-5 mr-2" /> 나가기
         </button>
         <button
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-darkBlue font-bold shadow-md text-white px-4 py-2 rounded-lg"
           disabled={!selectedCategory || (selectedCategory === '지역' && !selectedRegion)}
         >
           발행하기
