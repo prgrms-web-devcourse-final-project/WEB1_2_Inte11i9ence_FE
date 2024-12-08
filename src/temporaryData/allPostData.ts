@@ -5,7 +5,7 @@ export const postData: AllPostData[] = [
         {
         id: 1,
         title: "제주 여행 후기 🍊",
-        content: "제주도 여행 후기입니다. 저는 지난 주에 제주도 여행을 다녀왔어요! 맛있는 음식도 많이 먹고 정말 행복했던 제주여행이었는데요 역시 제주도는 흑돼지네요 여행 저녁마다 먹었는데 질리지 않고 너무 맛있게 먹었어요 ㅎㅎ 다른 분들도 제주도 가면 흑돼지 드셔보세요! 저는 서귀포 쪽에서 먹은 식당이 가장 맛있었는데, 댓글 달아주시면 공유해 드릴게요!",
+        content:"제주도 여행 후기입니다. 저는 지난 주에 제주도 여행을 다녀왔어요! 맛있는 음식도 많이 먹고 정말 행복했던 제주여행이었는데요 가본 곳 중 가장 좋았던 곳은 금오름이였습니다 정말 멋진 곳이더라고요! 이번 여행 중 가장 맛있게 메뉴는 흑돼지 같아요! 유명한 이유를 알겠더라고요 ㅎㅎ 다른 분들도 제주도 가면 드셔보세요!",
         photoUrl: "https://picsum.photos/1100/200",
         likes: 274,
         category: "제주도",
@@ -64,19 +64,19 @@ export const postData: AllPostData[] = [
         replies: 2,
     },
     {
-        id: 4,
-        title: "충청남도 여행",
-        content: "충청남도 여행 후기입니다. 가보니까 여행하기 너무 좋은 지역이였어요! 당진에서는 물놀이를 즐기고, 천안에서는 역사를 느낄 수 있었어요. 논산의 농촌체험은 정말 즐거웠네요. 충청남도는 다양한 경험을 할 수 있는 지역이라고 생각합니다. 다음에 또 방문하고 싶은 곳이에요!",
-        photoUrl: "https://picsum.photos/1100/200",
-        likes: 243,
-        category: "충청남도",
-        author: {
-        username: "김코딩",
-        profileUrl: "https://picsum.photos/1100/200",
+        "id": 5,
+        "title": "국내에서 여행 갈만한 곳 추천해주세요!",
+        "content": "유명한 국내 여행지는 대부분 한번씩 가 봤는데, 숨겨진 명소가 있는 여행지가 있을까요?? 전 아름다운 자연이 있는 지역을 좋아해요! 그런 여행지를 아시는 분이 있다면 추천 부탁드려요! 😊",
+        "photoUrl": "https://picsum.photos/1100/200",
+        "likes": 33,
+        "category": "자유",
+        "author": {
+            "username": "한코딩",
+            "profileUrl": "https://picsum.photos/1100/200"
         },
-        views: 45,
-        postedAt: "2021-09-01",
-        replies: 2,
+        "views": 45,
+        "postedAt": "2022-04-01",
+        "replies": 2
     },
     {
         id: 6,

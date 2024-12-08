@@ -22,7 +22,7 @@ const BestCardList = () => {
       // 목 서버, 실제 서버로 수정 필요
       try {
       const response = await axios.get(
-        'api/v1/posts'
+        'https://www.skypedia.shop/api/v1/posts'
         // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
         // 'https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/posts'
       )
