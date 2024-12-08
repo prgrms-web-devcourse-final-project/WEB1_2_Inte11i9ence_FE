@@ -4,8 +4,8 @@ import NextIcon from '@assets/svg/NextButton.svg?react'
 import defaultProfileImage from '@assets/png/default-profile-2.png'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
-import Profile from '@/components/Profile'
 import { onLogout } from './LogOut'
+import Profile from '@/components/Profile'
 interface NavigationProps {
   onClose: () => void
   username: string

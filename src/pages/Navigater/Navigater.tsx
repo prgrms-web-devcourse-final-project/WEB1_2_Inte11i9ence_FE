@@ -77,12 +77,12 @@ const Navigation = () => {
           <div className='flex gap-5 items-center relative'>
             <Link
               to='/WritePage'
-              className='font-bold'
+              className='font-bold text-[15px]'
             >
               글쓰기
             </Link>
             <button
-              className='w-8 h-8 rounded-full overflow-hidden'
+              className='w-7 h-7 rounded-full overflow-hidden'
               onClick={toggleMyDropdown}
             >
               <img
@@ -93,7 +93,7 @@ const Navigation = () => {
             </button>
             <button onClick={toggleNotiDropdown}>
               <NotiIcon
-                width={24}
+                width={20}
                 height={24}
               />
               {hasUnreadNotifications && (
