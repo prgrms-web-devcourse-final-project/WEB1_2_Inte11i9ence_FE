@@ -40,32 +40,36 @@ const Navigation = () => {
   return (
     <div>
       <div className='fixed bg-white top-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-xl h-16 text-black text-base flex justify-between items-center z-50 px-12'>
-        {/* 왼쪽 버튼들 */}
-        <div className='flex gap-5'>
-          <Link
-            to='/postlist'
-            className='font-bold'
-          >
-            게시판
-          </Link>
-          <Link
-            to='/schedule'
-            className='font-bold'
-          >
-            일정 공유
-          </Link>
-          <button className='font-bold'>
-            <Link to='/photo'>사진</Link>
-          </button>
-        </div>
-
         {/* 중앙 로고 */}
-        <div className='absolute left-1/2 transform -translate-x-1/2'>
-          <Link to='/'>
-            <button className='text-3xl font-title font-bold text-transparent bg-clip-text bg-gradient-to-tl from-[#68B8FF] via-[#1A2A6C] to-[#68B8FF]'>
-              skypedia
-            </button>
-          </Link>
+        <div className='flex justify-center align-center gap-5'>
+          <div className=''>
+            <Link to='/'>
+              <button className='text-3xl font-title font-bold text-transparent bg-clip-text bg-gradient-to-tl from-[#68B8FF] via-[#1A2A6C] to-[#68B8FF]'>
+                skypedia
+              </button>
+            </Link>
+          </div>
+          {/* 왼쪽 버튼들 */}
+          <div className='flex gap-5 items-center text-[15px]'>
+            <Link
+              to='/postlist'
+              className='font-bold'
+            >
+              게시판
+            </Link>
+            <Link
+              to='/schedule'
+              className='font-bold'
+            >
+              일정 공유
+            </Link>
+            <Link
+              to='/photo'
+              className='font-bold'
+            >
+              사진
+            </Link>
+          </div>
         </div>
 
         {/* 로그인 여부에 따른 오른쪽 버튼들 */}
@@ -119,7 +123,7 @@ const Navigation = () => {
         ) : (
           <button
             onClick={openModal}
-            className='font-bold'
+            className='font-bold text-[15px]'
           >
             로그인
           </button>
