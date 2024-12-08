@@ -26,16 +26,16 @@ const SearchResultPage = () => {
             
             try {
                 const response = await axios.get(
-                    `https://83c7c11d-0a32-4b7b-9db8-6f828abf0474.mock.pstmn.io/api/v1/posts`
-                    // 실제 엔드포인트 : ABCD를 제목으로 갖는 게시글 목록 조회
-                    // `/api/v1/posts/search?keyword=ABCD&target=title`
+                    'api/v1/posts'
+                    // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
+                    // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/posts`
                 );
 
-                if (!response.data || !response.data.posts) {
+                if (!response.data || !response.data) {
                     throw new Error('검색 결과를 불러오는데 실패했습니다.');
                 }
 
-                setAllPosts(response.data.posts);
+                setAllPosts(response.data);
             } catch (error) {
                 console.error('검색 결과 조회 실패:', error);
                 setError('검색 결과를 불러오는데 실패했습니다.');

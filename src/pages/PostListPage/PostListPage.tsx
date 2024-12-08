@@ -27,9 +27,13 @@ const PostListPage = () => {
 
     const getFilteredPosts = async () => {
         try {
-            const response = await axios.get(`https://83c7c11d-0a32-4b7b-9db8-6f828abf0474.mock.pstmn.io/api/v1/posts`)
-            if(mounted && response.data.posts){
-              setResultPosts(response.data.posts)
+            const response = await axios.get(
+              'api/v1/posts'
+              // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
+              // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/posts`
+            )
+            if(mounted && response.data){
+              setResultPosts(response.data)
             }
         }catch (error) {
             if (mounted) {
