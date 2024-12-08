@@ -56,6 +56,12 @@ export interface SinglePostData {
   comments: Comment[]
 }
 
+// 카테고리 (지역) 타입 정의
+export interface CategoryData {
+  name: string,
+  description: string
+}
+
 // 전체 게시글 조회 응답 타입 정의
 // export interface AllPostsResponse {
 //   content: BasePostData[]; // "전체 게시글 조회" 데이터
