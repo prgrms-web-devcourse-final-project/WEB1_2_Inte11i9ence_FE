@@ -42,7 +42,7 @@ const MypageGather = () => {
           onChange={(selected) => setSelectedView(selected)}
         />
       </div>
-      <div className='mt-4 w-full'>
+      <div className='mt-4 w-full px-[50px]'>
         {selectedView === 'posts' && (
           <div className='flex flex-col gap-4'>
             {myPost?.result?.map((post) => (

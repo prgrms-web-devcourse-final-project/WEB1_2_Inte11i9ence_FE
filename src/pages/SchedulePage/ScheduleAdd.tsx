@@ -4,6 +4,7 @@ import PlanAdd from './components/PlanAdd'
 import { createScheduleGroup } from '@/hooks/useCreateScheduleGroup'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import axios from 'axios'
+import PlusIcon from '@assets/svg/Plus.svg?react'
 
 const ScheduleAdd = () => {
   const [thumbnailImage, setThumbnailImage] = useState<File | null>(null)
@@ -11,8 +12,72 @@ const ScheduleAdd = () => {
   const [regionId, setRegionId] = useState<number | null>(null)
   const [title, setTitle] = useState('')
   const [searchParams] = useSearchParams()
+  const [selectedPlace, setSelectedPlace] = useState<string>('') // 선택된 장소 상태 추가
+  const [placeCoordinates, setPlaceCoordinates] =
+    useState<google.maps.LatLng | null>(null) // 장소 좌표 상태
+  const [showPlanAdd, setShowPlanAdd] = useState(false) // PlanAdd 컴포넌트 보이기 여부 상태 추가
+  const [selectedDate, setSelectedDate] = useState<string>('') // 선택된 날짜 상태
+  const [memo, setMemo] = useState<string>('') // 메모 상태
   const navigate = useNavigate()
   const groupId = searchParams.get('groupId') // URL에서 groupId를 가져옵니다.
+
+  const mapRef = useRef<HTMLDivElement | null>(null) // 지도 컨테이너 참조
+  const mapInstance = useRef<google.maps.Map | null>(null) // 지도 인스턴스 참조
+  const markerInstance = useRef<google.maps.Marker | null>(null) // 마커 인스턴스 참조
+  // 지도 및 마커 초기화
+  // Google Maps API 로드
+  useEffect(() => {
+    if (!window.google) {
+      const script = document.createElement('script')
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_API}&libraries=places`
+      script.async = true
+      script.defer = true
+      script.onload = () => {
+        // Google Maps API가 로드된 후에 지도 초기화
+        if (mapRef.current) {
+          mapInstance.current = new google.maps.Map(mapRef.current, {
+            center: { lat: 37.5665, lng: 126.978 }, // 기본 서울 위치
+            zoom: 10,
+          })
+
+          markerInstance.current = new google.maps.Marker({
+            map: mapInstance.current,
+            title: '선택된 장소',
+          })
+        }
+      }
+      document.body.appendChild(script)
+    } else {
+      // 이미 로드된 경우 바로 지도 초기화
+      if (mapRef.current) {
+        mapInstance.current = new google.maps.Map(mapRef.current, {
+          center: { lat: 37.5665, lng: 126.978 }, // 기본 서울 위치
+          zoom: 10,
+        })
+
+        markerInstance.current = new google.maps.Marker({
+          map: mapInstance.current,
+          title: '선택된 장소',
+        })
+      }
+    }
+  }, [])
+  // 선택된 장소에 대한 좌표 업데이트
+  const handlePlaceSelected = (
+    place: string,
+    coordinates: google.maps.LatLng,
+  ) => {
+    setSelectedPlace(place)
+    setPlaceCoordinates(coordinates)
+
+    if (mapInstance.current && markerInstance.current) {
+      mapInstance.current.panTo(coordinates) // 지도의 중심을 선택된 장소로 이동
+      markerInstance.current.setPosition(coordinates) // 마커 위치 업데이트
+
+      // 지도 줌을 20으로 설정
+      mapInstance.current.setZoom(15)
+    }
+  }
 
   useEffect(() => {
     if (groupId) {
@@ -96,10 +161,18 @@ const ScheduleAdd = () => {
     setTitle(event.target.value)
   }
 
+  const handleAddClick = () => {
+    setShowPlanAdd(true) // 세부 일정 추가 버튼 클릭 시 PlanAdd 보이기
+  }
+
+  const handleCompletion = () => {
+    setShowPlanAdd(false) // 완료 버튼 클릭 시 PlanAdd 숨기기
+  }
+
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='flex flex-col gap-4 mt-10 px-20'>
       <div className='flex h-[70vh]'>
-        <div className='flex flex-col flex-[4] relative gap-4 overflow-y-auto overflow-x-hidden max-w-full'>
+        <div className='flex flex-col flex-[4] relative gap-4 overflow-y-auto overflow-x-hidden max-w-full custom-scroll'>
           <div>
             <div className='flex flex-col w-full mx-4 gap-4 items-start'>
               <div className='h-[40px] relative z-1000'>
@@ -111,38 +184,40 @@ const ScheduleAdd = () => {
                 onChange={handleTitleChange} // 제목 변경 핸들러 연결
                 className='font-bold text-2xl border-b w-[92%] py-3 focus:outline-none'
               />
-              <div className='flex justify-center w-[90%] h-[30vh]'>
-                <div className='flex align-center justify-center bg-lightGray w-[80%] rounded-lg'>
-                  {/* 썸네일 추가 버튼 */}
-                  <button onClick={handleButtonClick}>썸네일 사진 추가</button>
-                  <input
-                    ref={fileInputRef} // ref로 input 연결
-                    type='file'
-                    accept='image/*'
-                    className='hidden'
-                    onChange={handleImageChange}
-                  />
-                  {previewImage && (
-                    <div
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        backgroundImage: `url(${previewImage})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        borderRadius: '10px',
-                        border: '2px solid #ccc',
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
             </div>
+            <button
+              onClick={handleButtonClick}
+              className='flex w-[91%] p-2 bg-lightGray rounded-lg mx-6 justify-center mt-4'
+            >
+              <p className=' text-sm'>이미지 업로드</p>
+            </button>
           </div>
-          <PlanAdd />
+          {!showPlanAdd && (
+            <button
+              onClick={handleAddClick}
+              className='flex px-2 mx-2 justify-between'
+            >
+              <p className='font-bold text-lg'>세부 일정 추가</p>
+              <PlusIcon
+                width={24}
+                height={30}
+              />
+            </button>
+          )}
+          {showPlanAdd && (
+            <>
+              <PlanAdd onPlaceSelected={handlePlaceSelected} />
+              <button onClick={handleCompletion}>완료</button>
+            </>
+          )}
         </div>
-        <div className='flex flex-[5] bg-darkGray'>오른쪽 지도</div>
+        <div
+          className='flex flex-[3] bg-darkGray'
+          ref={mapRef}
+          style={{ height: '100%' }}
+        />
       </div>
+
       <div className='flex gap-4 justify-center'>
         <button
           onClick={() => navigate(-1)}

@@ -9,7 +9,32 @@ import formatTime from '@/utils/formatTime'
 import { Eye } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { region } from './components/mockData'
-
+import CommentSection from '../postDetail/CommentSection'
+const comments = [
+  {
+    author: {
+      username: 'suji',
+    },
+    time: '1시간 전',
+    content: '인천에 생각보다 놀거리가 많네요~~',
+  },
+  {
+    author: {
+      username: 'miririg',
+      profileUrl: '',
+    },
+    time: '2시간 전',
+    content:
+      'ㅎㅎ 해돋이를 못 보셨다니 아쉽네요 해돋이 공원 저도 가봤는데 넘 예쁘더라고요 ㅎ.ㅎ',
+  },
+  {
+    author: {
+      username: 'chae',
+    },
+    time: '3시간 전',
+    content: '세 번째 댓글입니다.',
+  },
+]
 const ScheduleDetail = () => {
   const [groupDetail, setGroupDetail] = useState<Group>({} as Group)
   const [googleMapsLoaded, setGoogleMapsLoaded] = useState(false)
@@ -133,9 +158,9 @@ const ScheduleDetail = () => {
   }, [])
 
   return (
-    <div className='flex-col  flex mx-[58px] mt-10 gap-12'>
-      <div className='flex h-[70vh] '>
-        <div className='flex-[4] flex-col overflow-y-auto overflow-x-hidden '>
+    <div className='flex-col  flex mx-[58px] mt-10 gap-4'>
+      <div className='flex h-[70vh] border-b pb-12'>
+        <div className='flex-[4] flex-col overflow-y-auto overflow-x-hidden custom-scroll '>
           <div className='font-bold text-2xl border-b pb-6'>
             {groupDetail.title}
           </div>
@@ -168,7 +193,7 @@ const ScheduleDetail = () => {
               <span
                 className={`border-2 rounded-[0.7rem]  px-1 pb-0.5 my-0.5 border-darkBlue text-darkBlue font-bold text-[14px]`}
               >
-                서울
+                인천
               </span>
               <div className='flex justify-center items-center align-center gap-2 text-darkGray text-xs mx-2'>
                 <div className='flex  justify-center align-center gap-1'>
@@ -206,6 +231,7 @@ const ScheduleDetail = () => {
           </div>
           <span className='text-darkGray'>{groupDetail.replies}</span>
         </div>
+        <CommentSection comments={comments} />
       </div>
     </div>
   )

@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 import Send from '@/assets/png/Send.png'
 import Comment from './Comment'
-import { Comment as PostComment } from '@/typings/post';
+import { Comment as PostComment } from '@/typings/post'
 
 interface CommentSectionProps {
-  comments: PostComment[];
+  comments: PostComment[]
 }
 
-
 const CommentSection: React.FC<CommentSectionProps> = ({ comments }) => {
-  const [commentList, setCommentList] = useState<PostComment[]>(comments);
+  const [commentList, setCommentList] = useState<PostComment[]>(comments)
   //   [
   //   {
   //     author: '작성자1',
@@ -37,11 +36,14 @@ const CommentSection: React.FC<CommentSectionProps> = ({ comments }) => {
   // ]
 
   return (
-    <div className='mt-10 w-9/12 mx-auto'>
+    <div className='mt-10 w-full mx-auto'>
       {/* 댓글 입력 */}
       <h2 className='text-xl font-bold mb-4 text-left'>댓글 달기</h2>
       <div className='relative'>
-        <textarea placeholder='댓글을 입력하세요...' className='w-full h-28 p-3 pr-12 border border-gray-300 rounded-2xl mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500'></textarea>
+        <textarea
+          placeholder='댓글을 입력하세요...'
+          className='w-full h-28 p-3 pr-12 border border-gray-300 rounded-2xl mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500'
+        ></textarea>
         <button className='absolute bottom-7 right-3 bg-transparent border-none'>
           <img
             src={Send}
@@ -54,11 +56,11 @@ const CommentSection: React.FC<CommentSectionProps> = ({ comments }) => {
       <div className='mt-6 mb-40'>
         {commentList.map((comment, index) => (
           <Comment
-          key={index}
-          author={comment.author}
-          username={comment.author?.username}
-          time={comment.time}
-          content={comment.content}
+            key={index}
+            author={comment.author}
+            username={comment.author?.username}
+            time={comment.time}
+            content={comment.content}
           />
         ))}
       </div>
