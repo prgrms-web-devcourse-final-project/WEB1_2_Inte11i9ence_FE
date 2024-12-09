@@ -1,3 +1,4 @@
+// PlanAdd.tsx
 import React, { useState, useRef, useEffect } from 'react'
 
 interface PlanAddProps {
@@ -64,6 +65,10 @@ const PlanAdd: React.FC<PlanAddProps> = ({ onPlaceSelected }) => {
     <div>
       <div className='flex mx-4 justify-between'>
         <p className='font-bold text-lg'>세부 일정 추가</p>
+
+        <div className='flex justify-center gap-3 text-darkGray pb-4 text-sm'>
+          <button onClick={handleComplete}>장소 보기</button>
+        </div>
       </div>
 
       <div className='flex flex-col p-4'>
@@ -79,15 +84,7 @@ const PlanAdd: React.FC<PlanAddProps> = ({ onPlaceSelected }) => {
         </div>
 
         <div className='flex flex-col items-start gap-4'>
-          <p className='font-bold'>추가된 장소</p>
-          <div className='flex w-full border h-[5vh] p-2 text-gray-400 text-sm'>
-            {place ? place : '검색을 통해 장소를 추가해보세요'}{' '}
-            {/* 선택된 장소 출력 */}
-          </div>
-        </div>
-
-        <div className='flex flex-col items-start gap-4'>
-          <p className='font-bold'>어느 날짜에 방문했나요?</p>
+          <p className='font-bold pt-3'>어느 날짜에 방문했나요?</p>
           <input
             placeholder='ex) 0000-00-00'
             value={date}
@@ -97,17 +94,14 @@ const PlanAdd: React.FC<PlanAddProps> = ({ onPlaceSelected }) => {
         </div>
 
         <div className='flex flex-col items-start gap-4'>
-          <p className='font-bold'>이 장소에 대해 메모를 남길 수 있어요!</p>
-          <input
+          <p className='font-bold pt-3'>
+            이 장소에 대해 메모를 남길 수 있어요!
+          </p>
+          <textarea
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
-            className='w-full border h-[15vh]'
+            className='w-full border h-[15vh] py-4 px-2 text-darkGray text-sm'
           />
-        </div>
-
-        <div className='flex justify-center gap-3 text-darkGray pb-4 text-sm'>
-          <button>취소</button>
-          <button onClick={handleComplete}>완료</button>
         </div>
       </div>
     </div>
