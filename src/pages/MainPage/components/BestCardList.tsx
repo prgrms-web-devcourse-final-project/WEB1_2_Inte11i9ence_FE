@@ -55,7 +55,7 @@ const BestCardList = () => {
   const bestPosts = postData.sort((a, b) => b.likes - a.likes).slice(0, 3)
   
   return (
-    <div className='flex flex-col w-full px-16'>
+    <div className='flex flex-col w-full px-10'>
       <header className='flex justify-between items-center mb-4 px-10 w-full'>
         <h2 className='text-2xl font-bold'>금주의 인기 포스트</h2>
         <Link

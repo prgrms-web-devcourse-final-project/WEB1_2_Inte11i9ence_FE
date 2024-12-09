@@ -13,11 +13,11 @@ const BestCardItem = ({ post }: PostItemProps) => {
       <Link
         to={`/post/${post.id}`}
         style={{ backgroundImage: `url(${post.photoUrl})` }}
-        className='font-bold h-[12rem] w-[55rem] rounded-xl flex items-center justify-end bg-cover bg-center relative'
+        className='font-bold h-[13rem] w-[58rem] rounded-xl flex items-center justify-end bg-cover bg-center relative'
       >
         <div className='absolute top-0 left-0 w-full h-full bg-[#000000] bg-opacity-50 rounded-xl'></div>
 
-        <div className='flex flex-col justify-between bg-white opacity-80 rounded-xl w-[30rem] h-[10rem] px-4 py-3 mr-5 z-10 justify-center align-center'>
+        <div className='flex flex-col justify-between bg-white opacity-80 rounded-xl w-[30rem] h-[10rem] px-4 py-3 mr-6 z-10 justify-center align-center'>
           <span className='text-xl font-bold '>{post.title}</span>
           <span className='text-sm text-darkGray overflow-hidden line-clamp-3'>
             {post.content}
