@@ -127,7 +127,7 @@ const ScheduleDetail = () => {
   }, [])
 
   return (
-    <div className='flex-col flex gap-12'>
+    <div className='flex-col  flex mx-[58px] mt-10 gap-12'>
       <div className='flex h-[70vh] '>
         <div className='flex-[4] flex-col overflow-y-auto overflow-x-hidden '>
           <div className='font-bold text-2xl'>{groupDetail.title}</div>
@@ -140,7 +140,7 @@ const ScheduleDetail = () => {
                   className='w-full h-full object-cover'
                 />
               </div>
-              <div className='flex flex-col justify-start items-start'>
+              <div className='flex flex-col justify-start items-start '>
                 <p className='text-sm font-bold text-black'>
                   {groupDetail?.author?.username}
                 </p>
@@ -177,7 +177,7 @@ const ScheduleDetail = () => {
         </div>
         <div
           ref={mapRef}
-          className='flex flex-[5] bg-darkGray'
+          className='flex flex-[3] bg-darkGray'
           style={{ height: '100%', width: '100%' }}
         />
       </div>
