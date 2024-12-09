@@ -112,7 +112,7 @@ const App = () => {
           ></Route>
           {/* {포스트상세페이지} */}
           <Route
-            path='/postpage'
+            path='/post/:id'
             element={<PostPage />}
           ></Route>
           {/* 작서페이지 */}

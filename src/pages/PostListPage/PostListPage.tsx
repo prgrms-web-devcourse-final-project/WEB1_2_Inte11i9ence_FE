@@ -129,7 +129,6 @@ useEffect(() => {
     { value: '충청북도', label: '충청북도' },
   ]
 
-
   // 동적으로 정렬 옵션 설정
   const sortingOptions = useMemo(() => {
     const options = [
@@ -187,7 +186,7 @@ useEffect(() => {
       </div>
 
       {/* 카테고리 선택 드롭다운 */}
-      <div className='flex justify-between  '>
+      <div className='flex justify-between mt-10'>
         <div className='flex '>
           <div className='h-[40px] relative z-1000 mr-4 mx-24'>
             <DropdownSelector
