@@ -24,6 +24,7 @@ import JejuImg from '@/assets/jpg/제주도.jpg';
 import ChungbukImg from '@/assets/jpg/충청북도.jpg';
 import ChungnamImg from '@/assets/jpg/충청남도.jpg';
 import axios from 'axios';
+import { categoryData } from '@/temporaryData/categoryData';
 
 const SelectedRegionPostList = () => {
     const { id } = useParams();
@@ -50,50 +51,67 @@ const SelectedRegionPostList = () => {
     }, [id]);
 
         // 포스트, 지역 정보 가져오기 
-        const getAllDataInfo = async (category: string) => {
-            try {
-                // 병렬로 API 호출
-                const [postsResponse, regionResponse] = await Promise.all([
-                    axios.get(
-                        'api/v1/posts'
-                        // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
-                        // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/posts`
-                    ),
-                    axios.get(
-                        'api/v1/category'
-                        // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
-                        // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/category`
-                    )
-                ]);
+        // const getAllDataInfo = async (category: string) => {
+        //     try {
+        //         // 병렬로 API 호출
+        //         const [postsResponse, regionResponse] = await Promise.all([
+        //             axios.get(
+        //                 'api/v1/posts'
+        //                 // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
+        //                 // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/posts`
+        //             ),
+        //             axios.get(
+        //                 'api/v1/category'
+        //                 // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
+        //                 // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/category`
+        //             )
+        //         ]);
         
-                // 지역 정보 설정
-                if (regionResponse.data) {
-                    setRegionInfo(regionResponse.data);
-                    if (category !== '지역 전체') {
-                        const currentRegion = regionResponse.data.find(
-                            (region: { name: string }) => region.name === category
-                        );
-                        setSelectedRegionInfo(currentRegion ? currentRegion.description : '');
-                    }
-                }
+        //         // 지역 정보 설정
+        //         if (regionResponse.data) {
+        //             setRegionInfo(regionResponse.data);
+        //             if (category !== '지역 전체') {
+        //                 const currentRegion = regionResponse.data.find(
+        //                     (region: { name: string }) => region.name === category
+        //                 );
+        //                 setSelectedRegionInfo(currentRegion ? currentRegion.description : '');
+        //             }
+        //         }
         
-                // 포스트 데이터 필터링 및 설정
-                if (postsResponse.data) {
-                    const filteredPosts = postsResponse.data.filter(
-                        (post: { category: string }) => 
-                            post.category === category
-                    );
-                    setDetailPosts(filteredPosts);
-                }
-            } catch (error) {
-                console.error('데이터 로딩 실패:', error);
-                setError('데이터를 불러오는데 실패했습니다.');
-            }
-        };
+        //         // 포스트 데이터 필터링 및 설정
+        //         if (postsResponse.data) {
+        //             const filteredPosts = postsResponse.data.filter(
+        //                 (post: { category: string }) => 
+        //                     post.category === category
+        //             );
+        //             setDetailPosts(filteredPosts);
+        //         }
+        //     } catch (error) {
+        //         console.error('데이터 로딩 실패:', error);
+        //         setError('데이터를 불러오는데 실패했습니다.');
+        //     }
+        // };
 
-        useEffect(() => {
-            getAllDataInfo(secondCategory);
-        }, [secondCategory]);
+        // useEffect(() => {
+        //     getAllDataInfo(secondCategory);
+        // }, [secondCategory]);
+
+    // 클라이언트 데이터로 대체
+    const getAllDataInfo = async (category: string) => {
+        const currentRegion = categoryData.find(
+            (region) => region.name === category
+        );
+        setSelectedRegionInfo(currentRegion ? currentRegion.description : '');
+
+        const filteredPosts = postData.filter(
+            (post) => post.category === category
+        );
+        setDetailPosts(filteredPosts);
+    }
+
+    useEffect(() => {
+        getAllDataInfo(secondCategory);
+    }, [secondCategory]);
 
     // 1번 드롭다운 change 이벤트 핸들러
     const handleCategory = async (selected: string) => {
@@ -101,7 +119,9 @@ const SelectedRegionPostList = () => {
         // 1번 드롭다운 '지역' 이외 선택 시 2번 드롭다운 미표시 및 라우터 이동
         if (selected !== '지역') {
             setIsSeconedCategoryOpen(false);
-            navigate('/postlist');
+            navigate('/postlist', {
+                state: { selectedCategory: selected } // 선택한 카테고리 정보를 state로 전달
+        });
         } else {
             setIsSeconedCategoryOpen(true);
         }
@@ -146,6 +166,10 @@ const SelectedRegionPostList = () => {
     ]
 
     const regionOptions = [
+        // categoryData.map((region) => ({
+        //     value: region.name,
+        //     label: region.name
+        // }))
         { value: '지역 전체', label: '지역 전체' },
         { value: '강원도', label: '강원도' },
         { value: '경기도', label: '경기도' },

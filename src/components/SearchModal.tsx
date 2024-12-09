@@ -4,6 +4,7 @@ import SearchIcon from '@/assets/svg/search.svg?react'
 import { useNavigate } from 'react-router-dom'
 import SearchArrow from '@assets/svg/searcharrow.svg?react'
 import axios from 'axios'
+import { categoryData } from '@/temporaryData/categoryData'
 
 interface SearchModalProps {
   initialSearchTerm?: string
@@ -22,20 +23,23 @@ const SearchModal = ({ initialSearchTerm = '' }: SearchModalProps) => {
 
   // 컴포넌트 마운트 시 카테고리 가져오기
   useEffect(() => {
-    const getCategory = async () => {
-      try {
-        const response = await axios.get(
-          'https://www.skypedia.shop/api/v1/posts'
-          // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
-          // 'https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/category'
-        )
-        const filteredCategory = response.data.map((item: any) => item.name)
-        setCategory(filteredCategory)
-      } catch (error) {
-        console.error('에러 발생',error)
-      }
-    }
-    getCategory()
+    // const getCategory = async () => {
+    //   try {
+    //     const response = await axios.get(
+    //       'https://www.skypedia.shop/api/v1/posts'
+    //       // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
+    //       // 'https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/category'
+    //     )
+    //     const filteredCategory = response.data.map((item: any) => item.name)
+    //     setCategory(filteredCategory)
+    //   } catch (error) {
+    //     console.error('에러 발생',error)
+    //   }
+      
+    // }
+    // getCategory()
+    const filteredCategory = categoryData.map((item) => item.name)
+    setCategory(filteredCategory)
   }, [isModalOpen])
 
   // 컴포넌트 마운트 시 랜덤 카테고리 생성
