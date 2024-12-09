@@ -188,7 +188,7 @@ useEffect(() => {
       {/* 카테고리 선택 드롭다운 */}
       <div className='flex justify-between mt-10'>
         <div className='flex '>
-          <div className='h-[40px] relative z-1000 mr-4 mx-24'>
+          <div className='h-[40px] relative z-1000 mr-4 mx-[4.5rem]'>
             <DropdownSelector
               options={options}
               defaultValue={selectedCategory}
@@ -206,7 +206,7 @@ useEffect(() => {
             </div>
           )}
         </div>
-        <div className='h-[40px] relative z-1000 mx-24'>
+        <div className='h-[40px] relative z-1000 mx-[4.7rem]'>
           <DropdownSelector
             options={sortingOptions}
             defaultValue='latest'
