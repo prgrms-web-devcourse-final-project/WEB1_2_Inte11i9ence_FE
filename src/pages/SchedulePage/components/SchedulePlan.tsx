@@ -17,7 +17,7 @@ const SchedulePlan = ({ details }: { details: Plan[] }) => {
   let globalOrderNumber = 0
 
   return (
-    <div className='p-4'>
+    <div className='p-4 '>
       {uniqueDates.map((date) => (
         <div key={date}>
           <div className='flex rounded-lg my-2 bg-[#ecf4f9] w-fit'>

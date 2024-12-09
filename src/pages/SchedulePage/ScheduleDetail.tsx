@@ -61,11 +61,17 @@ const ScheduleDetail = () => {
             totalLng += position.lng()
             validLocations++
 
-            new google.maps.Marker({
+            const marker = new google.maps.Marker({
               position,
               map,
               title: location,
               label: `${index + 1}`,
+            })
+
+            // 마커 클릭 시 이벤트 리스너 추가
+            marker.addListener('click', () => {
+              map.setCenter(position) // 클릭한 마커로 지도 중심 이동
+              map.setZoom(15) // 줌 레벨 변경
             })
           } else {
             console.error(`Geocoding failed for ${location}: ${status}`)
@@ -127,10 +133,12 @@ const ScheduleDetail = () => {
   }, [])
 
   return (
-    <div className='flex-col flex gap-12'>
+    <div className='flex-col  flex mx-[58px] mt-10 gap-12'>
       <div className='flex h-[70vh] '>
         <div className='flex-[4] flex-col overflow-y-auto overflow-x-hidden '>
-          <div className='font-bold text-2xl'>{groupDetail.title}</div>
+          <div className='font-bold text-2xl border-b pb-6'>
+            {groupDetail.title}
+          </div>
           <div className='flex justify-between px-4 py-3 items-center align-center'>
             <div className='flex items-center gap-2 '>
               <div className='w-8 h-8 rounded-full overflow-hidden'>
@@ -140,7 +148,7 @@ const ScheduleDetail = () => {
                   className='w-full h-full object-cover'
                 />
               </div>
-              <div className='flex flex-col justify-start items-start'>
+              <div className='flex flex-col justify-start items-start '>
                 <p className='text-sm font-bold text-black'>
                   {groupDetail?.author?.username}
                 </p>
@@ -171,13 +179,13 @@ const ScheduleDetail = () => {
             </div>
           </div>
 
-          <div className='flex flex-col relative gap-4 overflow-y-auto overflow-x-hidden max-w-full'>
+          <div className='flex flex-col relative gap-4 overflow-y-auto overflow-x-hidden max-w-full '>
             <SchedulePlan details={groupDetail.details} />
           </div>
         </div>
         <div
           ref={mapRef}
-          className='flex flex-[5] bg-darkGray'
+          className='flex flex-[3] bg-darkGray'
           style={{ height: '100%', width: '100%' }}
         />
       </div>

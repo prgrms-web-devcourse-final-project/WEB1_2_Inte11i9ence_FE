@@ -81,11 +81,11 @@ const SchedulePage = () => {
           <Link
             to={'detail'}
             key={group.groupId}
-            className='flex flex-col justify-between p-4 w-[45%] sm:w-[25%] lg:w-[20%] mx-2 bg-white shadow-lg rounded-lg border border-lightGray transition-transform hover:scale-105 hover:shadow-xl gap-8 aspect-[4/5]'
+            className='flex flex-col justify-between p-4 w-[45%] sm:w-[25%] lg:w-[20%] mx-2 bg-white shadow-lg rounded-lg border border-lightGray transition-transform hover:scale-105 hover:shadow-xl gap-5 aspect-[4/5]'
           >
             <div className='flex flex-col gap-4'>
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center gap-2'>
+              <div className='flex items-center justify-between '>
+                <div className='flex items-center gap-2 '>
                   <div className='w-6 h-6 rounded-full overflow-hidden'>
                     <img
                       src={group.author.profileUrl || defaultProfileImage}
@@ -102,7 +102,7 @@ const SchedulePage = () => {
                     ?.name || '지역 정보 없음'}
                 </button>
               </div>
-              <div className='h-[20vh]'>
+              <div className='h-[16vh]'>
                 <img
                   src={group.groupImgUrl || noPhoto}
                   alt='Group'

@@ -86,7 +86,10 @@ const Navigation = () => {
               onClick={toggleMyDropdown}
             >
               <img
-                src={profile.profileUrl || defaultProfileImage}
+                src={
+                  profile.profileUrl ||
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoV1w-qvi0_hmEVu_uemLxtPglSevwCJLa-A&s'
+                }
                 alt='Profile'
                 className='w-full h-full object-cover'
               />
@@ -110,7 +113,10 @@ const Navigation = () => {
               <MyDropdown
                 onClose={() => setMyDropdownOpen(false)}
                 username={profile.username}
-                userProfileImage={profile.profileUrl}
+                userProfileImage={
+                  profile.profileUrl ||
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoV1w-qvi0_hmEVu_uemLxtPglSevwCJLa-A&s'
+                }
               />
             )}
             {isNotiDropdownOpen && (
