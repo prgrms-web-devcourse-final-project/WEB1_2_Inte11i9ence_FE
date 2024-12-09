@@ -255,7 +255,7 @@ const SelectedRegionPostList = () => {
         <div>
             
             <div
-    className='relative h-[27rem] w-full bg-cover bg-center'
+    className='relative h-[23rem] w-full bg-cover bg-center'
     style={{ backgroundImage: regionInfoImg() }}
 >
     {/* 배경 오버레이 */}
