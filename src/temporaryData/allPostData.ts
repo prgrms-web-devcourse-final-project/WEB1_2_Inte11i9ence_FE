@@ -9,6 +9,27 @@ import photo5 from "../assets/jpg/photoUrl_5.jpg"
 import photo6 from "../assets/jpg/photoUrl_6.jpg"
 import photo7 from "../assets/jpg/photoUrl_7.jpg"
 import photo8 from "../assets/jpg/photoUrl_8.jpg"
+import defaultProfileImage from '@/assets/png/default-profile-2.png';
+
+export const commentData = [
+    {author: {
+        username: "Jane Doe",
+        profileUrl: defaultProfileImage,
+      },
+      time: "1시간 전",
+      content: "사진이 정말 예뻐서 방문하고 싶어지네요! 다음 여행에 참고해 볼게요 😊",
+    },
+    {
+      author: {
+        username: "거북이",
+        profileUrl: defaultProfileImage,
+      },
+      time: "2시간 전",
+      content: "행복한 여행을 즐기신 것 같아 기분이 좋네요!",
+    },
+    
+   ]
+
 export const postData: AllPostData[] = [
 
        // "전체 게시글 조회" 데이터
@@ -26,6 +47,7 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2024-12-01",
         replies: 2,
+        comments: commentData
     },
     {
         id: 2,
@@ -41,6 +63,7 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2024-11-27",
         replies: 2,
+        comments: commentData
     },
     {
         id: 3,
@@ -56,6 +79,7 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2021-09-01",
         replies: 2,
+        comments: commentData
     },
     {
         id: 4,
@@ -72,11 +96,12 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2023-09-01",
         replies: 2,
+        comments: commentData
     },
     {
         id: 5,
         title: "국내에서 여행 갈만한 곳 추천해주세요!",
-        content: "유명한 국내 여행지는 대부분 한번씩 가 봤는데, 숨겨진 명소가 있는 여행지가 있을까요?? 전 아름다운 자연이 있는 지역을 좋아해요! 그런 여행지를 아시는 분이 있다면 추천 부탁드려요! 😊",
+        content: "유명한 국내 여행지는 대부분 한번씩 가 봤는데, 숨겨진 명소가 있는 여행지가 있을까요 전 아름다운 자연이 있는 지역을 좋아해요! 그런 여행지를 아시는 분이 있다면 추천 부탁드려요! 😊",
         photoUrl: photo1,
         likes: 43,
         category: "자유",
@@ -86,7 +111,9 @@ export const postData: AllPostData[] = [
         },
         views: 45,
         postedAt: "2022-04-01",
-        replies: 2
+        replies: 2,
+
+        comments: commentData   
     },
     {
         id: 6,
@@ -102,6 +129,7 @@ export const postData: AllPostData[] = [
         views: 68,
         postedAt: "2024-09-01",
         replies: 2,
+        comments: commentData
     },
     {
         id: 7,
@@ -117,6 +145,7 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2021-09-01",
         replies: 2,
+        comments: commentData
     },
     {
         id: 8,
@@ -132,6 +161,7 @@ export const postData: AllPostData[] = [
         views: 97,
         postedAt: "2023-04-05",
         replies: 2,
+        comments: commentData
     },
     {
         id: 9,
@@ -147,6 +177,7 @@ export const postData: AllPostData[] = [
         views: 36,
         postedAt: "2021-07-15",    
         replies: 2,
+        comments: commentData
     },
     {
         id: 10,
@@ -162,6 +193,7 @@ export const postData: AllPostData[] = [
         views: 48,
         postedAt: "2021-07-15",   
         replies: 2,
+        comments: commentData
     },
     {
         id: 11,
@@ -177,6 +209,7 @@ export const postData: AllPostData[] = [
         views: 75,
         postedAt: "2021-07-15",
         replies: 2,
+        comments: commentData
     },
     {
         id: 12,
@@ -193,6 +226,7 @@ export const postData: AllPostData[] = [
         views: 99,
         postedAt: "2024-11-01",
         replies: 2,
+        comments: commentData
     },
     {
         id: 13,
@@ -208,6 +242,7 @@ export const postData: AllPostData[] = [
         views: 42,
         postedAt: "2021-09-01",
         replies: 2,
+        comments: commentData
     },
     {
         id: 14,
@@ -223,6 +258,7 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2021-09-04",
         replies: 2,
+        comments: commentData
     },
     {
         id: 15,
@@ -238,6 +274,7 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2021-09-05",
         replies: 2,
+        comments: commentData
     },
     {
         id: 16,
@@ -253,6 +290,7 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2024-04-23",
         replies: 2,
+        comments: commentData
     },
     {
         id: 17,
@@ -268,11 +306,12 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2024-09-14",
         replies: 2,
+        comments: commentData
     },
     {
         id: 18,
         title: "경기도 북부 쪽 갈 것 같은데 추천 좀 해주세요!",
-        content: "경기도 북부 쪽 갈 것 같은데 갈 만한 곳 있을까요? 근처에 갈 만한 곳이나 볼거리 있으면 추천 좀 해주세요! 맛집도 부탁드려요 ㅎㅎ 감사합니다.",
+        content: "경기도 북부 쪽 갈 것 같은데 갈 만한 곳 있을까요 근처에 갈 만한 곳이나 볼거리 있으면 추천 좀 해주세요! 맛집도 부탁드려요 ㅎㅎ 감사합니다.",
         photoUrl: photo2,
         likes: 45,
         category: "경기도",
@@ -283,6 +322,7 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2021-09-01",
         replies: 2,
+        comments: commentData
     },
     {
         id: 19,
@@ -297,8 +337,9 @@ export const postData: AllPostData[] = [
         },
         views: 92,
         postedAt: "2024-02-27",
-        replies: 5
-    },
+        replies: 5,
+
+comments: commentData    },
     {
         id: 20,
         title: "강릉 여행 🌊",
@@ -313,6 +354,7 @@ export const postData: AllPostData[] = [
         views: 78,
         postedAt: "2024-01-24",
         replies: 2,
+        comments: commentData
     },
     {
         id: 21,
@@ -328,11 +370,12 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2024-08-04",
         replies: 2,
+        comments: commentData
     },
     {
         id: 22,
         title: "서울 여행 하고 왔어요!",
-        content: "서울 여행 즐기고 왔습니다! 역시 서울은 한국의 심장부네요. 저는 시간을 거슬러 올라간 듯한 기분으로 웅장한 경복궁을 거닐다가 진지한 쇼핑과 내 인생 최고의 떡볶이를 먹기 위해 명동으로 달려갔습니다. 너무 맛있었어요 ㅎㅎ 밤에 N서울타워에 올라갔는데 와~ 도시의 불빛이 환상적이었어요. 밤에는 홍대? 에너지와 음악이 너무 많아요! 서울은 옛것과 새것이 완벽하게 혼합되어 있습니다. 다음에 또 방문하고 싶어요!",
+        content: "서울 여행 즐기고 왔습니다! 역시 서울은 한국의 심장부네요. 저는 시간을 거슬러 올라간 듯한 기분으로 웅장한 경복궁을 거닐다가 진지한 쇼핑과 내 인생 최고의 떡볶이를 먹기 위해 명동으로 달려갔습니다. 너무 맛있었어요 ㅎㅎ 밤에 N서울타워에 올라갔는데 와~ 도시의 불빛이 환상적이었어요. 밤에는 홍대 에너지와 음악이 너무 많아요! 서울은 옛것과 새것이 완벽하게 혼합되어 있습니다. 다음에 또 방문하고 싶어요!",
         photoUrl: photo7,
         likes: 26,
         category: "서울",
@@ -343,6 +386,7 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2024-09-22",
         replies: 2,
+        comments: commentData
     },
     {
         id: 23,
@@ -358,11 +402,12 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2024-10-01",
         replies: 2,
+        comments: commentData
     },
     {
         id: 24,
         title: "충청북도 여행 다녀왔는데, 너무 좋았어요!",
-        content: "충청북도에 이렇게 볼거리가 많은 줄 누가 알았겠어요? 충주호수에서 배를 탔는데, 경치가 정말 환상적이었어요. 단양은 훨씬 더 좋았습니다. 탐험할 수 있는 멋진 동굴이 너무 많고, 강 절벽이 정말 아름답습니다. 현지 식당에서 인삼삼계탕을 먹어봤는데 의외로 맛있었어요. 방문하기에 너무나 평화롭고 과소평가된 지역입니다.",
+        content: "충청북도에 이렇게 볼거리가 많은 줄 누가 알았겠어요 충주호수에서 배를 탔는데, 경치가 정말 환상적이었어요. 단양은 훨씬 더 좋았습니다. 탐험할 수 있는 멋진 동굴이 너무 많고, 강 절벽이 정말 아름답습니다. 현지 식당에서 인삼삼계탕을 먹어봤는데 의외로 맛있었어요. 방문하기에 너무나 평화롭고 과소평가된 지역입니다.",
         photoUrl: photo4,
         likes: 26,
         category: "리뷰",
@@ -374,11 +419,12 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2021-09-01",
         replies: 2,
+        comments: commentData
     },
     {
         id: 25,
-        title: "서울에 크리스마스 시즌에 가면 좋은 곳 있을까요?",
-        content: "크리스마스 쯤 서울에 방문하는데, 크리스마스 시즌에 가면 좋은 곳 있을까요? 크리스마스 분위기를 느낄 수 있는 곳이면 좋겠어요. 추천 부탁드립니다!",
+        title: "서울에 크리스마스 시즌에 가면 좋은 곳 있을까요",
+        content: "크리스마스 쯤 서울에 방문하는데, 크리스마스 시즌에 가면 좋은 곳 있을까요 크리스마스 분위기를 느낄 수 있는 곳이면 좋겠어요. 추천 부탁드립니다!",
         photoUrl: photo6,
         likes: 26,
         category: "자유",
@@ -389,6 +435,7 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2024-12-01",
         replies: 2,
+        comments: commentData
     },
     {
         id: 26,
@@ -403,8 +450,9 @@ export const postData: AllPostData[] = [
         },
         views: 102,
         postedAt: "2024-07-01",
-        replies: 4
-    },
+        replies: 4,
+
+comments: commentData    },
     {
         id: 27,
         title: "서울에서 느낀 한국의 매력",
@@ -418,12 +466,13 @@ export const postData: AllPostData[] = [
         },
         views: 100,
         postedAt: "2024-11-24",
-        replies: 4
-    },
+        replies: 4,
+
+comments: commentData    },
     {
         id: 28,
-        title: "부산에서 크리스마스 분위기 느낄 수 있는 곳?",
-        content: "다음 주에 부산에 가는데, 크리스마스 조명이 예쁘게 꾸며진 곳 있나요? 공원이나 카페, 혹은 거리 같은 곳 추천해주시면 감사하겠습니다. 근처에 맛집도 있으면 더 좋아요!",
+        title: "부산에서 크리스마스 분위기 느낄 수 있는 곳",
+        content: "다음 주에 부산에 가는데, 크리스마스 조명이 예쁘게 꾸며진 곳 있나요 공원이나 카페, 혹은 거리 같은 곳 추천해주시면 감사하겠습니다. 근처에 맛집도 있으면 더 좋아요!",
         photoUrl: photo6,
         likes: 29,
         category: "자유",
@@ -434,11 +483,12 @@ export const postData: AllPostData[] = [
         views: 110,
         postedAt: "2024-12-01",
         replies: 3,
+        comments: commentData
     },
     {
         id: 29,
-        title: "서울 근교로 당일치기 여행 어디가 좋을까요?",
-        content: "서울 근교로 당일치기 여행을 가고 싶은데, 제가 뚜벅이라 차가 없어도 대중교통으로 쉽게 갈 수 있는 곳 어디 있을까요? 너무 힘들지 않고 편안한 장소였으면 좋겠어요.",
+        title: "서울 근교로 당일치기 여행 어디가 좋을까요",
+        content: "서울 근교로 당일치기 여행을 가고 싶은데, 제가 뚜벅이라 차가 없어도 대중교통으로 쉽게 갈 수 있는 곳 어디 있을까요 너무 힘들지 않고 편안한 장소였으면 좋겠어요.",
         photoUrl: photo4,
         likes: 21,
         category: "자유",
@@ -449,6 +499,7 @@ export const postData: AllPostData[] = [
         views: 80,
         postedAt: "2024-12-03",
         replies: 4,
+        comments: commentData
     },
     {
         id: 30,
@@ -463,12 +514,13 @@ export const postData: AllPostData[] = [
         },
         views: 95,
         postedAt: "2024-01-29",
-        replies: 4
-    },
+        replies: 4,
+
+comments: commentData    },
     {
         id: 31,
-        title: "눈 오는 날 가기 좋은 등산 코스?",
-        content: "겨울철에 등산하기 좋은 곳 있나요? 눈 내리면 더 예쁘고, 경치가 좋은 곳이면 좋겠어요. 아직 등산 초보라, 너무 어렵지 않은 코스로 추천해주세요!",
+        title: "눈 오는 날 가기 좋은 등산 코스",
+        content: "겨울철에 등산하기 좋은 곳 있나요 눈 내리면 더 예쁘고, 경치가 좋은 곳이면 좋겠어요. 아직 등산 초보라, 너무 어렵지 않은 코스로 추천해주세요!",
         photoUrl: photo1,
         likes: 30,
         category: "자유",
@@ -479,11 +531,12 @@ export const postData: AllPostData[] = [
         views: 98,
         postedAt: "2024-12-01",
         replies: 5,
+        comments: commentData
     },
     {
         id: 32,
-        title: "크리스마스 느낌 물씬 나는 카페 추천",
-        content: "저는 아기자기하고 따뜻한 분위기의 카페를 너무 좋아하는데, 크리스마스에 잘 꾸며진 카페가 있을까요? 사진 많이 찍고 싶어요!",
+        title: "크리스마스 느낌 물씬 나는 카페 추천해주세요!",
+        content: "저는 아기자기하고 따뜻한 분위기의 카페를 너무 좋아하는데, 크리스마스에 잘 꾸며진 카페가 있을까요 사진 많이 찍고 싶어요!",
         photoUrl: photo6,
         likes: 40,
         category: "자유",
@@ -494,10 +547,11 @@ export const postData: AllPostData[] = [
         views: 85,
         postedAt: "2024-12-03",
         replies: 6,
+        comments: commentData
     },
     {
         id: 33,
-        title: "서울에서 커플 사진 찍기 좋은 장소?",
+        title: "서울에서 커플 사진 찍기 좋은 장소",
         content: "연인과 함께 서울에서 커플 사진 찍을 만한 좋은 장소를 찾고 있어요. 크리스마스 분위기 나는 곳이면 더 좋겠어요. 추천해주세요!",
         photoUrl: photo6,
         likes: 36,
@@ -509,11 +563,12 @@ export const postData: AllPostData[] = [
         views: 90,
         postedAt: "2024-10-02",
         replies: 8,
+        comments: commentData
     },
     {
         id: 34,
-        title: "커피 좋아하는 사람들에게 추천할 만한 카페 있을까요?",
-        content: "저는 커피를 너무 좋아하는데, 한국에서 꼭 가봐야 할 독특한 카페가 있을까요? 서울 뿐만 아니라 어디든 상관없으니 맛있는 커피가 있는 곳 추천 부탁드려요.",
+        title: "커피 좋아하는 사람들에게 추천할 만한 카페 있을까요",
+        content: "저는 커피를 너무 좋아하는데, 한국에서 꼭 가봐야 할 독특한 카페가 있을까요 서울 뿐만 아니라 어디든 상관없으니 맛있는 커피가 있는 곳 추천 부탁드려요.",
         photoUrl: photo5,
         likes: 28,
         category: "자유",
@@ -524,6 +579,7 @@ export const postData: AllPostData[] = [
         views: 75,
         postedAt: "2024-12-03",
         replies: 4,
+        comments: commentData
     },
     {
         id: 35,
@@ -538,12 +594,13 @@ export const postData: AllPostData[] = [
         },
         views: 89,
         postedAt: "2024-01-26",
-        replies: 3
-    },
+        replies: 3,
+
+comments: commentData    },
     {
         id: 36,
         title: "부산에서 인생샷 찍기 좋은 장소 추천!",
-        content: "부산 여행 중인데, 인생샷 남길 수 있는 멋진 장소 있을까요? 해변도 좋고, 감천마을처럼 예쁜 곳도 좋아요!",
+        content: "부산 여행 중인데, 인생샷 남길 수 있는 멋진 장소 있을까요 해변도 좋고, 감천마을처럼 예쁜 곳도 좋아요!",
         photoUrl: photo5,
         likes: 48,
         category: "자유",
@@ -554,6 +611,7 @@ export const postData: AllPostData[] = [
         views: 115,
         postedAt: "2024-06-04",
         replies: 7,
+        comments: commentData
     },
     {
         id: 37,
@@ -568,8 +626,9 @@ export const postData: AllPostData[] = [
         },
         views: 90,
         postedAt: "2024-11-27",
-        replies: 2
-    },
+        replies: 2,
+
+comments: commentData    },
     {
         id: 38,
         title: "충북 단양의 자연 속 힐링 | 충북 여행 후기 | 단양 여행 후기",
@@ -583,8 +642,9 @@ export const postData: AllPostData[] = [
         },
         views: 83,
         postedAt: "2024-01-30",
-        replies: 3
-    },
+        replies: 3,
+
+comments: commentData    },
     {
         id: 39,
         title: "전남 순천만 여행",
@@ -598,12 +658,13 @@ export const postData: AllPostData[] = [
         },
         views: 87,
         postedAt: "2024-01-28",
-        replies: 2
-    },
+        replies: 2,
+
+comments: commentData    },
     {
         id: 40,
         title: "전남 여행 중 꼭 가봐야 할 힐링 스팟!",
-        content: "전라남도에서 힐링하면서 자연도 즐길 수 있는 여행지가 있을까요? 제가 다녀온 곳이 그런 곳이였어요! 나주에 있는 산림자원연구소 메타세콰이어 길이였는데요, 푸릇푸릇한 길이 계속 펼쳐지는데 정말 평화롭고 좋았어요. 근처 들리실 일 있으면 꼭 추천드려요! 또 다른 추천 장소 있으면 알려주세요!",
+        content: "전라남도에서 힐링하면서 자연도 즐길 수 있는 여행지가 있을까요 제가 다녀온 곳이 그런 곳이였어요! 나주에 있는 산림자원연구소 메타세콰이어 길이였는데요, 푸릇푸릇한 길이 계속 펼쳐지는데 정말 평화롭고 좋았어요. 근처 들리실 일 있으면 꼭 추천드려요! 또 다른 추천 장소 있으면 알려주세요!",
         photoUrl: photo5,
         likes: 37,
         category: "전라남도",
@@ -614,11 +675,12 @@ export const postData: AllPostData[] = [
         views: 128,
         postedAt: "2024-12-03",
         replies: 5,
+        comments: commentData
     },
     {
         id: 41,
         title: "전주 한옥마을에서 맛집 추천 좀!",
-        content: "전주 한옥마을에 왔는데요, 한복도 대여해서 입고 한옥마을을 걸어다니니까 기분도 좋고 재밌더라고요. 한번 쯤 추천드려요! 이제 저녁을 먹으려고 하는데, 분위기 좋으면서도 맛있는 음식점 어디 없을까요? 비빔밥 말고도 추천해주세요!",
+        content: "전주 한옥마을에 왔는데요, 한복도 대여해서 입고 한옥마을을 걸어다니니까 기분도 좋고 재밌더라고요. 한번 쯤 추천드려요! 이제 저녁을 먹으려고 하는데, 분위기 좋으면서도 맛있는 음식점 어디 없을까요 비빔밥 말고도 추천해주세요!",
         photoUrl: photo5,
         likes: 55,
         category: "전라북도",
@@ -629,11 +691,12 @@ export const postData: AllPostData[] = [
         views: 200,
         postedAt: "2024-12-04",
         replies: 9,
+        comments: commentData
     },
     {
         id: 42,
         title: "경북에서 전통시장 즐기기",
-        content: "지난주 경북 여행 중에 전통시장을 다녀왔는데요, 와 진짜 볼거리 먹거리가 가득하더라고요! 닭강정도 너무 맛있었고, 시장 골목을 걸으며 느껴지는 따뜻한 분위기가 정말 좋았어요. 혹시 경북 지역에서 또 다른 시장을 추천해 주실 분 계신가요? 다음번엔 새로운 시장도 가보고 싶네요!",
+        content: "지난주 경북 여행 중에 전통시장을 다녀왔는데요, 와 진짜 볼거리 먹거리가 가득하더라고요! 닭강정도 너무 맛있었고, 시장 골목을 걸으며 느껴지는 따뜻한 분위기가 정말 좋았어요. 혹시 경북 지역에서 또 다른 시장을 추천해 주실 분 계신가요 다음번엔 새로운 시장도 가보고 싶네요!",
         photoUrl: photo5,
         likes: 29,
         category: "경상북도",
@@ -644,6 +707,7 @@ export const postData: AllPostData[] = [
         views: 90,
         postedAt: "2024-12-02",
         replies: 3,
+        comments: commentData
     },
     {
         id: 43,
@@ -659,6 +723,7 @@ export const postData: AllPostData[] = [
         views: 92,
         postedAt: "2024-12-04",
         replies: 3,
+        comments: commentData
     },
     {
         id: 44,
@@ -674,6 +739,7 @@ export const postData: AllPostData[] = [
         views: 120,
         postedAt: "2024-12-03",
         replies: 5,
+        comments: commentData
     },
     {
         id: 45,
@@ -689,6 +755,7 @@ export const postData: AllPostData[] = [
         views: 98,
         postedAt: "2024-12-02",
         replies: 4,
+        comments: commentData
     },
     {
         id: 46,
@@ -704,6 +771,7 @@ export const postData: AllPostData[] = [
         views: 118,
         postedAt: "2024-12-01",
         replies: 6,
+        comments: commentData
     },
     {
         id: 47,
@@ -719,6 +787,7 @@ export const postData: AllPostData[] = [
         views: 105,
         postedAt: "2024-12-03",
         replies: 5,
+        comments: commentData
     },
     {
         id: 48,
@@ -734,6 +803,7 @@ export const postData: AllPostData[] = [
         views: 100,
         postedAt: "2024-12-04",
         replies: 4,
+        comments: commentData
     },
     {
         id: 49,
@@ -749,6 +819,7 @@ export const postData: AllPostData[] = [
         views: 145,
         postedAt: "2024-12-02",
         replies: 7,
+        comments: commentData
     },
 
     {
@@ -765,6 +836,7 @@ export const postData: AllPostData[] = [
         views: 300,
         postedAt: "2024-11-27",
         replies: 1,
+        comments: commentData
     }
 
 ];
