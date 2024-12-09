@@ -5,10 +5,14 @@ import NextIcon from '@assets/svg/nextArrow.svg?react'
 import PrevIcon from '@assets/svg/prevArrow.svg?react'
 import VoteResults from './vote'
 import PinIcon from '@assets/svg/Pin.svg?react'
+import { photoList } from './mockdata'
 
-const PhotoDetail = () => {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [hasVoted, setHasVoted] = useState(false)
+// const PhotoDetail = () => {
+//   const [currentIndex, setCurrentIndex] = useState(0)
+//   const [hasVoted, setHasVoted] = useState(false)
+const PhotoDetail = ({ onClose }: { onClose: () => void }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [hasVoted, setHasVoted] = useState(false);
 
   const images = [defaultProfileImage, defaultProfileImageOne]
 
@@ -52,7 +56,7 @@ const PhotoDetail = () => {
                 />
               </div>
               <div className='flex flex-col justify-start items-start'>
-                <p className='text-sm font-bold text-black'>닉네임</p>
+                <p className='text-sm font-bold text-black'>닉네임ㄴ</p>
                 <div className='flex text-[10px] text-darkGray gap-2'>
                   <p>1시간 전</p>
                   <p>100</p>
@@ -119,6 +123,12 @@ const PhotoDetail = () => {
               <VoteResults />
             )}
           </div>
+          <button
+         onClick={onClose}
+          className='absolute bottom-4 right-4 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 shadow-md'
+        >
+          닫기
+        </button>
         </div>
       </div>
     </div>
