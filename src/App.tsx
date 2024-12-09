@@ -24,6 +24,7 @@ import SelectedRegionPostList from './pages/PostListPage/SelectedRegionPostList'
 import SearchResultPage from './pages/PostListPage/SearchResultPage'
 import PostCreatePage from './pages/WritePage/PostCreatePage'
 import OAuthCallback from './components/OAuthCallback'
+import ErrorPage from './pages/Error/ErrorPage'
 
 const App = () => {
   return (
@@ -119,6 +120,11 @@ const App = () => {
           <Route
             path='/WritePage'
             element={<PostCreatePage />}
+          ></Route>
+
+        <Route
+            path='*'
+            element={<ErrorPage/>}
           ></Route>
         </Routes>
       </Container>
