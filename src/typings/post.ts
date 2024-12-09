@@ -4,10 +4,10 @@ export interface AllPostData {
   id: number
   title: string
   content: string
-  photoUrl: string | null
+  photoUrl?: string | null
   author: {
     username: string
-    profileUrl: string | null
+    profileUrl?: string | null
   }
 
   likes: number

@@ -25,6 +25,8 @@ const PostItem = ({ post }: PostItemProps) => {
         return 'text-darkBlue border-darkBlue'
     }
   }
+    // 디버깅을 위한 콘솔 로그 추가
+    console.log('PostItem 렌더링 중:', post)
 
   return (
     <div className='flex justify-center'>

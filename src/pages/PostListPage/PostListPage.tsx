@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { postData } from '@/temporaryData/allPostData'
 import DropdownSelector from '@/components/DropdownSelector'
 import RegionDropdown from '@/components/RegionDropdown'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { AllPostData } from '@/typings/post'
 
@@ -18,37 +18,75 @@ const PostListPage = () => {
   const [sortType, setSortType] = useState('latest')
   const navigate = useNavigate()
   const [error, setError] = useState<string | null>(null) // 에러 메시지
-  const { id } = useParams()
-  const [resultPosts, setResultPosts] = useState<AllPostData[]>([])
+
+  const [allPosts, setAllPosts] = useState<AllPostData[]>([])
+  const [filteredGroups, setFilteredGroups] = useState<AllPostData[]>([])
+  const [notice, setNotice] = useState<AllPostData[]>([])
+  
+// 최초 마운트 시 전체 게시글 조회
+useEffect(() => {
+  setAllPosts(postData)
+},[])
 
   // 게시글 필터링 - 마운트 시 전체 게시글, 최신순으로 조회 (옵션 없는 경우)
-  useEffect(() => {
-    let mounted = true
+    //    useEffect(() => {
+    //     let mounted = true;
 
-    const getFilteredPosts = async () => {
-      try {
-        const response = await axios.get(
-          'https://www.skypedia.shop/api/v1/posts',
-          // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
-          // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/posts`
-        )
-        if (mounted && response.data) {
-          setResultPosts(response.data)
-        }
-      } catch (error) {
-        if (mounted) {
-          console.error('게시글 조회 실패:', error)
-          setError('게시글 조회 실패')
-        }
+    //     const getFilteredPosts = async () => {
+    //         try {
+    //             const response = await axios.get(
+    //               'https://www.skypedia.shop/api/v1/posts'
+    //               // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
+    //               // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/posts`
+    //             )
+    //             if(mounted && response.data){
+    //               setAllPosts(response.data)
+    //             }
+    //         }catch (error) {
+    //             if (mounted) {
+    //             console.error('게시글 조회 실패:', error)
+    //             setError('게시글 조회 실패')
+    //             }
+    //         }    
+    //     }
+    //     getFilteredPosts();
+
+    //     return () => {
+    //         mounted = false;
+    //     }
+  // }, [])
+
+// 게시글 필터링 및 공지 게시글 분리 - 2개 드롭다운 변경마다
+useEffect(() => {
+  const filterPosts = () => {
+    const ExceptRegionOptions = ['공지', '자유', '리뷰'];
+
+    const filtered = allPosts.filter((post) => {
+      if (post.category === '공지') {return false};
+
+      if (selectedCategory === '전체') {
+        return true;
       }
-    }
-    getFilteredPosts()
 
-    return () => {
-      mounted = false
-    }
-  }, [])
+      if (selectedCategory === '지역') {
+        if (selectedDetailCategory === '지역 전체') {
+          return !ExceptRegionOptions.includes(post.category);
+        }
+        return post.category === selectedDetailCategory;
+      }
 
+      return post.category === selectedCategory;
+    });
+
+    setFilteredGroups(filtered);
+  };
+  const noticePost = allPosts.filter((post) => post.category === '공지');
+  setNotice(noticePost);
+
+  filterPosts();
+}, [selectedCategory, selectedDetailCategory, allPosts]);
+
+// 카테고리 변경 핸들러
   const handleRegionCategory = (selected: string) => {
     setSelectedCategory(selected)
 
@@ -91,59 +129,45 @@ const PostListPage = () => {
     { value: '충청북도', label: '충청북도' },
   ]
 
-  const sortingOptions = [
-    { value: 'latest', label: '최신순' },
-    { value: 'likes', label: '인기순' },
-    { value: 'title', label: '제목순' },
-    { value: 'rating', label: '별점순' },
-  ]
 
-  const ExceptRegionOptions = ['공지', '자유', '리뷰']
+  // 동적으로 정렬 옵션 설정
+  const sortingOptions = useMemo(() => {
+    const options = [
+      { value: 'latest', label: '최신순' },
+      { value: 'likes', label: '인기순' },
+      { value: 'title', label: '제목순' },
+    ];
 
-  const filteredGroups = resultPosts.filter((post) => {
-    // 공지사항은 제외
-    if (post.category === '공지') {
-      return false
+    if (selectedCategory === '리뷰') {
+      options.push({ value: 'rating', label: '별점순' });
     }
 
-    // 전체 카테고리 선택 시 모든 포스트 표시
-    if (selectedCategory === '전체') {
-      return true
-    }
-
-    // 지역 카테고리 선택 시 상세 지역 필터링
-    if (selectedCategory === '지역') {
-      // ExceptRegionOptions에 포함되지 않은 카테고리만 표시
-      if (selectedDetailCategory === '지역 전체') {
-        return !ExceptRegionOptions.includes(post.category)
-      }
-      return post.category === selectedDetailCategory
-    }
-
-    // 그 외 카테고리는 선택된 카테고리만 필터링
-    return post.category === selectedCategory
-  })
-
-  const notice = resultPosts.filter((post) => post.category === '공지')
+    return options;
+  }, [selectedCategory]);
 
   // 클라이언트 정렬 로직 (API 실패 시)
   const sortedPosts = useMemo(() => {
-    const sorted = [...filteredGroups]
-
-    switch (sortType) {
-      case 'latest':
-        return sorted.sort(
-          (a, b) =>
-            new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime(),
-        )
-      case 'likes':
-        return sorted.sort((a, b) => b.likes - a.likes)
-      case 'title':
-        return sorted.sort((a, b) => a.title.localeCompare(b.title))
-      case 'rating':
-        return sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0))
-      default:
-        return sorted
+    const sorted = [...filteredGroups];
+    
+    switch(sortType) {
+        case 'latest':
+            return sorted.sort((a, b) => 
+                new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()
+            );
+        case 'likes':
+            return sorted.sort((a, b) => b.likes - a.likes);
+        case 'title':
+            return sorted.sort((a, b) => 
+                a.title.localeCompare(b.title)
+            );
+        case 'rating':
+            return sorted
+            // .filter((post) => post.rating !== undefined)
+            .sort((a, b) => 
+                (b.rating || 0) - (a.rating || 0)
+            );
+        default:
+            return sorted;
     }
   }, [filteredGroups, sortType])
 

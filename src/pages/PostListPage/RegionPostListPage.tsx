@@ -7,6 +7,7 @@ import { useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AllPostData } from '@/typings/post';
+import { postData } from '@/temporaryData/allPostData';
 
 const RegionPostListPage = () => {
     const [firstCategory, setFirstCategory] = useState('지역')
@@ -17,24 +18,31 @@ const RegionPostListPage = () => {
     const [notice, setNotice] = useState<AllPostData[]>([]);
     const navigate = useNavigate();
 
+    // useEffect(() => {
+    //     const getCategory = async () => {
+    //         try {
+    //             // 지역 게시판은 프론트 UI 상으로만 구현하는 것이므로, 전체 포스트 가져온 후 지명으로 된 카테고리만 필터링 처리
+    //             const response = await axios.get(
+    //                 'api/v1/posts'
+    //                 // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
+    //                 // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/posts`
+    //             ) // 전체 포스트 조회
+    //             const filteredPosts = response.data.filter((post: { category: string; }) => post.category !== '자유' && post.category !== '공지' && post.category !== '리뷰')
+    //             setRegionPosts(filteredPosts)
+    //             const notice = response.data.filter((post: { category: string; }) => post.category === '공지')
+    //             setNotice(notice)
+    //         } catch (error) {
+    //             console.error('지역 게시판 : 카테고리 조회 실패:', error);
+    //         }
+    //     }
+    //     getCategory();
+    // }, []);
+
     useEffect(() => {
-        const getCategory = async () => {
-            try {
-                // 지역 게시판은 프론트 UI 상으로만 구현하는 것이므로, 전체 포스트 가져온 후 지명으로 된 카테고리만 필터링 처리
-                const response = await axios.get(
-                    'api/v1/posts'
-                    // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
-                    // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/posts`
-                ) // 전체 포스트 조회
-                const filteredPosts = response.data.filter((post: { category: string; }) => post.category !== '자유' && post.category !== '공지' && post.category !== '리뷰')
-                setRegionPosts(filteredPosts)
-                const notice = response.data.filter((post: { category: string; }) => post.category === '공지')
-                setNotice(notice)
-            } catch (error) {
-                console.error('지역 게시판 : 카테고리 조회 실패:', error);
-            }
-        }
-        getCategory();
+        const filteredPosts = postData.filter((post: { category: string; }) => post.category !== '공지' && post.category !== '자유' && post.category !== '리뷰')
+        setRegionPosts(filteredPosts)
+        const notice = postData.filter((post: { category: string; }) => post.category === '공지')
+        setNotice(notice)
     }, []);
 
     useEffect(() => {
