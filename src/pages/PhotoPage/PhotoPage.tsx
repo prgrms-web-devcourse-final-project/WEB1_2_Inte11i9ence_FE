@@ -107,7 +107,7 @@ const PhotoPage = () => {
                   </div>
                 </div>
               </div>
-              <div className='h-[20vh]'>
+              <div className='h-[20vh] '>
                 <img
                   src={photo.ImgUrl}
                   alt='Group'
@@ -122,7 +122,10 @@ const PhotoPage = () => {
           </button>
         ))}
       </div>
-      {isPhotoDetailOpen && <PhotoDetail></PhotoDetail>}
+      {isPhotoDetailOpen && (
+        <PhotoDetail onClose={() => setIsPhotoDetailOpen(false)} /> // 닫기 핸들러 전달
+      )}
+
     </div>
   )
 }
