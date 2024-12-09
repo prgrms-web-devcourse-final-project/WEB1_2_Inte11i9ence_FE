@@ -78,7 +78,8 @@ const SchedulePage = () => {
       </div>
       <div className='flex flex-wrap mx-16 mt-4 h-auto w-full justify-start gap-y-12 gap-x-4'>
         {groups.map((group) => (
-          <div
+          <Link
+            to={'detail'}
             key={group.groupId}
             className='flex flex-col justify-between p-4 w-[45%] sm:w-[25%] lg:w-[20%] mx-2 bg-white shadow-lg rounded-lg border border-lightGray transition-transform hover:scale-105 hover:shadow-xl gap-8 aspect-[4/5]'
           >
@@ -125,7 +126,7 @@ const SchedulePage = () => {
               </div>
               <p>{formatTime(group.createdAt)}</p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

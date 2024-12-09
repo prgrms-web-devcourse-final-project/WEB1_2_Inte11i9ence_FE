@@ -8,13 +8,14 @@ import { Group } from '@/typings/region'
 import formatTime from '@/utils/formatTime'
 import { Eye } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { region } from './components/mockData'
 
 const ScheduleDetail = () => {
   const [groupDetail, setGroupDetail] = useState<Group>({} as Group)
+  const [googleMapsLoaded, setGoogleMapsLoaded] = useState(false)
   const mapRef = useRef<HTMLDivElement | null>(null)
   const navigate = useNavigate()
 
-  //수정페이지로이동하는거
   const handleEdit = () => {
     if (groupDetail.groupId) {
       navigate(`/schedule/add?groupId=${groupDetail.groupId}`)
@@ -37,11 +38,15 @@ const ScheduleDetail = () => {
   const initializeMap = () => {
     if (mapRef.current && groupDetail.details) {
       const map = new google.maps.Map(mapRef.current, {
-        center: { lat: 37.5665, lng: 126.978 }, // 기본 좌표: 서울
+        center: { lat: 37.5665, lng: 126.978 },
         zoom: 10,
       })
 
-      groupDetail.details.forEach((detail) => {
+      let totalLat = 0
+      let totalLng = 0
+      let validLocations = 0
+
+      groupDetail.details.forEach((detail, index) => {
         const location = detail.location
         const geocoder = new google.maps.Geocoder()
 
@@ -52,13 +57,25 @@ const ScheduleDetail = () => {
             results[0]
           ) {
             const position = results[0].geometry.location
+            totalLat += position.lat()
+            totalLng += position.lng()
+            validLocations++
+
             new google.maps.Marker({
               position,
               map,
               title: location,
+              label: `${index + 1}`,
             })
           } else {
             console.error(`Geocoding failed for ${location}: ${status}`)
+          }
+
+          if (validLocations === groupDetail.details.length) {
+            const avgLat = totalLat / validLocations
+            const avgLng = totalLng / validLocations
+            map.setCenter({ lat: avgLat, lng: avgLng })
+            map.setZoom(10)
           }
         })
       })
@@ -70,32 +87,31 @@ const ScheduleDetail = () => {
       if (typeof google === 'undefined') {
         const script = document.createElement('script')
         script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_API}`
-
         script.async = true
         script.defer = true
-        script.onload = () => initializeMap()
+        script.onload = () => setGoogleMapsLoaded(true)
         document.body.appendChild(script)
         script.onerror = () => {
           console.error('Google Maps script failed to load')
         }
-        console.log(
-          'Google API Key:',
-          process.env.NEXT_PUBLIC_GOOGLE_API ||
-            import.meta.env.VITE_GOOGLE_API ||
-            process.env.REACT_APP_GOOGLE_API,
-        )
       } else {
-        initializeMap()
+        setGoogleMapsLoaded(true)
       }
     }
-    //https://fed8aa8a-b229-4c7b-ba68-4a6376b3ab56.mock.pstmn.io/
+
+    loadGoogleMaps()
+  }, [])
+
+  useEffect(() => {
+    if (googleMapsLoaded && groupDetail.details) {
+      initializeMap()
+    }
+  }, [googleMapsLoaded, groupDetail])
+
+  useEffect(() => {
     const fetchGroupDetail = async () => {
       try {
-        const response = await axios.get(
-          'api/v1/plangroup/1', // 실제 API URL로 변경
-        )
-        setGroupDetail(response.data)
-        loadGoogleMaps()
+        setGroupDetail(region) // Mock 데이터 설정
       } catch (error) {
         console.error('error', error)
       }
