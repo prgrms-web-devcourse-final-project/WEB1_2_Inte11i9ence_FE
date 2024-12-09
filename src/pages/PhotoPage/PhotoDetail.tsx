@@ -9,34 +9,39 @@ import { photoList } from './mockdata'
 import { Link } from 'react-router-dom'
 
 interface PhotoType {
-  id: number;
-  nickname: string;
-  regionName: string;
-  type: string;
-  ImgUrl: string;
-  content: string;
-  date: string;
-  profileImg?: string;
+  id: number
+  nickname: string
+  regionName: string
+  type: string
+  ImgUrl: string
+  content: string
+  date: string
+  profileImg?: string
 }
 
 interface PhotoDetailProps {
-  photoInfo: PhotoType;
-  onClose: () => void;
+  photoInfo: PhotoType
+  onClose: () => void
 }
 
 // const PhotoDetail = () => {
 //   const [currentIndex, setCurrentIndex] = useState(0)
 //   const [hasVoted, setHasVoted] = useState(false)
-const PhotoDetail: React.FC<PhotoDetailProps> = ({ photoInfo, onClose }: { onClose: () => void }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [hasVoted, setHasVoted] = useState(false);
+const PhotoDetail: React.FC<PhotoDetailProps> = ({
+  photoInfo,
+  onClose,
+}: {
+  onClose: () => void
+}) => {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [hasVoted, setHasVoted] = useState(false)
   const [photo, setPhoto] = useState<PhotoType | null>(null)
 
   const images = [photoInfo.ImgUrl, defaultProfileImageOne]
 
   useEffect(() => {
     setPhoto(photoInfo.ImgUrl)
-    console.log("photoInfo", photoInfo)
+    console.log('photoInfo', photoInfo)
   }, [])
 
   const handlePrev = () => {
@@ -80,7 +85,9 @@ const PhotoDetail: React.FC<PhotoDetailProps> = ({ photoInfo, onClose }: { onClo
                 />
               </div>
               <div className='flex flex-col justify-start items-start'>
-                <p className='text-sm font-bold text-black'>{photoInfo.nickname}</p>
+                <p className='text-sm font-bold text-black'>
+                  {photoInfo.nickname}
+                </p>
                 <div className='flex text-[10px] text-darkGray gap-2'>
                   <p>1시간 전</p>
                   <p>100</p>
@@ -125,7 +132,7 @@ const PhotoDetail: React.FC<PhotoDetailProps> = ({ photoInfo, onClose }: { onClo
             {!hasVoted ? (
               // 투표 전 UI
               <div className='flex flex-col border-t pt-2 items-center gap-3'>
-                <div className='flex gap-4 items-center'>
+                <div className='flex gap-4 pt-4 items-center'>
                   <button
                     className='bg-darkBlue text-white py-2 px-2 text-sm rounded-lg hover:bg-blue-600'
                     onClick={handleVote}
@@ -147,20 +154,13 @@ const PhotoDetail: React.FC<PhotoDetailProps> = ({ photoInfo, onClose }: { onClo
             )}
           </div>
           <div className='flex w-full justify-center'>
-            <Link
-          onClick={onClose}
-            className='mt-4 '
-            to={'/photo/add'}
-          >
-            사진 추가
-          </Link>
             <button
-          onClick={onClose}
-            className='mt-4 mx-8'
-          >
-            닫기
-          </button>
-        </div>
+              onClick={onClose}
+              className='mt-4 mx-8'
+            >
+              닫기
+            </button>
+          </div>
         </div>
       </div>
     </div>
