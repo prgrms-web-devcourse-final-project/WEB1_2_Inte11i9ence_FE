@@ -8,12 +8,25 @@ import PhotoDetail from './PhotoDetail'
 import axios from 'axios'
 import { Group } from 'lucide-react'
 
+interface PhotoType {
+  id: number;
+  nickname: string;
+  regionName: string;
+  type: string;
+  ImgUrl: string;
+  content: string;
+  date: string;
+  profileImg?: string;
+}
+
 const PhotoPage = () => {
   const [postList, setPhotoList] = useState([])
   const [filteredPhotos, setFilteredPhotos] = useState([])
   const [selectedView, setSelectedView] = useState('지역 전체')
   const [selectedType, setSelectedType] = useState('인물')
   const [isPhotoDetailOpen, setIsPhotoDetailOpen] = useState(false)
+  const [selectedPhoto, setSelectedPhoto] = useState<PhotoType | null>(null) // 선택된 사진 상태 추가
+
   const options = [
     { value: '지역 전체', label: '지역 전체' },
     { value: '서울', label: '서울' },
@@ -81,7 +94,9 @@ const PhotoPage = () => {
         {filteredPhotos.map((photo) => (
           <button
             key={photo.id}
-            onClick={() => setIsPhotoDetailOpen(true)}
+            onClick={() => {
+              setSelectedPhoto(photo) // 선택된 사진 설정
+              setIsPhotoDetailOpen(true)}}
             className='flex flex-col justify-between p-4 w-[45%] sm:w-[25%] lg:w-[20%] mx-2 bg-white shadow-lg rounded-lg border border-lightGray transition-transform hover:scale-105 hover:shadow-xl gap-8 aspect-[4/5]'
           >
             <div className='flex flex-col gap-4'>
@@ -123,7 +138,7 @@ const PhotoPage = () => {
         ))}
       </div>
       {isPhotoDetailOpen && (
-        <PhotoDetail onClose={() => setIsPhotoDetailOpen(false)} /> // 닫기 핸들러 전달
+        <PhotoDetail photoInfo={selectedPhoto} onClose={() => setIsPhotoDetailOpen(false)} /> // 닫기 핸들러 전달
       )}
 
     </div>

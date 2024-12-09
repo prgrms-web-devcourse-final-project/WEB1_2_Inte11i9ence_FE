@@ -152,7 +152,7 @@ const RegionPostListPage = () => {
               }
             </div>
             {/* 카테고리 선택 드롭다운 */}
-            <div className='flex justify-between w-[85%] mx-auto mt-10'>
+            <div className='flex justify-between w-[87%] mx-auto mt-10'>
                 <div className='flex'>
                 <div className='h-[40px] relative z-1000 mr-4'>
                     <DropdownSelector

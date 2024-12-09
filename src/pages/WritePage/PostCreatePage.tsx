@@ -1,30 +1,50 @@
 import React, { useState } from 'react';
 import Out from '@/assets/png/Out.png';
+import DropdownSelector from '@/components/DropdownSelector';
+import RegionDropdown from '@/components/RegionDropdown';
 
 type Category = '자유' | '지역' | '리뷰';
 
 const PostCreatePage: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<Category | ''>('');
-  const [selectedRegion, setSelectedRegion] = useState<string | ''>('');
+  // const [selectedCategory, setSelectedCategory] = useState<Category | ''>('');
+  // const [selectedRegion, setSelectedRegion] = useState<string | ''>('');
   const [rating, setRating] = useState<number | null>(null);
   const [image, setImage] = useState<File | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
+  const [firstCategory, setFirstCategory] = useState('전체')
+  const [secondCategory, setSecondCategory] = useState('지역 전체')
+  const [isSecondCategoryOpen, setIsSecondCategoryOpen] = useState(false)
 
   // 지역 카테고리 목록
-  const regionOptions = ['서울', '부산', '대구', '광주'];
+  // const regionOptions = ['서울', '부산', '대구', '광주'];
 
-  // 카테고리 선택 핸들러
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategory(e.target.value as Category);
-    setSelectedRegion(''); // 지역 초기화
-    setRating(null); // 별점 초기화
-  };
+  // // 카테고리 선택 핸들러
+  // const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setSelectedCategory(e.target.value as Category);
+  //   setSelectedRegion(''); // 지역 초기화
+  //   setRating(null); // 별점 초기화
+  // };
 
-  // 지역 선택 핸들러
-  const handleRegionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedRegion(e.target.value);
-  };
+  // // 지역 선택 핸들러
+  // const handleRegionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setSelectedRegion(e.target.value);
+  // };
+
+  // 1번 드롭다운 change 이벤트 핸들러
+  const handleCategory = (selected: string) => {
+    setFirstCategory(selected);
+    if(selected === '지역'){
+      setIsSecondCategoryOpen(true);
+    }
+    if(selected !== '지역'){
+      setIsSecondCategoryOpen(false);
+    }
+  }
+  // 2번 드롭다운 change 이벤트 핸들러
+  const handleRegionCategory = (selected: string) => {
+    setSecondCategory(selected);
+  }
 
   // 별점 클릭 핸들러
   const handleRatingClick = (newRating: number) => {
@@ -57,14 +77,43 @@ const PostCreatePage: React.FC = () => {
     setTags((prevTags) => prevTags.filter((_, i) => i !== index));
   };
 
+  const options = [
+    { value: '전체', label: '전체' },
+    // { value: '공지', label: '공지' },
+    { value: '자유', label: '자유' },
+    { value: '지역', label: '지역' },
+    { value: '리뷰', label: '리뷰' },
+]
+
+const regionOptions = [
+    { value: '지역 전체', label: '지역 전체' },
+    { value: '강원도', label: '강원도' },
+    { value: '경기도', label: '경기도' },
+    { value: '경상남도', label: '경상남도' },
+    { value: '경상북도', label: '경상북도' },
+    { value: '광주', label: '광주' },
+    { value: '대구', label: '대구' },
+    { value: '대전', label: '대전' },
+    { value: '부산', label: '부산' },
+    { value: '서울', label: '서울' },
+    { value: '세종', label: '세종' },
+    { value: '울산', label: '울산' },
+    { value: '인천', label: '인천' },
+    { value: '전라남도', label: '전라남도' },
+    { value: '전라북도', label: '전라북도' },
+    { value: '제주도', label: '제주도' },
+    { value: '충청남도', label: '충청남도' },
+    { value: '충청북도', label: '충청북도' },
+]
+
   return (
-    <div className="p-4 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">게시글 작성하기</h1>
+    <div className="p-4 w-[90%] mx-auto">
+      {/* <h1 className="text-2xl font-bold mb-6">게시글 작성하기</h1> */}
 
       {/* 조건부 렌더링: 별점 에디터 */}
-      {selectedCategory === '리뷰' && (
+      {firstCategory === '리뷰' && (
         <div className="mb-4">
-          <div className="flex ml-28">
+          <div className="flex justify-center">
             {[1, 2, 3, 4, 5].map((star) => (
               <span
                 key={star}
@@ -83,7 +132,23 @@ const PostCreatePage: React.FC = () => {
       {/* 상단 드롭다운 섹션 */}
       <div className="flex items-center gap-4 mb-6">
         <div className="flex items-center">
-          <select
+        <div className='flex'>
+                <div className='h-[40px] relative z-1000 mr-4'>
+                    <DropdownSelector
+                    options={options}
+                    defaultValue={firstCategory}
+                    onChange={handleCategory}
+                    />
+                </div>
+                {/* 지역 카테고리 선택 시 상세 지역 선택 드롭다운 */}
+                {isSecondCategoryOpen &&(
+                    <RegionDropdown
+                            options={regionOptions}
+                            defaultValue={secondCategory}
+                            onChange={handleRegionCategory}
+                />)}
+                </div>
+          {/* <select
             id="category"
             className="border rounded px-3 py-2"
             value={selectedCategory}
@@ -93,10 +158,10 @@ const PostCreatePage: React.FC = () => {
             <option value="자유">자유</option>
             <option value="지역">지역</option>
             <option value="리뷰">리뷰</option>
-          </select>
+          </select> */}
         </div>
 
-        {selectedCategory === '지역' && (
+        {/* {selectedCategory === '지역' && (
           <div className="flex items-center">
             <select
               id="region"
@@ -112,7 +177,7 @@ const PostCreatePage: React.FC = () => {
               ))}
             </select>
           </div>
-        )}
+        )} */}
       </div>
 
       <div className="mb-6">
@@ -128,7 +193,7 @@ const PostCreatePage: React.FC = () => {
       <div className="mb-2">
         <textarea
           id="content"
-          className="w-full border rounded-lg px-3 py-2 h-80 shadow-lg resize-none"
+          className="w-full border rounded-lg px-3 py-2 h-96 shadow-lg resize-none"
           placeholder="내용을 입력하세요"
         />
 
@@ -195,7 +260,7 @@ const PostCreatePage: React.FC = () => {
         </button>
         <button
           className="bg-darkBlue font-bold shadow-md text-white px-4 py-2 rounded-lg"
-          disabled={!selectedCategory || (selectedCategory === '지역' && !selectedRegion)}
+          disabled={!firstCategory || (firstCategory === '지역' && !secondCategory)}
         >
           발행하기
         </button>
