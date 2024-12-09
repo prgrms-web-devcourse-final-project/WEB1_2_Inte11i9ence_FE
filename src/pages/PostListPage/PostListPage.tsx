@@ -9,7 +9,7 @@ import axios from 'axios'
 import { AllPostData } from '@/typings/post'
 
 const PostListPage = () => {
-  const location = useLocation();
+  const location = useLocation()
   const initCategory = location.state?.selectedCategory || '전체'
   const [selectedCategory, setSelectedCategory] = useState(initCategory)
   const [selectedDetailCategory, setSelectedDetailCategory] =
@@ -18,6 +18,7 @@ const PostListPage = () => {
   const [sortType, setSortType] = useState('latest')
   const navigate = useNavigate()
   const [error, setError] = useState<string | null>(null) // 에러 메시지
+
   const [allPosts, setAllPosts] = useState<AllPostData[]>([])
   const [filteredGroups, setFilteredGroups] = useState<AllPostData[]>([])
   const [notice, setNotice] = useState<AllPostData[]>([])
@@ -128,6 +129,7 @@ useEffect(() => {
     { value: '충청북도', label: '충청북도' },
   ]
 
+
   // 동적으로 정렬 옵션 설정
   const sortingOptions = useMemo(() => {
     const options = [
@@ -167,11 +169,11 @@ useEffect(() => {
         default:
             return sorted;
     }
-}, [filteredGroups, sortType]);
+  }, [filteredGroups, sortType])
 
-const sortHandler = (selected: string) => {
-  setSortType(selected);  // 정렬 타입 상태 업데이트
-};
+  const sortHandler = (selected: string) => {
+    setSortType(selected) // 정렬 타입 상태 업데이트
+  }
 
   return (
     <div>
@@ -185,7 +187,7 @@ const sortHandler = (selected: string) => {
       </div>
 
       {/* 카테고리 선택 드롭다운 */}
-      <div className='flex justify-between mt-10 '>
+      <div className='flex justify-between  '>
         <div className='flex '>
           <div className='h-[40px] relative z-1000 mr-4 mx-24'>
             <DropdownSelector

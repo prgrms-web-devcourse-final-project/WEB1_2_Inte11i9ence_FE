@@ -3,7 +3,7 @@ import MypagePlaces from './component/MypagePlaces'
 import axios from 'axios'
 import { Group } from '@/typings/region'
 import MypagePostList from './component/MypagePostList'
-
+import { myPlanGroup, myRegion } from './component/mockdata'
 const Mypage = () => {
   const [regionId, setRegionId] = useState<number>(1) // 선택된 regionId
   const [regions, setRegions] = useState<
@@ -13,32 +13,32 @@ const Mypage = () => {
   const [selectedRegionName, setSelectedRegionName] = useState<string>('')
   const fetchData = async () => {
     try {
-      // 일정 그룹 데이터 가져오기
-      const groupResponse = await axios.get('/api/v1/plangroup/chaejeong')
+      // // 일정 그룹 데이터 가져오기
+      // const groupResponse = await axios.get('/api/v1/plangroup/chaejeong')
 
-      // 만약 groupResponse.data가 객체라면, 배열로 접근
-      const groups = groupResponse.data
+      // // 만약 groupResponse.data가 객체라면, 배열로 접근
+      // const groups = groupResponse.data
 
-      // uniqueRegionIds는 regionId 중복없이, 오름차순 추출하는 거임
-      const uniqueRegionIds = Array.isArray(groups)
-        ? [...new Set(groups.map((group: Group) => group.regionId))].sort(
-            (a, b) => a - b,
-          )
-        : []
+      // // uniqueRegionIds는 regionId 중복없이, 오름차순 추출하는 거임
+      // const uniqueRegionIds = Array.isArray(groups)
+      //   ? [...new Set(groups.map((group: Group) => group.regionId))].sort(
+      //       (a, b) => a - b,
+      //     )
+      //   : []
 
-      const regionPromises = uniqueRegionIds.map(async (regionId) => {
-        const regionResponse = await axios.get(`/api/v1/region/${regionId}`)
-        return { regionId, regionName: regionResponse.data.name }
-      })
+      // const regionPromises = uniqueRegionIds.map(async (regionId) => {
+      //   const regionResponse = await axios.get(`/api/v1/region/${regionId}`)
+      //   return { regionId, regionName: regionResponse.data.name }
+      // })
 
-      const regions = await Promise.all(regionPromises)
-      setRegions(regions)
+      // const regions = await Promise.all(regionPromises)
+      setRegions(myRegion)
       //regionName으로 배열 생성 ex)['서울','부산','대구'..]
       // const regionNames = regions.map((region) => region.regionName)
-      // setRegionNames(regionNames)
+      // setRegi                                 onNames(regionNames)
 
       // 글 목록 설정
-      setPostList(groups)
+      setPostList(myPlanGroup)
     } catch (error) {
       console.error('Error fetching data:', error)
     }

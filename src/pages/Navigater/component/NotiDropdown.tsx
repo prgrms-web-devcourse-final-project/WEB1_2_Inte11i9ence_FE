@@ -114,7 +114,6 @@ const NotiDropdown = ({
             >
               모두 읽음
             </button>
-            <button className='cursor-pointer'>모두 삭제</button>
           </div>
         </div>
         {filteredNotifications.map((notification) => (

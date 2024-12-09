@@ -207,7 +207,7 @@ const Profile: React.FC<ProfileProps> = ({
           justifyContent: 'center',
           alignItems: 'center',
           gap: '27px',
-          width: '400px',
+          width: '360px',
           padding: '40px',
           borderRadius: '15px',
           backgroundColor: '#fff', // 카드 배경 흰색
@@ -218,7 +218,7 @@ const Profile: React.FC<ProfileProps> = ({
       >
         <h1
           style={{
-            fontSize: '20px',
+            fontSize: '25px',
             fontWeight: 700,
             color: '#1C2B59',
             marginBottom: '20px',
@@ -252,7 +252,7 @@ const Profile: React.FC<ProfileProps> = ({
               borderRadius: '5px',
               padding: '2px 10px',
               cursor: 'pointer',
-              fontSize: '14px',
+              fontSize: '13px',
             }}
           >
             이미지 업로드
@@ -299,12 +299,12 @@ const Profile: React.FC<ProfileProps> = ({
         <div className='flex justify-center gap-4 h-[4vh] items-center'>
           <button
             onClick={onClose}
-            className='bg-darkBlue text-white text-sm py-2 px-2 rounded-lg '
+            className='bg-darkBlue text-white text-sm py-2 px-3 rounded-lg '
           >
             취소
           </button>
           <button
-            className='bg-darkBlue text-white text-sm py-2 px-2 rounded-lg '
+            className='bg-darkBlue text-white text-sm py-2 px-3 rounded-lg '
             onClick={handleSave}
           >
             완료
