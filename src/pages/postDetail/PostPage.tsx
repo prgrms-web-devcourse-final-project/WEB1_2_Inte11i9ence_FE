@@ -23,6 +23,19 @@ const PostPage = ({
   const [postCategory, setPostCategory] = useState<string>('')
   const [rating, setRating] = useState<number>(0)
 
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case '자유':
+        return 'text-lightBlue border-lightBlue'
+      case '리뷰':
+        return 'text-yellow-500 border-yellow-500'
+      case '공지':
+        return 'text-pink-500 border-pink-500'
+      default:
+        return 'text-darkBlue border-darkBlue'
+    }
+  }
+
   useEffect(() => {
     const foundPost = postData.find((post) => post.id === Number(id));
   setPostInfo(foundPost || null);
@@ -62,7 +75,7 @@ const PostPage = ({
           <div className='flex flex-col items-end'>
             {/* 지역 게시판에서만 지역 표시 */}
             {rating === 0  && (
-              <span className='text-darkBlue border-darkBlue font-bold border-2 rounded-[0.7rem]  px-1 pb-0.5 my-0.5'>
+              <span className= {` ${getCategoryColor(postInfo?.category || '')} font-bold border-2 rounded-[0.7rem]  px-1 pb-0.5 my-0.5`}>
                 {postCategory}
               </span>
             )}
@@ -82,7 +95,7 @@ const PostPage = ({
                   }
                 />
               ))} */}
-              <span className='flex text-yellow-400 border-yellow-400 font-bold border-2 rounded-[0.7rem]  px-1 pb-0.5 my-0.5'>
+              <span className={`flex ${getCategoryColor(postInfo?.category || '')} font-bold border-2 rounded-[0.7rem]  px-1 pb-0.5 my-0.5`}>
               <Star
                   key={rating}
                   size={20}
