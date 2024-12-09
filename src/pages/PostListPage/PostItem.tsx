@@ -29,7 +29,9 @@ const PostItem = ({ post }: PostItemProps) => {
 
   return (
     <div className='flex justify-center'>
-      <div className='flex flex-col justify-center w-[88%] border-b pb-2 '>
+
+      <div className='flex flex-col justify-center w-[95%] border-b pb-2 '>
+
         <Link to={`/post/${post.id}`}>
           <div className='flex justify-between align-center py-2 gap-16'>
             <div className='flex flex-col justify-between  gap-2 w-[70%]'>
