@@ -92,11 +92,11 @@ const RegionCardItem = () => {
             key={region.id}
             to={`/postlist/region/${encodeURIComponent(region.name)}`}
             style={{ backgroundImage: `url(${regionImages[region.name as keyof typeof regionImages]})` }}
-            className='font-bold text-xl w-44 h-56 text-white rounded-xl flex items-end justify-center py-4 bg-cover bg-center bg-no-repeat relative'
+            className='font-bold text-[1.4rem] w-48 h-60 text-white rounded-xl flex items-end justify-center py-4 bg-cover bg-center bg-no-repeat relative'
           >
             {/* 배경 이미지 위에 어두운 레이어 추가 */}
             <div className='absolute top-0 left-0 w-full h-full bg-[#000000] bg-opacity-40 rounded-xl'></div>
-            <span className='relative z-10'>{region.name}</span>
+            <span className='relative z-10 pb-2'>{region.name}</span>
           </Link>
         ))}
       </div>
