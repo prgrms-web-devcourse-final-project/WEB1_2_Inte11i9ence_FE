@@ -142,7 +142,7 @@ const SearchModal = ({ initialSearchTerm = '' }: SearchModalProps) => {
       <div className='mx-auto px-4 flex flex-col items-center'>
         <form
           onSubmit={submitHandler}
-          className='w-[55rem]'
+          className='w-[60rem]'
         >
           <div
             ref={modalRef}
@@ -153,7 +153,7 @@ const SearchModal = ({ initialSearchTerm = '' }: SearchModalProps) => {
               type='text'
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className='w-full h-10 pl-6 pr-12 border border-darkGray rounded-3xl'
+              className='w-full h-12 pl-6 pr-12 border border-darkGray rounded-3xl'
               placeholder='검색어를 입력하세요'
               onClick={() => setIsModalOpen(true)}
             />

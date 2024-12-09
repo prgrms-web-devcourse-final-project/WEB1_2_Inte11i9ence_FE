@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom'
 import { postData } from '@/temporaryData/allPostData'
 import { useState, useEffect } from 'react'
 import { AllPostData } from '@/typings/post'
+import  formatTime  from '@/utils/formatTime'
+import { Link } from 'react-router-dom'
 
 const PostPage = ({
   login, //임시로 true
@@ -57,13 +59,13 @@ const PostPage = ({
             <img
               src={postInfo?.author.profileUrl || Profile}
               alt='프로필 사진'
-              className='w-14 h-14 rounded-full mr-3'
+              className='w-10 h-10 rounded-full'
             />
             <div>
-              <div className='flex'>
-                <span className='text-2xl text-gray-800 ml-1'>{postInfo?.author.username}</span>
-                <div className='flex gap-2 ml-4 mt-3 text-gray-500 text-sm'>
-                  {postInfo?.postedAt} <Eye size={20} /> {postInfo?.views}
+              <div className=''>
+                <span className='text-xl font-bold text-gray-800 ml-1'>{postInfo?.author.username}</span>
+                <div className='flex gap-1 ml-4 text-gray-500 text-sm'>
+                  {postInfo?.postedAt && formatTime(postInfo.postedAt)} <Eye size={20} /> {postInfo?.views}
                 </div>
               </div>
             </div>
@@ -108,9 +110,9 @@ const PostPage = ({
           <div className='flex items-center gap-2'>
             {!login ? (
               <>
-                <button className='flex items-center text-gray-500 hover:text-purple-500 ml-4'>
+                <Link to='/chat' className='flex items-center text-gray-500 hover:text-purple-500 ml-4'>
                   채팅하기
-                </button>
+                </Link>
                 <button className='flex items-center text-gray-500 hover:text-green-500'>
                   스크랩
                 </button>
@@ -131,11 +133,11 @@ const PostPage = ({
 
       {/* 게시물 내용 */}
       <div className='border-b border-lightgray mb-20'></div>
-        <div className='w-9/12 mx-auto'>
+        <div className='w-[89%] mx-auto'>
           <div className='mb-5'>
             <img
               src={postInfo?.photoUrl || Gangwondo}
-              alt='강원도 이미지'
+              alt='게시글 이미지'
               className='w-full rounded-lg mb-10'
             />
             <p className='leading-relaxed text-left break-keep text-pretty leading-loose'>

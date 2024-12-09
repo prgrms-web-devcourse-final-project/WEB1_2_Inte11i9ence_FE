@@ -100,9 +100,9 @@ const sortHandler = (selected: string) => {
 };
 
     return (
-        <div>
+        <div className='w-[93%] mx-auto'>
             <SearchModal initialSearchTerm={keyword}  />
-            <div className='h-[40px] relative z-1000 mb-40 mr-24 pt-10'>
+            <div className='h-[40px] relative z-1000 mb-16 mr-8 pt-10'>
                     <DropdownSelector
                         options={sortingOptions}
                         defaultValue='latest'
