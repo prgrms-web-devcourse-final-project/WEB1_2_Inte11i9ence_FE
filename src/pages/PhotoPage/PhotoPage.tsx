@@ -7,16 +7,17 @@ import { Link } from 'react-router-dom'
 import PhotoDetail from './PhotoDetail'
 import axios from 'axios'
 import { Group } from 'lucide-react'
+import formatTime from '@/utils/formatTime'
 
 interface PhotoType {
-  id: number;
-  nickname: string;
-  regionName: string;
-  type: string;
-  ImgUrl: string;
-  content: string;
-  date: string;
-  profileImg?: string;
+  id: number
+  nickname: string
+  regionName: string
+  type: string
+  ImgUrl: string
+  content: string
+  date: string
+  profileImg?: string
 }
 
 const PhotoPage = () => {
@@ -96,7 +97,8 @@ const PhotoPage = () => {
             key={photo.id}
             onClick={() => {
               setSelectedPhoto(photo) // 선택된 사진 설정
-              setIsPhotoDetailOpen(true)}}
+              setIsPhotoDetailOpen(true)
+            }}
             className='flex flex-col justify-between p-4 w-[45%] sm:w-[25%] lg:w-[20%] mx-2 bg-white shadow-lg rounded-lg border border-lightGray transition-transform hover:scale-105 hover:shadow-xl gap-8 aspect-[4/5]'
           >
             <div className='flex flex-col gap-4'>
@@ -131,16 +133,18 @@ const PhotoPage = () => {
               </div>
               <p className='font-bold text-sm text-black'>{photo.content}</p>
             </div>
-            <div className='flex justify-end text-darkGray text-xs'>
-              <p>{photo.date}</p>
+            <div className='flex w-full justify-end text-darkGray text-xs'>
+              <p>{formatTime(photo.date)}</p>
             </div>
           </button>
         ))}
       </div>
       {isPhotoDetailOpen && (
-        <PhotoDetail photoInfo={selectedPhoto} onClose={() => setIsPhotoDetailOpen(false)} /> // 닫기 핸들러 전달
+        <PhotoDetail
+          photoInfo={selectedPhoto}
+          onClose={() => setIsPhotoDetailOpen(false)}
+        /> // 닫기 핸들러 전달
       )}
-
     </div>
   )
 }
