@@ -11,8 +11,49 @@ const ScheduleAdd = () => {
   const [regionId, setRegionId] = useState<number | null>(null)
   const [title, setTitle] = useState('')
   const [searchParams] = useSearchParams()
+  const [selectedPlace, setSelectedPlace] = useState<string>('') // 선택된 장소 상태 추가
+  const [placeCoordinates, setPlaceCoordinates] =
+    useState<google.maps.LatLng | null>(null) // 장소 좌표 상태
+  const [showPlanAdd, setShowPlanAdd] = useState(false) // PlanAdd 컴포넌트 보이기 여부 상태 추가
+  const [selectedDate, setSelectedDate] = useState<string>('') // 선택된 날짜 상태
+  const [memo, setMemo] = useState<string>('') // 메모 상태
   const navigate = useNavigate()
   const groupId = searchParams.get('groupId') // URL에서 groupId를 가져옵니다.
+
+  const mapRef = useRef<HTMLDivElement | null>(null) // 지도 컨테이너 참조
+  const mapInstance = useRef<google.maps.Map | null>(null) // 지도 인스턴스 참조
+  const markerInstance = useRef<google.maps.Marker | null>(null) // 마커 인스턴스 참조
+  // 지도 및 마커 초기화
+  useEffect(() => {
+    if (mapRef.current && window.google) {
+      mapInstance.current = new google.maps.Map(mapRef.current, {
+        center: { lat: 37.5665, lng: 126.978 }, // 기본 서울 위치
+        zoom: 10,
+      })
+
+      markerInstance.current = new google.maps.Marker({
+        map: mapInstance.current,
+        title: '선택된 장소',
+      })
+    }
+  }, [])
+
+  // 선택된 장소에 대한 좌표 업데이트
+  const handlePlaceSelected = (
+    place: string,
+    coordinates: google.maps.LatLng,
+  ) => {
+    setSelectedPlace(place)
+    setPlaceCoordinates(coordinates)
+
+    if (mapInstance.current && markerInstance.current) {
+      mapInstance.current.panTo(coordinates) // 지도의 중심을 선택된 장소로 이동
+      markerInstance.current.setPosition(coordinates) // 마커 위치 업데이트
+
+      // 지도 줌을 20으로 설정
+      mapInstance.current.setZoom(15)
+    }
+  }
 
   useEffect(() => {
     if (groupId) {
@@ -96,10 +137,21 @@ const ScheduleAdd = () => {
     setTitle(event.target.value)
   }
 
+  const handleAddClick = () => {
+    setShowPlanAdd(true) // PlanAdd 보이기
+  }
+
+  const handleCompletion = () => {
+    setShowPlanAdd(false) // PlanAdd 숨기기
+    if (placeCoordinates) {
+      markerInstance.current?.setPosition(placeCoordinates) // 마커만 업데이트
+    }
+  }
+
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='flex flex-col gap-4 mt-10 px-20'>
       <div className='flex h-[70vh]'>
-        <div className='flex flex-col flex-[4] relative gap-4 overflow-y-auto overflow-x-hidden max-w-full'>
+        <div className='flex flex-col flex-[4] relative gap-4 overflow-y-auto overflow-x-hidden max-w-full custom-css'>
           <div>
             <div className='flex flex-col w-full mx-4 gap-4 items-start'>
               <div className='h-[40px] relative z-1000'>
@@ -139,9 +191,22 @@ const ScheduleAdd = () => {
               </div>
             </div>
           </div>
-          <PlanAdd />
+          {showPlanAdd && <PlanAdd onPlaceSelected={handlePlaceSelected} />}{' '}
+          {/* PlanAdd 보이기 */}
+          <button onClick={handleAddClick}>세부 일정 추가</button>
+          <button onClick={handleCompletion}>완료</button>
         </div>
-        <div className='flex flex-[5] bg-darkGray'>오른쪽 지도</div>
+        <div
+          className='flex flex-[3] bg-darkGray'
+          ref={mapRef}
+          style={{ height: '100%' }}
+        />
+      </div>
+      {/* 선택된 장소, 날짜, 메모 내용 표시 */}
+      <div className='flex flex-col gap-4 mt-4'>
+        {selectedPlace && <div>선택된 장소: {selectedPlace}</div>}
+        {selectedDate && <div>선택된 날짜: {selectedDate}</div>}
+        {memo && <div>메모 내용: {memo}</div>}
       </div>
       <div className='flex gap-4 justify-center'>
         <button
