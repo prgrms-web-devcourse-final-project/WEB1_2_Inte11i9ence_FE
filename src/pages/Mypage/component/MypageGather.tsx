@@ -3,6 +3,7 @@ import DropdownSelector from '@/components/DropdownSelector'
 import { PostApiResponse } from '@/typings/post'
 import axios from 'axios'
 import PostItem from '../../PostListPage/PostItem'
+import { myPosts } from './mockdata'
 
 const MypageGather = () => {
   // 상태 타입을 PostApiResponse로 설정
@@ -15,20 +16,21 @@ const MypageGather = () => {
   ]
 
   useEffect(() => {
-    const fetchMyPost = async () => {
-      try {
-        const response = await axios.get(
-          selectedView === 'posts'
-            ? '/api/v1/posts/chaejeong'
-            : '/api/v1/posts/scrap',
-        )
+    // const fetchMyPost = async () => {
+    //   try {
+    //     const response = await axios.get(
+    //       selectedView === 'posts'
+    //         ? '/api/v1/posts/chaejeong'
+    //         : '/api/v1/posts/scrap',
+    //     )
 
-        setMyPost(response.data)
-      } catch (error) {
-        console.error('error', error)
-      }
-    }
-    fetchMyPost()
+    //     setMyPost(response.data)
+    //   } catch (error) {
+    //     console.error('error', error)
+    //   }
+    // }
+    // fetchMyPost()
+    setMyPost(myPosts)
   }, [selectedView])
 
   return (
@@ -46,7 +48,7 @@ const MypageGather = () => {
             {myPost?.result?.map((post) => (
               <div
                 key={post.id}
-                className='relative z-1000 mx-12'
+                className='relative z-1000 '
               >
                 <PostItem post={post} />
               </div>
@@ -58,7 +60,7 @@ const MypageGather = () => {
             {myPost?.result?.map((post) => (
               <div
                 key={post.id}
-                className='relative z-1000 mx-12'
+                className='relative z-1000 '
               >
                 <PostItem post={post} />
               </div>

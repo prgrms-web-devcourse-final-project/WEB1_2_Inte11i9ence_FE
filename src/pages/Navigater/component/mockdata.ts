@@ -1,15 +1,3 @@
-export const mockMember = {
-  id: 4,
-  oauthId: 'naver asodfweoqofsdobsfdofsjofdsoasdf',
-  name: '홍길동',
-  email: 'testuser@naver.com',
-  username: '홍길동',
-  role: 'ROLE_USER',
-  profileImage: null,
-  createdAt: '2024-11-27T15:50:02.629299',
-  updatedAt: '2024-11-27T15:50:02.629338',
-}
-
 export const mockNotifications = [
   {
     id: 1,

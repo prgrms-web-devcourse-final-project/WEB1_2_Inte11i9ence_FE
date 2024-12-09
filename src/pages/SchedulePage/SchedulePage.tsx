@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import { Group } from '@/typings/region'
 import noPhoto from '@assets/png/noPhoto.png'
 import formatTime from '@/utils/formatTime'
+import { scheduleList, regionAll, region } from './components/mockData'
 const SchedulePage = () => {
   const [regions, setRegions] = useState<{ id: number; name: string }[]>([])
   const [groups, setGroups] = useState<Group[]>([]) // 일정 그룹 데이터
@@ -17,10 +18,11 @@ const SchedulePage = () => {
   // 지역 목록 가져오기
   const fetchRegions = async () => {
     try {
-      const response = await axios.get('/api/v1/region')
-      const regionsData = response.data
-      const allRegions = [{ id: 0, name: '지역 전체' }, ...regionsData]
-      setRegions(allRegions)
+      // const response = await axios.get('/api/v1/region')
+      // const regionsData = response.data
+      // const allRegions = [{ id: 0, name: '지역 전체' }, ...regionsData]
+      // setRegions(allRegions)
+      setRegions(regionAll)
     } catch (error) {
       console.error('Error', error)
     }
@@ -29,11 +31,12 @@ const SchedulePage = () => {
   // 일정 그룹 가져오기 (모든 그룹 또는 특정 지역 그룹)
   const fetchGroups = async (regionId: number | string | null = null) => {
     try {
-      const response = regionId
-        ? await axios.get(`/api/v1/plangroup/region/${regionId}`)
-        : await axios.get('/api/v1/plangroup')
-      setGroups(response.data)
-      console.log(`그룹${response.data}`)
+      // const response = regionId
+      //   ? await axios.get(`/api/v1/plangroup/region/${regionId}`)
+      //   : await axios.get('/api/v1/plangroup')
+      // setGroups(response.data)
+      // console.log(`그룹${response.data}`)
+      setGroups(regionId ? region : scheduleList)
     } catch (error) {
       console.error('Error', error)
     }
@@ -56,7 +59,6 @@ const SchedulePage = () => {
 
   return (
     <div className='flex-col flex'>
-      <div>검색박스</div>
       <div className='flex y-[20px] mx-[70px] bg-white items-center justify-between'>
         <div className='h-[40px] relative z-1000'>
           <DropdownSelector

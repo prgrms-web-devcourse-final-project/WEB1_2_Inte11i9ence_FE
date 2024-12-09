@@ -15,36 +15,36 @@ interface PhotoDetailProps {
 const PhotoDetail = ({ photoId, onClose }: PhotoDetailProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [hasVoted, setHasVoted] = useState(false)
-  const [photoDetail,setPhotoDetail] = useState(null)
-  const [voteResults,setVoteResults] = useState(null)
+  const [photoDetail, setPhotoDetail] = useState(null)
+  const [voteResults, setVoteResults] = useState(null)
 
-useEffect(()=>{
-  const fetchPhotoDetail = async()=>{
-    try{
-      const response = await axios.get(`api/photos/${photoId}`)
-      setPhotoDetail(response.data)
-    }catch(error){
-      console.error('Error',error)
+  useEffect(() => {
+    const fetchPhotoDetail = async () => {
+      try {
+        const response = await axios.get(`api/photos/${photoId}`)
+        setPhotoDetail(response.data)
+      } catch (error) {
+        console.error('Error', error)
+      }
+    }
+    fetchPhotoDetail()
+  }, [photoId])
+
+  const handleVote = async (photoId: string) => {
+    try {
+      const response = await axios.post('/api/vote', {
+        photoId, // 투표된 사진 ID
+        userId: 'user123', // 사용자 ID (로그인 사용자 기준)
+      })
+      if (response.data.success) {
+        console.log('투표 성공:', response.data.voteResults)
+        setHasVoted(true) // 투표 상태 업데이트
+        setVoteResults(response.data.voteResults) // 결과 UI 업데이트
+      }
+    } catch (error) {
+      console.error('투표 실패:', error)
     }
   }
-  fetchPhotoDetail()
-},[photoId])
-
-const handleVote = async (photoId:string) => {
-  try {
-    const response = await axios.post('/api/vote', {
-      photoId, // 투표된 사진 ID
-      userId: 'user123', // 사용자 ID (로그인 사용자 기준)
-    })
-    if (response.data.success) {
-      console.log('투표 성공:', response.data.voteResults)
-      setHasVoted(true) // 투표 상태 업데이트
-      setVoteResults(response.data.voteResults) // 결과 UI 업데이트
-    }
-  } catch (error) {
-    console.error('투표 실패:', error)
-  }
-}
   const images = [defaultProfileImage, defaultProfileImageOne]
 
   const handlePrev = () => {
@@ -58,8 +58,6 @@ const handleVote = async (photoId:string) => {
       prevIndex === images.length - 1 ? 0 : prevIndex + 1,
     )
   }
-
-  
 
   return (
     <div>
@@ -88,7 +86,7 @@ const handleVote = async (photoId:string) => {
                 <p className='text-sm font-bold text-black'>닉네임</p>
                 <div className='flex text-[10px] text-darkGray gap-2'>
                   <p>{photoDetail.createAt}</p>
-                  <p>{photoDetail.views}}</p>
+                  <p>{photoDetail.views}</p>
                 </div>
               </div>
             </div>
@@ -108,7 +106,7 @@ const handleVote = async (photoId:string) => {
               />
             </button>
             <img
-              src={images[currentIndex]} //api로 오는 사진으로 변경 
+              src={images[currentIndex]} //api로 오는 사진으로 변경
               alt={`Photo ${currentIndex + 1}`}
               className='w-full h-full object-cover rounded-md'
             />
@@ -123,7 +121,7 @@ const handleVote = async (photoId:string) => {
             </button>
           </div>
           <p className='font-bold text-sm text-black mt-4'>
-           {photoDetail.content}
+            {photoDetail.content}
           </p>
           {/* 투표 UI */}
           <div className='mt-4  p-2'>
@@ -134,21 +132,21 @@ const handleVote = async (photoId:string) => {
                   <button
                     className='bg-darkBlue text-white py-2 px-2 text-sm rounded-lg hover:bg-blue-600'
                     onClick={() => handleVote(photo1Id)}
-                    >
+                  >
                     첫 번째 사진
                   </button>
                   <p className='font-bold text-lg'>VS</p>
                   <button
                     className='bg-darkBlue text-white py-2 px-2 text-sm rounded-lg hover:bg-blue-600'
                     onClick={() => handleVote(photo2Id)}
-                    >
+                  >
                     두 번째 사진
                   </button>
                 </div>
               </div>
             ) : (
-              // 투표 후 UI, 글의 작성자인지, 투표를 한 사람인ㅇ지에 대한 정보랑, 투표수 전달해서 보여주기 
-              <VoteResults voteResults={voteResults}/>
+              // 투표 후 UI, 글의 작성자인지, 투표를 한 사람인ㅇ지에 대한 정보랑, 투표수 전달해서 보여주기
+              <VoteResults voteResults={voteResults} />
             )}
           </div>
         </div>

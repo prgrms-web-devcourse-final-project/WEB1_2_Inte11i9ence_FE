@@ -5,6 +5,6 @@ interface ContainerProps {
   children: React.ReactNode
 }
 const Container = ({ children }: ContainerProps) => {
-  return <div className='max-w-screen-mg px-4 py-0 h-screen'>{children}</div>
+  return <div className='max-w-screen-mg px-6 py-0 h-screen'>{children}</div>
 }
 export default Container

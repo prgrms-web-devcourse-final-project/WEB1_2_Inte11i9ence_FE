@@ -9,7 +9,7 @@ import axios from 'axios'
 import { AllPostData } from '@/typings/post'
 
 const PostListPage = () => {
-  const location = useLocation();
+  const location = useLocation()
   const initCategory = location.state?.selectedCategory || '전체'
   const [selectedCategory, setSelectedCategory] = useState(initCategory)
   const [selectedDetailCategory, setSelectedDetailCategory] =
@@ -18,36 +18,36 @@ const PostListPage = () => {
   const [sortType, setSortType] = useState('latest')
   const navigate = useNavigate()
   const [error, setError] = useState<string | null>(null) // 에러 메시지
-  const {id} = useParams();
+  const { id } = useParams()
   const [resultPosts, setResultPosts] = useState<AllPostData[]>([])
 
-   // 게시글 필터링 - 마운트 시 전체 게시글, 최신순으로 조회 (옵션 없는 경우)
-   useEffect(() => {
-    let mounted = true;
+  // 게시글 필터링 - 마운트 시 전체 게시글, 최신순으로 조회 (옵션 없는 경우)
+  useEffect(() => {
+    let mounted = true
 
     const getFilteredPosts = async () => {
-        try {
-            const response = await axios.get(
-              'https://www.skypedia.shop/api/v1/posts'
-              // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
-              // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/posts`
-            )
-            if(mounted && response.data){
-              setResultPosts(response.data)
-            }
-        }catch (error) {
-            if (mounted) {
-            console.error('게시글 조회 실패:', error)
-            setError('게시글 조회 실패')
-            }
-        }    
+      try {
+        const response = await axios.get(
+          'https://www.skypedia.shop/api/v1/posts',
+          // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
+          // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/posts`
+        )
+        if (mounted && response.data) {
+          setResultPosts(response.data)
+        }
+      } catch (error) {
+        if (mounted) {
+          console.error('게시글 조회 실패:', error)
+          setError('게시글 조회 실패')
+        }
+      }
     }
-    getFilteredPosts();
+    getFilteredPosts()
 
     return () => {
-        mounted = false;
+      mounted = false
     }
-}, [])
+  }, [])
 
   const handleRegionCategory = (selected: string) => {
     setSelectedCategory(selected)
@@ -95,14 +95,16 @@ const PostListPage = () => {
     { value: 'latest', label: '최신순' },
     { value: 'likes', label: '인기순' },
     { value: 'title', label: '제목순' },
-    { value: 'rating', label: '별점순' }
+    { value: 'rating', label: '별점순' },
   ]
 
   const ExceptRegionOptions = ['공지', '자유', '리뷰']
 
   const filteredGroups = resultPosts.filter((post) => {
     // 공지사항은 제외
-    if (post.category === '공지') {return false};
+    if (post.category === '공지') {
+      return false
+    }
 
     // 전체 카테고리 선택 시 모든 포스트 표시
     if (selectedCategory === '전체') {
@@ -122,35 +124,32 @@ const PostListPage = () => {
     return post.category === selectedCategory
   })
 
-  const notice = resultPosts.filter((post) => post.category === '공지');
+  const notice = resultPosts.filter((post) => post.category === '공지')
 
   // 클라이언트 정렬 로직 (API 실패 시)
   const sortedPosts = useMemo(() => {
-    const sorted = [...filteredGroups];
-    
-    switch(sortType) {
-        case 'latest':
-            return sorted.sort((a, b) => 
-                new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()
-            );
-        case 'likes':
-            return sorted.sort((a, b) => b.likes - a.likes);
-        case 'title':
-            return sorted.sort((a, b) => 
-                a.title.localeCompare(b.title)
-            );
-        case 'rating':
-            return sorted.sort((a, b) => 
-                (b.rating || 0) - (a.rating || 0)
-            );
-        default:
-            return sorted;
-    }
-}, [filteredGroups, sortType]);
+    const sorted = [...filteredGroups]
 
-const sortHandler = (selected: string) => {
-  setSortType(selected);  // 정렬 타입 상태 업데이트
-};
+    switch (sortType) {
+      case 'latest':
+        return sorted.sort(
+          (a, b) =>
+            new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime(),
+        )
+      case 'likes':
+        return sorted.sort((a, b) => b.likes - a.likes)
+      case 'title':
+        return sorted.sort((a, b) => a.title.localeCompare(b.title))
+      case 'rating':
+        return sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0))
+      default:
+        return sorted
+    }
+  }, [filteredGroups, sortType])
+
+  const sortHandler = (selected: string) => {
+    setSortType(selected) // 정렬 타입 상태 업데이트
+  }
 
   return (
     <div>
@@ -164,7 +163,7 @@ const sortHandler = (selected: string) => {
       </div>
 
       {/* 카테고리 선택 드롭다운 */}
-      <div className='flex justify-between mt-10 '>
+      <div className='flex justify-between  '>
         <div className='flex '>
           <div className='h-[40px] relative z-1000 mr-4 mx-24'>
             <DropdownSelector
