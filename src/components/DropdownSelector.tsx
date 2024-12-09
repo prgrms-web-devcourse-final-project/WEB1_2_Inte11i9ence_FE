@@ -43,11 +43,11 @@ const DropdownSelector = ({
 
   return (
     <div
-      className='flex bg-white flex-col items-end text-[12px]'
+      className='flex flex-col items-end text-[12px]'
       ref={dropdownRef}
     >
       <div
-        className={`border w-auto rounded-lg text-[12px] font-bold shadow-md text-black flex flex-col items-stretch transition-all ${
+        className={`border w-auto rounded-lg bg-white text-[12px] font-bold shadow-md text-black flex flex-col items-stretch transition-all ${
           isExpanded ? 'p-2 gap-2' : 'p-2'
         }`}
       >
