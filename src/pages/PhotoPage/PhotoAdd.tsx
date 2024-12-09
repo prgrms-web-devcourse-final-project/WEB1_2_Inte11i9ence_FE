@@ -19,7 +19,7 @@ const PhotoAdd = () => {
     <div className='flex flex-col gap-4'>
       <div className='flex flex-col flex-[4] relative gap-4'>
         <div>
-          <div className='flex flex-col w-full mx-4  gap-7 items-start'>
+          <div className='flex flex-col w-full mx-20 pr-10 gap-7 items-start'>
             <div className='flex gap-4'>
               <div className='h-[40px]  relative z-1000'>
                 <DropdownSelector
