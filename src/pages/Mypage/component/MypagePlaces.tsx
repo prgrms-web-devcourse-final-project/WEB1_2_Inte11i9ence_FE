@@ -21,7 +21,7 @@ const MypagePlaces = ({ regions, onRegionSelect }: MypagePlacesProps) => {
   }
 
   return (
-    <div className='relative flex flex-col flex-[3] gap-16 justify-center items-center'>
+    <div className='relative flex flex-col flex-[4] gap-16 justify-center items-center'>
       <div className='w-[130px] h-[130px] bg-white absolute top-[55px] z-20'>
         <LocationIcon
           width={130}
@@ -29,18 +29,18 @@ const MypagePlaces = ({ regions, onRegionSelect }: MypagePlacesProps) => {
         />
       </div>
       <div className='font-bold text-lg z-10'>
-        <span className='text-lightBlue  '>위에서닉네임받아</span>
+        <span className='text-lightBlue  '>chaejeong</span>
         님은 <span className='text-lightBlue '>{regions?.length}</span>
         개의 지역을 여행했어요!
       </div>
-      <div className='h-[40vh] w-full bg-white shadow-lg rounded-lg border border-lightGray z-10 p-4 font-bold'>
-        <div className='flex justify-center mt-[50px]'>
-          <div className='flex flex-wrap gap-5 w-full mx-4 justify-center'>
+      <div className='h-[30vh] w-full bg-white shadow-lg rounded-lg border border-lightGray z-10 p-4 font-bold flex'>
+        <div className='flex justify-center items-center pt-8'>
+          <div className='flex flex-wrap gap-7  w-full mx-4 justify-start '>
             {regions?.map(({ regionId, regionName }) => (
               <button
                 key={regionId}
                 onClick={() => handleButtonClick(regionId)}
-                className={`border p-[1vw] py-1 w-auto rounded-lg text-sm shadow-md ${
+                className={`border p-[1vw] py-1 w-auto rounded-lg text-sm shadow-md h-8 ${
                   selectedRegion === regionId
                     ? 'bg-[#ecf4f9] text-black'
                     : 'bg-white'

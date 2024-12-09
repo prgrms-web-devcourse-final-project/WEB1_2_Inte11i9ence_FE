@@ -61,8 +61,8 @@ const Mypage = () => {
     : postList
 
   return (
-    <div className='flex justify-center items-start w-full h-full'>
-      <div className='flex w-[57vw] h-[70vh] items-center justify-center gap-9'>
+    <div className='flex justify-center items-start w-full h-full pt-20'>
+      <div className='flex px-16 h-[70vh] items-center justify-center gap-9'>
         <MypagePlaces
           regions={regions}
           onRegionSelect={setRegionId}

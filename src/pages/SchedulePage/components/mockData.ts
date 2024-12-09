@@ -70,7 +70,7 @@ export const region = {
       'https://images.pexels.com/photos/29514076/pexels-photo-29514076/free-photo-of-vibrant-nightlife-in-japanese-urban-scene.jpeg?auto=compress&cs=tinysrgb&w=600',
   },
   regionId: 1,
-  title: '인천 1박 2일 총정리',
+  title: '🌅인천 1박 2일 일정 모음: 해돋이부터 맛집까지 🍚',
   groupImgUrl: 'group.jpg',
   views: 200,
   likes: 30,
@@ -83,7 +83,7 @@ export const region = {
       groupId: 1,
       location: '월미도',
       content:
-        '월미도는 바다를 보며 산책을 즐길 수 있는 멋진 섬입니다. 월미도 테마파크에서 다양한 놀이기구를 즐길 수 있고, 또한 수산물 시장에서 신선한 해산물을 맛볼 수 있어요. 밤에는 멋진 야경을 즐길 수 있더라구요',
+        '여행 첫날은 월미도로 시작했어요. 바닷바람 맞으면서 산책하기 딱 좋은 곳이라 정말 좋아하는데요. 도착하자마자 낚지호떡이랑 새우꼬치를 하나씩 사서 바로 먹었답니다. 맛있어서 한 입 먹고 행복해지는 기분 있죠? ㅎㅎ 놀이공원도 잠깐 둘러봤는데 너무 신나더라구요 ',
       latitude: 37.5665,
       longitude: 126.978,
       planDate: '2020-12-12',
@@ -95,7 +95,7 @@ export const region = {
       groupId: 1,
       location: '송도 센트럴파크',
       content:
-        '자전거를 빌려서 공원을 한 바퀴 돌아볼 수 있고, 보트도 탈 수 있어요. 여유롭게 산책을 즐기기에도 정말 좋은 곳입니다. ',
+        '두 번째로 간 곳은 송도 센트럴파크예요. 여기는 진짜 현대적인 풍경이랑 자연이 같이 있는 곳이라 갈 때마다 새로워요. 이번엔 카누를 예약해서 타봤는데, 물 위에서 공원을 둘러보는 게 진짜 힐링 그 자체였어요. 가만히 카누에 앉아서 바람도 맞고 풍경도 보니까 완전 여유로웠답니다. 그리고 공원 근처 어반 브릭스라는 루프탑 카페도 완전 추천드려요! 여기서 커피 한 잔 들고 일몰 보는 순간, 아... 진짜 이 맛에 여행 오는구나 싶었어요. ',
       latitude: 37.5665,
       longitude: 126.978,
       planDate: '2020-12-12',
@@ -107,7 +107,7 @@ export const region = {
       groupId: 1,
       location: '인천 해돋이 공원',
       content:
-        '인천 해돋이 공원은 새해 첫날 해돋이를 보기 위해 찾은 곳인데요, 바다와 함께 떠오르는 해를 보는 경험이 정말 감동적이었습니다. 일출을 보면서 여유롭게 하루를 시작할 수 있는 특별한 곳입니다. 사진 찍기에도 매우 좋은 장소여서, 자연을 만끽하며 힐링할 수 있었습니다.',
+        '저는 사실 아침에 늦게 일어나서 해돋이를 놓쳤답니다^^. 근데 여기 진짜 강추예요. 해돋이공원이라 그런지 일출이 딱 보이기 좋은 자리들이 많아요.  근처 포구에서 먹은 해산물 정식도 정말 맛있었어요! ',
       latitude: 37.5665,
       longitude: 126.978,
       planDate: '2020-12-12',
@@ -119,7 +119,7 @@ export const region = {
       groupId: 1,
       location: '을왕리',
       content:
-        ' 맑은 바다와 넓은 백사장이 인상적이었어요. 해수욕을 즐기거나 바다를 보며 산책하기에 좋은 장소입니다. 여름에 바다를 즐기기 위해 찾을 만한 멋진 장소로, 물놀이를 좋아하는 분들에게 추천드립니다.',
+        '을왕리는 역시 석양 아니겠어요? 해변 걸으면서 모래도 밟고 갯벌 구경도 하고, 너무 재밌었어요. 특히 저녁엔 조개구이 먹으러 갔는데, 조개가 얼마나 신선하던지...!! 완전 감동했습니다. 해가 질 무렵엔 해변에 앉아서 하늘이 붉게 물드는 걸 봤는데요, 그 순간 진짜 아무 생각도 안 나고 너무 행복했어요. 캠프파이어 하는 분들도 계셔서 분위기가 더 좋았답니다.',
       latitude: 37.5665,
       longitude: 126.978,
       planDate: '2020-12-13',
@@ -169,7 +169,7 @@ export const scheduleList = [
         'https://images.pexels.com/photos/29514076/pexels-photo-29514076/free-photo-of-vibrant-nightlife-in-japanese-urban-scene.jpeg?auto=compress&cs=tinysrgb&w=600',
     },
     regionId: 4,
-    title: '인천 1박 2일 총정리',
+    title: '🌅인천 1박 2일 일정 모음: 해돋이부터 맛집까지 🍚',
     groupImgUrl:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIkA7Zm_KQLlFMX0b7bnRgrwcML7cZC5-VQQ&s',
     views: 45,
@@ -580,7 +580,7 @@ export const scheduleList = [
         'https://images.pexels.com/photos/29514076/pexels-photo-29514076/free-photo-of-vibrant-nightlife-in-japanese-urban-scene.jpeg?auto=compress&cs=tinysrgb&w=600',
     },
     regionId: 4,
-    title: '인천 1박 2일 총정리',
+    title: '🌅인천 1박 2일 일정 모음: 해돋이부터 맛집까지 🍚',
     groupImgUrl:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIkA7Zm_KQLlFMX0b7bnRgrwcML7cZC5-VQQ&s',
     views: 45,
