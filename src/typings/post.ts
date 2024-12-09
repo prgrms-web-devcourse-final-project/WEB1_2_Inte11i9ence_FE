@@ -5,40 +5,48 @@ export interface AllPostData {
   title: string
   content: string
   photoUrl?: string | null
-  author: {
-    username: string
-    profileUrl?: string | null
-  }
-
+  author: Author;
   likes: number
   views: number
   postedAt: string
   replies: number
   category: string
   rating?: number
+  comments: Comment[];
 }
+
+// 특정 게시글 - 작성자 타입 정의
+export interface Author {
+  username: string;
+  profileUrl: string;
+}
+
+// 특정 게시글 - 댓글 타입 정의
+export interface Comment {
+  author?: Author;
+  time: string;
+  content: string;
+  // replies?: Reply[];
+}
+
+export interface Reply {
+  nickname: string;
+  time: string;
+  content: string;
+}
+//
+// 카테고리 (지역) 타입 정의
+export interface CategoryData {
+  name: string,
+  description: string
+}
+
 // API 응답 타입 정의
 export interface PostApiResponse {
   message: string
   result: AllPostData[] // result는 AllPostData 배열
   nextPostUrl: string | null
 }
-
-// 특정 게시글 - 작성자 타입 정의
-export interface Author {
-  memberId: number
-  name: string
-}
-
-// 특정 게시글 - 댓글 타입 정의
-export interface Comment {
-  commentId: number
-  content: string
-  author: Author
-  createdAt: string
-}
-
-//
 
 // 특정 게시글 조회 응답 타입
 export interface SinglePostData {
@@ -54,12 +62,6 @@ export interface SinglePostData {
   updatedAt: string
   nickname: string
   comments: Comment[]
-}
-
-// 카테고리 (지역) 타입 정의
-export interface CategoryData {
-  name: string,
-  description: string
 }
 
 // 전체 게시글 조회 응답 타입 정의
