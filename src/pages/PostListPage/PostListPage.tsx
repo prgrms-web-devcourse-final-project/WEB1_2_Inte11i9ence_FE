@@ -22,71 +22,73 @@ const PostListPage = () => {
   const [allPosts, setAllPosts] = useState<AllPostData[]>([])
   const [filteredGroups, setFilteredGroups] = useState<AllPostData[]>([])
   const [notice, setNotice] = useState<AllPostData[]>([])
-  
-// 최초 마운트 시 전체 게시글 조회
-useEffect(() => {
-  setAllPosts(postData)
-},[])
+
+  // 최초 마운트 시 전체 게시글 조회
+  useEffect(() => {
+    setAllPosts(postData)
+  }, [])
 
   // 게시글 필터링 - 마운트 시 전체 게시글, 최신순으로 조회 (옵션 없는 경우)
-    //    useEffect(() => {
-    //     let mounted = true;
+  //    useEffect(() => {
+  //     let mounted = true;
 
-    //     const getFilteredPosts = async () => {
-    //         try {
-    //             const response = await axios.get(
-    //               'https://www.skypedia.shop/api/v1/posts'
-    //               // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
-    //               // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/posts`
-    //             )
-    //             if(mounted && response.data){
-    //               setAllPosts(response.data)
-    //             }
-    //         }catch (error) {
-    //             if (mounted) {
-    //             console.error('게시글 조회 실패:', error)
-    //             setError('게시글 조회 실패')
-    //             }
-    //         }    
-    //     }
-    //     getFilteredPosts();
+  //     const getFilteredPosts = async () => {
+  //         try {
+  //             const response = await axios.get(
+  //               'https://www.skypedia.shop/api/v1/posts'
+  //               // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
+  //               // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/posts`
+  //             )
+  //             if(mounted && response.data){
+  //               setAllPosts(response.data)
+  //             }
+  //         }catch (error) {
+  //             if (mounted) {
+  //             console.error('게시글 조회 실패:', error)
+  //             setError('게시글 조회 실패')
+  //             }
+  //         }
+  //     }
+  //     getFilteredPosts();
 
-    //     return () => {
-    //         mounted = false;
-    //     }
+  //     return () => {
+  //         mounted = false;
+  //     }
   // }, [])
 
-// 게시글 필터링 및 공지 게시글 분리 - 2개 드롭다운 변경마다
-useEffect(() => {
-  const filterPosts = () => {
-    const ExceptRegionOptions = ['공지', '자유', '리뷰'];
+  // 게시글 필터링 및 공지 게시글 분리 - 2개 드롭다운 변경마다
+  useEffect(() => {
+    const filterPosts = () => {
+      const ExceptRegionOptions = ['공지', '자유', '리뷰']
 
-    const filtered = allPosts.filter((post) => {
-      if (post.category === '공지') {return false};
-
-      if (selectedCategory === '전체') {
-        return true;
-      }
-
-      if (selectedCategory === '지역') {
-        if (selectedDetailCategory === '지역 전체') {
-          return !ExceptRegionOptions.includes(post.category);
+      const filtered = allPosts.filter((post) => {
+        if (post.category === '공지') {
+          return false
         }
-        return post.category === selectedDetailCategory;
-      }
 
-      return post.category === selectedCategory;
-    });
+        if (selectedCategory === '전체') {
+          return true
+        }
 
-    setFilteredGroups(filtered);
-  };
-  const noticePost = allPosts.filter((post) => post.category === '공지');
-  setNotice(noticePost);
+        if (selectedCategory === '지역') {
+          if (selectedDetailCategory === '지역 전체') {
+            return !ExceptRegionOptions.includes(post.category)
+          }
+          return post.category === selectedDetailCategory
+        }
 
-  filterPosts();
-}, [selectedCategory, selectedDetailCategory, allPosts]);
+        return post.category === selectedCategory
+      })
 
-// 카테고리 변경 핸들러
+      setFilteredGroups(filtered)
+    }
+    const noticePost = allPosts.filter((post) => post.category === '공지')
+    setNotice(noticePost)
+
+    filterPosts()
+  }, [selectedCategory, selectedDetailCategory, allPosts])
+
+  // 카테고리 변경 핸들러
   const handleRegionCategory = (selected: string) => {
     setSelectedCategory(selected)
 
@@ -135,38 +137,37 @@ useEffect(() => {
       { value: 'latest', label: '최신순' },
       { value: 'likes', label: '인기순' },
       { value: 'title', label: '제목순' },
-    ];
+    ]
 
     if (selectedCategory === '리뷰') {
-      options.push({ value: 'rating', label: '별점순' });
+      options.push({ value: 'rating', label: '별점순' })
     }
 
-    return options;
-  }, [selectedCategory]);
+    return options
+  }, [selectedCategory])
 
   // 클라이언트 정렬 로직 (API 실패 시)
   const sortedPosts = useMemo(() => {
-    const sorted = [...filteredGroups];
-    
-    switch(sortType) {
-        case 'latest':
-            return sorted.sort((a, b) => 
-                new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()
-            );
-        case 'likes':
-            return sorted.sort((a, b) => b.likes - a.likes);
-        case 'title':
-            return sorted.sort((a, b) => 
-                a.title.localeCompare(b.title)
-            );
-        case 'rating':
-            return sorted
+    const sorted = [...filteredGroups]
+
+    switch (sortType) {
+      case 'latest':
+        return sorted.sort(
+          (a, b) =>
+            new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime(),
+        )
+      case 'likes':
+        return sorted.sort((a, b) => b.likes - a.likes)
+      case 'title':
+        return sorted.sort((a, b) => a.title.localeCompare(b.title))
+      case 'rating':
+        return (
+          sorted
             // .filter((post) => post.rating !== undefined)
-            .sort((a, b) => 
-                (b.rating || 0) - (a.rating || 0)
-            );
-        default:
-            return sorted;
+            .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+        )
+      default:
+        return sorted
     }
   }, [filteredGroups, sortType])
 

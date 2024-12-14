@@ -3,13 +3,14 @@ import Profile from '@/assets/png/Profile.png'
 import { Eye, Star } from 'lucide-react'
 import Gangwondo from '@/assets/png/Gangwondo.png'
 import CommentSection from './CommentSection'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { postData } from '@/temporaryData/allPostData'
 import { useState, useEffect } from 'react'
 import { AllPostData } from '@/typings/post'
 import formatTime from '@/utils/formatTime'
 import { Link } from 'react-router-dom'
-
+import useCreateChat from '@/hooks/useCreateChat'
+import axios from 'axios'
 const PostPage = ({
   login, //임시로 true
   // boardType = '지역게시판', // 임시
@@ -19,11 +20,34 @@ const PostPage = ({
 }) => {
   // const rating = 4
   // const region = '강원도'
+
   const tagExample = ['#국내여행', '#한국', '#힐링여행', '#국내여행지추천']
   const { id } = useParams()
   const [postInfo, setPostInfo] = useState<AllPostData | null>(null)
   const [postCategory, setPostCategory] = useState<string>('')
   const [rating, setRating] = useState<number>(0)
+  const navigate = useNavigate()
+  // useCreateChat 훅 초기화
+
+  const handleChatClick = async () => {
+    if (!postInfo?.author.username) {
+      console.error('작성자 정보가 없습니다.')
+      return
+    }
+
+    try {
+      const chatRoomInfo = await createChatRoom() // 채팅방 생성
+      navigate('/chat', {
+        state: {
+          chatRoomInfo,
+          postId: postInfo?.id,
+          postTitle: postInfo?.title,
+        },
+      }) // 채팅 페이지로 이동
+    } catch (error) {
+      console.error('채팅방 생성 오류:', error)
+    }
+  }
 
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -44,6 +68,23 @@ const PostPage = ({
     setPostCategory(foundPost?.category || '')
     setRating(foundPost?.rating || 0)
   }, [id])
+  const { createChatRoom } = useCreateChat(postInfo?.author.username || '')
+  console.log(`포스트페ㅣ지${postInfo?.author.username}`)
+
+  useEffect(() => {
+    const getPost = async () => {
+      try {
+        const response = await axios.get(
+          'https://www.skypedia.shop/api/v1/post/2',
+        )
+        setPostInfo(response.data)
+      } catch (error) {
+        console.error('error', error)
+      }
+    }
+    getPost()
+    console.log(postInfo)
+  }, [])
 
   return (
     <div className='w-full flex flex-col justify-center mx-20 p-5'>
@@ -117,12 +158,12 @@ const PostPage = ({
           <div className='flex items-center gap-2'>
             {!login ? (
               <>
-                <Link
-                  to='/chat'
+                <button
+                  onClick={handleChatClick}
                   className='flex items-center text-gray-500 hover:text-purple-500 ml-4'
                 >
                   채팅하기
-                </Link>
+                </button>
                 <button className='flex items-center text-gray-500 hover:text-green-500'>
                   스크랩
                 </button>
