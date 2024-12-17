@@ -150,7 +150,7 @@ const ChatBox = ({ room, myNickName, myId }: ChatBoxProps) => {
         <div className='flex items-center gap-2'>
           <div className='w-8 h-8 rounded-full overflow-hidden'>
             <img
-              src={room.otherProfileImg || 'defaultProfileImage'}
+              src={room.otherProfileImg || defaultProfileImage}
               alt='Profile'
               className='w-full h-full object-cover'
             />
