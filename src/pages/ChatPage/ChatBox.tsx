@@ -3,13 +3,8 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import SockJS from 'sockjs-client'
 import { Client } from '@stomp/stompjs' // WebSocket 클라이언트 라이브러리
-
-interface Room {
-  id: string
-  creatorName: string
-  participantName: string
-  creatorId: string
-}
+import { ChatRoom } from '@/typings/chat'
+import defaultProfileImage from '@assets/png/default-profile-2.png'
 
 interface Message {
   id: string
@@ -19,7 +14,7 @@ interface Message {
 }
 
 interface ChatBoxProps {
-  room: Room
+  room: ChatRoom
   myNickName: string
   myId: number
 }
@@ -155,17 +150,13 @@ const ChatBox = ({ room, myNickName, myId }: ChatBoxProps) => {
         <div className='flex items-center gap-2'>
           <div className='w-8 h-8 rounded-full overflow-hidden'>
             <img
-              src={''}
+              src={room.otherProfileImg || 'defaultProfileImage'}
               alt='Profile'
               className='w-full h-full object-cover'
             />
           </div>
           <div className='flex w-full justify-between'>
-            <p className='font-semibold text-black'>
-              {myNickName === room.creatorName
-                ? room.creatorName
-                : room.participantName}
-            </p>
+            <p className='font-semibold text-black'>{room.otherNickName}</p>
             <p className='font-semibold text-black'>| 게시글이름추가</p>
           </div>
         </div>

@@ -75,7 +75,7 @@ const PostPage = ({
     const getPost = async () => {
       try {
         const response = await axios.get(
-          'https://www.skypedia.shop/api/v1/post/2',
+          'https://www.skypedia.shop/api/v1/post/1',
         )
         setPostInfo(response.data)
       } catch (error) {

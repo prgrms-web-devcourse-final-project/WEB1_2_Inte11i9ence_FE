@@ -11,11 +11,12 @@ const useProfile = (token: string) => {
           'https://www.skypedia.shop/api/v1/member/me',
           {
             headers: {
-              Authorization: `Bearer ${token}`, // JWT 토큰 추가 근데 이거 로직짜여있다고 하셔서 나중에 뺄수도
+              Authorization: `Bearer ${token}`,
             },
           },
         )
         setProfile(response.data)
+        console.log(response.data)
       } catch (error) {
         console.error('error', error)
       }
