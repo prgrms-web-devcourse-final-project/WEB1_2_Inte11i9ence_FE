@@ -1,30 +1,29 @@
-import './scroll.css' // 스크롤 스타일링
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import SockJS from 'sockjs-client'
-import { Client } from '@stomp/stompjs' // WebSocket 클라이언트 라이브러리
+import { Client } from '@stomp/stompjs'
 import { ChatRoom } from '@/typings/chat'
 import defaultProfileImage from '@assets/png/default-profile-2.png'
+import './scroll.css'
 
 interface Message {
   id: string
   content: string
-  senderId: string
+  senderId: number
   createdAt: string
 }
 
 interface ChatBoxProps {
   room: ChatRoom
-  myNickName: string
-  myId: number
+  myId: number | undefined
 }
 
-const ChatBox = ({ room, myNickName, myId }: ChatBoxProps) => {
-  const [messages, setMessages] = useState<Message[]>([]) // 메시지 상태 관리
-  const [newMessage, setNewMessage] = useState('') // 새 메시지 입력 상태
-  const [client, setClient] = useState<Client | null>(null) // WebSocket 클라이언트 상태
+const ChatBox = ({ room, myId }: ChatBoxProps) => {
+  const [messages, setMessages] = useState<Message[]>([])
+  const [newMessage, setNewMessage] = useState('')
+  const [client, setClient] = useState<Client | null>(null)
+  const messagesEndRef = useRef<HTMLDivElement | null>(null)
 
-  // 메시지 목록 가져오기 함수
   const getMessages = async () => {
     const token = localStorage.getItem('access_token')
     try {
@@ -37,12 +36,26 @@ const ChatBox = ({ room, myNickName, myId }: ChatBoxProps) => {
           },
         },
       )
-      setMessages(response.data || []) // 응답 데이터 설정 (빈 배열 대체)
+      setMessages(response.data.content || [])
     } catch (error) {
       console.error('ERROR', error)
-      setMessages([]) // 오류 발생 시 빈 배열로 초기화
+      setMessages([])
     }
   }
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+      })
+    }
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
   useEffect(() => {
     if (room) {
       const token = localStorage.getItem('access_token')
@@ -50,7 +63,6 @@ const ChatBox = ({ room, myNickName, myId }: ChatBoxProps) => {
         console.error('토큰이 없습니다. WebSocket 연결을 시작할 수 없습니다.')
         return
       }
-
       const socket = new SockJS('https://www.skypedia.shop/ws-stomp')
       const stompClient = new Client({
         webSocketFactory: () => socket,
@@ -71,16 +83,6 @@ const ChatBox = ({ room, myNickName, myId }: ChatBoxProps) => {
           const receivedMessage = JSON.parse(message.body)
           setMessages((prev) => [...prev, receivedMessage])
         })
-
-        stompClient.subscribe(
-          `/sub/chat/room/${room.id}/status`,
-          (statusMessage) => {
-            const status = JSON.parse(statusMessage.body)
-            if (status === 'DELETED' || status === 'BLOCKED') {
-              console.log('채팅방이 삭제되었거나 차단되었습니다.')
-            }
-          },
-        )
       }
 
       stompClient.onDisconnect = () => {
@@ -90,62 +92,65 @@ const ChatBox = ({ room, myNickName, myId }: ChatBoxProps) => {
       stompClient.activate()
       setClient(stompClient)
 
-      // cleanup function to deactivate client when component unmounts or room changes
       return () => {
         if (stompClient && stompClient.active) {
-          stompClient.deactivate() // 연결이 활성화되었을 때만 종료
-          console.log('WebSocket 연결이 종료되었습니다.')
+          stompClient.deactivate()
         }
       }
     }
-  }, [room]) // room이 변경될 때마다 새로운 WebSocket 연결을 시작합니다.
+  }, [room])
 
-  // 메시지 가져오기 실행
   useEffect(() => {
     if (room) {
       getMessages()
     }
   }, [room])
 
-  // 메시지 전송 함수
   const sendMessage = () => {
     if (!client || !client.active) {
       console.log('WebSocket 클라이언트가 연결되지 않았습니다.')
       return
     }
-
-    // 값들 출력해보기
-    console.log('room.id:', room.id)
-    console.log('newMessage:', newMessage)
-    console.log('userId:', myId)
-
-    // 데이터가 유효한지 체크
-    if (!room.id || !newMessage.trim() || !myId) {
-      console.log('메시지 전송에 필요한 데이터가 부족합니다.')
-      return // 데이터 부족 시 종료
-    }
-
-    // 메시지 전송
     try {
       client.publish({
-        destination: `/pub/chat/message`, // WebSocket 경로 수정
+        destination: `/pub/chat/message`,
         body: JSON.stringify({
           roomId: room.id,
           content: newMessage,
           senderId: myId,
         }),
       })
-
-      console.log('메시지가 성공적으로 전송되었습니다.')
-      setNewMessage('') // 메시지 전송 후 초기화
+      setNewMessage('')
     } catch (error) {
       console.error('메시지 전송 중 오류 발생:', error)
     }
   }
 
+  const formatTime = (createdAt: string) => {
+    const date = new Date(createdAt)
+    const hours = date.getHours().toString().padStart(2, '0')
+    const minutes = date.getMinutes().toString().padStart(2, '0')
+    const seconds = date.getSeconds().toString().padStart(2, '0')
+    return `${hours}:${minutes}:${seconds}`
+  }
+
+  const groupMessagesByDate = (messages: Message[]) => {
+    const grouped: { [key: string]: Message[] } = {}
+    messages.forEach((msg) => {
+      const date = new Date(msg.createdAt)
+      const dateStr = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+      if (!grouped[dateStr]) {
+        grouped[dateStr] = []
+      }
+      grouped[dateStr].push(msg)
+    })
+    return grouped
+  }
+
+  const groupedMessages = groupMessagesByDate(messages)
+
   return (
-    <div className='flex flex-col h-[78vh] mt-20 w-full mx-auto bg-white border shadow custom-scroll'>
-      {/* 상단 채팅방 정보 */}
+    <div className='flex flex-col h-[78vh] mt-20 w-full mx-auto bg-white border shadow'>
       <div className='flex items-center justify-between bg-lightGrays px-4 py-2 border-b'>
         <div className='flex items-center gap-2'>
           <div className='w-8 h-8 rounded-full overflow-hidden'>
@@ -162,35 +167,38 @@ const ChatBox = ({ room, myNickName, myId }: ChatBoxProps) => {
         </div>
       </div>
 
-      {/* 메시지 목록 */}
-      <div className='flex flex-col flex-1 p-4 gap-4 overflow-y-auto'>
-        {Array.isArray(messages) && messages.length === 0 ? (
-          <p className='text-center text-gray-500'>메시지가 비어 있습니다.</p>
-        ) : (
-          Array.isArray(messages) &&
-          messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex ${msg.senderId === room.creatorId ? 'justify-end' : 'justify-start'}`}
-            >
-              <div>
-                <div
-                  className={`px-4 py-2 rounded-lg text-[13px] ${msg.senderId === room.creatorId ? 'bg-darkBlue text-white' : 'bg-gray-200 text-black'}`}
-                >
-                  <p>{msg.content}</p>
+      <div className='flex flex-col flex-1 p-4 gap-4 custom-scroll'>
+        {Object.keys(groupedMessages).map((dateStr) => (
+          <div key={dateStr}>
+            <div className='text-center text-gray-400 mt-4 mb-2'>{dateStr}</div>
+            {groupedMessages[dateStr].map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex ${msg.senderId === myId ? 'justify-end' : 'justify-start'}`}
+              >
+                <div className='flex flex-col'>
+                  <div
+                    className={`flex inline-flex px-4 py-2 rounded-lg text-[13px] ${
+                      msg.senderId === myId
+                        ? 'bg-darkBlue text-white'
+                        : 'bg-gray-200 text-black'
+                    }`}
+                  >
+                    <p>{msg.content}</p>
+                  </div>
+                  <span
+                    className={`text-[11px] my-1 ${msg.senderId === myId ? 'text-right' : 'text-left'}`}
+                  >
+                    {formatTime(msg.createdAt)}
+                  </span>
                 </div>
-                <span
-                  className={`text-xs mt-1 block ${msg.senderId === room.creatorId ? 'text-right' : 'text-left'}`}
-                >
-                  {new Date(msg.createdAt).toLocaleString()}
-                </span>
               </div>
-            </div>
-          ))
-        )}
+            ))}
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
       </div>
 
-      {/* 입력창 및 전송 버튼 */}
       <div className='flex items-center gap-2 p-4 border-t bg-gray-50'>
         <input
           type='text'

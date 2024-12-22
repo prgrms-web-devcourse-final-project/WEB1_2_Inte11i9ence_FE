@@ -5,9 +5,9 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  define: {
-    global: {},
-  },
+  // define: {
+  //   global: {},
+  // },
   optimizeDeps: {
     include: ['sockjs-client'],
   },
@@ -26,6 +26,7 @@ export default defineConfig({
       '@store': path.resolve(__dirname, './src/store'),
       '@typings': path.resolve(__dirname, './src/typings'),
       '@utils': path.resolve(__dirname, './src/utils'),
+      'sockjs-client': 'sockjs-client/dist/sockjs.js',
     },
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },

@@ -9,7 +9,7 @@ const ChatPage = () => {
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]) // 채팅방 목록
   const [selectedRoom, setSelectedRoom] = useState<ChatRoom>() // 선택된 채팅방
   const [myNickName, setMyNickName] = useState('') // 내 닉네임
-  const [myId, setMyId] = useState('') // 내 ID
+  const [myId, setMyId] = useState<number>() // 내 ID
   const token = localStorage.getItem('access_token') || '' // 토큰
 
   // 내 프로필 가져오기
@@ -17,6 +17,7 @@ const ChatPage = () => {
   useEffect(() => {
     if (profile) {
       setMyNickName(profile.username)
+      setMyId(profile.id)
     }
   }, [profile])
 
@@ -87,7 +88,7 @@ const ChatPage = () => {
   }
 
   return (
-    <div className='flex justify-center items-center w-full px-20 pt-10'>
+    <div className='flex justify-center items-center w-full px-20 '>
       <div className='flex w-[80vw] h-[70vh] items-center justify-center gap-8'>
         <div className='flex flex-col flex-[4.5] h-full gap-6 justify-start items-start'>
           <div>
@@ -127,7 +128,6 @@ const ChatPage = () => {
           {selectedRoom && (
             <ChatBox
               room={selectedRoom}
-              myNickName={myNickName}
               myId={myId}
             />
           )}

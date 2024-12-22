@@ -30,7 +30,7 @@
       "@typings/*": ["src/typings/*"],
       "@utils/*": ["src/utils/*"]
     },
-    "types": ["vite-plugin-svgr/client","node","google.maps"],
+    "types": ["vite-plugin-svgr/client","node","google.maps","@types/stompjs"],
 
     /* Linting */
     "strict": true,
