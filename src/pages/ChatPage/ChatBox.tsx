@@ -2,21 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import SockJS from 'sockjs-client'
 import { Client } from '@stomp/stompjs'
-import { ChatRoom } from '@/typings/chat'
 import defaultProfileImage from '@assets/png/default-profile-2.png'
-import './scroll.css'
-
-interface Message {
-  id: string
-  content: string
-  senderId: number
-  createdAt: string
-}
-
-interface ChatBoxProps {
-  room: ChatRoom
-  myId: number | undefined
-}
+import { ChatBoxProps, Message } from '@/typings/chat'
+import { formatTime, groupMessagesByDate } from '@/utils/chatFormatTime'
 
 const ChatBox = ({ room, myId }: ChatBoxProps) => {
   const [messages, setMessages] = useState<Message[]>([])
@@ -32,7 +20,6 @@ const ChatBox = ({ room, myId }: ChatBoxProps) => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
           },
         },
       )
@@ -43,10 +30,16 @@ const ChatBox = ({ room, myId }: ChatBoxProps) => {
     }
   }
 
+  useEffect(() => {
+    if (room) {
+      getMessages()
+    }
+  }, [room])
+
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({
-        behavior: 'smooth',
+        behavior: 'auto',
         block: 'end',
       })
     }
@@ -100,12 +93,6 @@ const ChatBox = ({ room, myId }: ChatBoxProps) => {
     }
   }, [room])
 
-  useEffect(() => {
-    if (room) {
-      getMessages()
-    }
-  }, [room])
-
   const sendMessage = () => {
     if (!client || !client.active) {
       console.log('WebSocket 클라이언트가 연결되지 않았습니다.')
@@ -126,34 +113,13 @@ const ChatBox = ({ room, myId }: ChatBoxProps) => {
     }
   }
 
-  const formatTime = (createdAt: string) => {
-    const date = new Date(createdAt)
-    const hours = date.getHours().toString().padStart(2, '0')
-    const minutes = date.getMinutes().toString().padStart(2, '0')
-    const seconds = date.getSeconds().toString().padStart(2, '0')
-    return `${hours}:${minutes}:${seconds}`
-  }
-
-  const groupMessagesByDate = (messages: Message[]) => {
-    const grouped: { [key: string]: Message[] } = {}
-    messages.forEach((msg) => {
-      const date = new Date(msg.createdAt)
-      const dateStr = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-      if (!grouped[dateStr]) {
-        grouped[dateStr] = []
-      }
-      grouped[dateStr].push(msg)
-    })
-    return grouped
-  }
-
   const groupedMessages = groupMessagesByDate(messages)
 
   return (
-    <div className='flex flex-col h-[78vh] mt-20 w-full mx-auto bg-white border shadow'>
+    <div className='flex flex-col rounded-xl h-[78vh] mt-20 w-full mx-auto bg-white border shadow'>
       <div className='flex items-center justify-between bg-lightGrays px-4 py-2 border-b'>
         <div className='flex items-center gap-2'>
-          <div className='w-8 h-8 rounded-full overflow-hidden'>
+          <div className='w-8 h- rounded-full overflow-hidden'>
             <img
               src={room.otherProfileImg || defaultProfileImage}
               alt='Profile'
@@ -161,41 +127,51 @@ const ChatBox = ({ room, myId }: ChatBoxProps) => {
             />
           </div>
           <div className='flex w-full justify-between'>
-            <p className='font-semibold text-black'>{room.otherNickName}</p>
-            <p className='font-semibold text-black'>| 게시글이름추가</p>
+            <p className='font-semibold text-[14px] text-black'>
+              {room.otherNickName}
+            </p>
           </div>
         </div>
       </div>
 
       <div className='flex flex-col flex-1 p-4 gap-4 custom-scroll'>
-        {Object.keys(groupedMessages).map((dateStr) => (
-          <div key={dateStr}>
-            <div className='text-center text-gray-400 mt-4 mb-2'>{dateStr}</div>
-            {groupedMessages[dateStr].map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex ${msg.senderId === myId ? 'justify-end' : 'justify-start'}`}
-              >
-                <div className='flex flex-col'>
-                  <div
-                    className={`flex inline-flex px-4 py-2 rounded-lg text-[13px] ${
-                      msg.senderId === myId
-                        ? 'bg-darkBlue text-white'
-                        : 'bg-gray-200 text-black'
-                    }`}
-                  >
-                    <p>{msg.content}</p>
-                  </div>
-                  <span
-                    className={`text-[11px] my-1 ${msg.senderId === myId ? 'text-right' : 'text-left'}`}
-                  >
-                    {formatTime(msg.createdAt)}
-                  </span>
-                </div>
+        {Object.keys(groupedMessages)
+          .reverse()
+          .map((dateStr) => (
+            <div key={dateStr}>
+              <div className='text-center text-darkGray text-[14px] mt-4 mb-2'>
+                {dateStr}
               </div>
-            ))}
-          </div>
-        ))}
+              {groupedMessages[dateStr]
+                .slice()
+                .reverse()
+                .map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`flex ${msg.senderId === myId ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div className='flex flex-col'>
+                      <div
+                        className={`flex inline-flex px-3 py-1 rounded-lg text-[13px] ${
+                          msg.senderId === myId
+                            ? 'bg-darkBlue text-white'
+                            : 'bg-gray-200 text-black'
+                        }`}
+                      >
+                        <p>{msg.content}</p>
+                      </div>
+                      <span
+                        className={`text-[11px] my-1 ${
+                          msg.senderId === myId ? 'text-right' : 'text-left'
+                        }`}
+                      >
+                        {formatTime(msg.createdAt)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          ))}
         <div ref={messagesEndRef} />
       </div>
 
@@ -205,11 +181,11 @@ const ChatBox = ({ room, myId }: ChatBoxProps) => {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder='메시지를 입력하세요...'
-          className='flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-darkBlue'
+          className='flex-1 px-3 py-1 text-[14px] border rounded-lg focus:outline-none focus:ring-2 focus:ring-darkBlue'
         />
         <button
           onClick={sendMessage}
-          className='px-4 py-2 bg-darkBlue text-white rounded-lg hover:bg-blue-600'
+          className='px-3 py-1 bg-darkBlue text-[14px] text-white rounded-lg hover:bg-blue-600'
         >
           전송
         </button>

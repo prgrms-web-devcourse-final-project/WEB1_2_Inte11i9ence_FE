@@ -19,3 +19,15 @@ export interface Pageable {
   first: boolean
   last: boolean
 }
+
+export interface Message {
+  id: string
+  content: string
+  senderId: number
+  createdAt: string
+}
+
+export interface ChatBoxProps {
+  room: ChatRoom
+  myId: number | undefined
+}
