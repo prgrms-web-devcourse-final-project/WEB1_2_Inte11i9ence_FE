@@ -22,7 +22,7 @@ const useProfile = (token: string) => {
     }
 
     fetchProfile()
-  }, [token, profile])
+  }, [])
 
   return { profile, setProfile }
 }
