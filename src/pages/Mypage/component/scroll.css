@@ -1,29 +1,21 @@
 .custom-scroll {
-  overflow-y: auto;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-  padding-right: 8px; /* 스크롤바 너비만큼 여백 추가 */
+  overflow-y: auto; /* 스크롤바 항상 보이도록 설정 */
+  padding-right: 10px; /* 스크롤바의 여백을 항상 확보 */
+margin-right:10px;
+margin-block:8px;
+max-height: calc(78vh - 80px); /* 메시지 영역 높이를 제한하여 스크롤 범위 설정 */
+
 }
 
 .custom-scroll::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
-}
-
-.custom-scroll:hover {
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: #888 transparent; /* Firefox */
-}
-
-.custom-scroll:hover::-webkit-scrollbar {
-  display: block;
   width: 8px; /* 스크롤바 너비 */
 }
 
-.custom-scroll:hover::-webkit-scrollbar-thumb {
-  background-color: #888; /* 스크롤바 색상 */
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #e2dede; /* 스크롤바 색상 */
   border-radius: 4px; /* 둥근 모서리 */
 }
 
-.custom-scroll:hover::-webkit-scrollbar-track {
+.custom-scroll::-webkit-scrollbar-track {
   background: transparent; /* 트랙 배경 투명 */
 }
