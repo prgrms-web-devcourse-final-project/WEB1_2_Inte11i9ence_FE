@@ -115,22 +115,53 @@ const ChatBox = ({ room, myId }: ChatBoxProps) => {
 
   const groupedMessages = groupMessagesByDate(messages)
 
+  const handleDelete = async () => {
+    const token = localStorage.getItem('access_token')
+    const confirmDelete = window.confirm('삭제 하시겠습니까?')
+
+    if (confirmDelete) {
+      try {
+        await axios.delete(
+          `https://www.skypedia.shop/api/v1/chat/room/${room.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        )
+        alert('삭제 완료되었습니다.')
+        window.location.reload()
+      } catch (error) {
+        console.error('error', error)
+        alert('삭제 중 오류가 발생했습니다.')
+      }
+    }
+  }
+
   return (
     <div className='flex flex-col rounded-xl h-[78vh] mt-20 w-full mx-auto bg-white border shadow'>
       <div className='flex items-center justify-between bg-lightGrays px-4 py-2 border-b'>
-        <div className='flex items-center gap-2'>
-          <div className='w-8 h- rounded-full overflow-hidden'>
-            <img
-              src={room.otherProfileImg || defaultProfileImage}
-              alt='Profile'
-              className='w-full h-full object-cover'
-            />
+        <div className='flex w-full items-center justify-between'>
+          <div className='flex gap-2 items-center  '>
+            <div className='w-8 h- rounded-full overflow-hidden'>
+              <img
+                src={room.otherProfileImg || defaultProfileImage}
+                alt='Profile'
+                className='w-full h-full object-cover'
+              />
+            </div>
+            <div className='flex w-full justify-between'>
+              <p className='font-semibold text-[14px] text-black'>
+                {room.otherNickName}
+              </p>
+            </div>
           </div>
-          <div className='flex w-full justify-between'>
-            <p className='font-semibold text-[14px] text-black'>
-              {room.otherNickName}
-            </p>
-          </div>
+          <button
+            onClick={handleDelete}
+            className='text-red-500 text-[14px]'
+          >
+            삭제
+          </button>
         </div>
       </div>
 
