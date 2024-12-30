@@ -74,7 +74,7 @@ const ChatBox = ({ room, myId }: ChatBoxProps) => {
         console.log('WebSocket에 연결되었습니다.')
         stompClient.subscribe(`/sub/chat/room/${room.id}`, (message) => {
           const receivedMessage = JSON.parse(message.body)
-          setMessages((prev) => [...prev, receivedMessage])
+          setMessages((prev) => [receivedMessage, ...prev])
         })
       }
 
