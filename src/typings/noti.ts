@@ -3,5 +3,6 @@ export interface Notification {
   type: string
   uri: string
   sentAt: string
-  read: boolean
+  viewed: boolean
+  id: number
 }
