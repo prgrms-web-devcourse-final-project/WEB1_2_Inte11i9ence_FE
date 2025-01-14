@@ -25,43 +25,62 @@ const PhotoAdd = () => {
       return
     }
 
-    const thumbnail1Url = URL.createObjectURL(thumbnail1) // 로컬 파일을 URL로 변환 (테스트용)
-    const thumbnail2Url = URL.createObjectURL(thumbnail2) // 로컬 파일을 URL로 변환 (테스트용)
-
-    // 요청 데이터 구성 (파일은 URL로)
-    const requestBody = {
-      content: content,
-      uploads: [
-        {
-          originalFileName: thumbnail1Url, // 파일 URL
-          contentType: thumbnail1.type, // 파일 타입
-        },
-        {
-          originalFileName: thumbnail2Url, // 파일 URL
-          contentType: thumbnail2.type, // 파일 타입
-        },
-      ],
-    }
-
-    console.log('Request Body:', requestBody)
-
     try {
-      // 서버로 JSON 데이터 전송
       const response = await axios.post(
         'https://www.skypedia.shop/api/v1/select-post?memberId=4',
-        requestBody,
+        {
+          content: content,
+          uploads: [
+            { originalFileName: thumbnail1.name, contentType: thumbnail1.type },
+            { originalFileName: thumbnail2.name, contentType: thumbnail2.type },
+          ],
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json', // Raw JSON으로 전송
+            'Content-Type': 'application/json',
           },
         },
       )
 
+      console.log('서버 응답:', response.data)
+
+      const uploads = response.data
+      if (!uploads || uploads.length !== 2) {
+        alert('파일 업로드를 위한 URL을 받지 못했습니다.')
+        return
+      }
+
+      const uploadPromises = [
+        uploadToS3(thumbnail1, uploads[0].photoUrl),
+        uploadToS3(thumbnail2, uploads[1].photoUrl),
+      ]
+
+      await Promise.all(uploadPromises)
+
       alert('게시글이 성공적으로 업로드되었습니다!')
-      console.log('Response:', response.data)
     } catch (error) {
       console.error('업로드 실패:', error)
+    }
+  }
+
+  const uploadToS3 = async (file: File, url: string) => {
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': file.type,
+        },
+        body: file,
+      })
+
+      if (!response.ok) {
+        throw new Error(`파일 "${file.name}" 업로드 실패.`)
+      }
+
+      console.log(`파일 "${file.name}" 업로드 성공!`)
+    } catch (error) {
+      console.error(`파일 "${file.name}" 업로드 중 오류 발생:`, error)
     }
   }
 
