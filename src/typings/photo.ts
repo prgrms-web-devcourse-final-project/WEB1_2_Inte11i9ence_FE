@@ -1,9 +1,10 @@
-interface Auth {
+export interface Auth {
   id: number
   username: string
   profileUrl: string
 }
-interface PhotoType {
+
+export interface PhotoType {
   selectPostId: number
   content: string
   presignedUrls: string[]
@@ -11,8 +12,16 @@ interface PhotoType {
   author: Auth
 }
 
-export default interface PhotoList {
+export interface PhotoList {
   hasNext: boolean
   lastId: null | number
   selectPosts: PhotoType[]
+}
+
+export interface PhotoDetailProp {
+  selectPostId: number
+  content: string
+  presignedUrls: string[]
+  createAt: string
+  author: Auth
 }

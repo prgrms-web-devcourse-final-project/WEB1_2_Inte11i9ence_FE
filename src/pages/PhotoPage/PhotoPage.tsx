@@ -5,32 +5,32 @@ import { Link } from 'react-router-dom'
 import PhotoDetail from './PhotoDetail'
 import axios from 'axios'
 import formatTime from '@/utils/formatTime'
-import PhotoList from '@/typings/photo'
+import { PhotoList, Auth } from '@/typings/photo'
 
 const PhotoPage = () => {
   const [postList, setPostList] = useState<PhotoList>()
   const [isPhotoDetailOpen, setIsPhotoDetailOpen] = useState(false)
-
-  const [selectedPhoto, setSelectedPhoto] = useState<PhotoType | null>(null) // 선택된 사진 상태 추가
+  const [selectedPost, setSelectedPost] = useState<number>()
+  const [author, setAuthor] = useState<Auth>()
   const token = localStorage.getItem('access_token')
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await axios.get(
-          'https://www.skypedia.shop/api/v1/select-post?size=30',
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+  const fetchPosts = async () => {
+    try {
+      const response = await axios.get(
+        'https://www.skypedia.shop/api/v1/select-post?size=60',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-        )
-        setPostList(response.data)
-        console.log(response.data)
-      } catch (error) {
-        console.error('Error', error)
-      }
+        },
+      )
+      setPostList(response.data)
+      console.log(response.data)
+    } catch (error) {
+      console.error('Error', error)
     }
+  }
+  useEffect(() => {
     fetchPosts()
   }, [])
 
@@ -54,7 +54,8 @@ const PhotoPage = () => {
             <button
               key={photo.selectPostId}
               onClick={() => {
-                setSelectedPhoto(photo)
+                setSelectedPost(photo.selectPostId)
+                setAuthor(photo.author)
                 setIsPhotoDetailOpen(true)
               }}
               className='flex flex-col justify-between p-4 w-[45%] sm:w-[25%] lg:w-[20%] mx-2 bg-white shadow-lg rounded-lg border border-lightGray transition-transform hover:scale-105 hover:shadow-xl gap-8 aspect-[4/5]'
@@ -92,8 +93,10 @@ const PhotoPage = () => {
       </div>
       {isPhotoDetailOpen && (
         <PhotoDetail
-          photoInfo={selectedPhoto}
+          selectedPost={selectedPost}
+          author={author}
           onClose={() => setIsPhotoDetailOpen(false)}
+          refreshPosts={fetchPosts}
         />
       )}
     </div>
