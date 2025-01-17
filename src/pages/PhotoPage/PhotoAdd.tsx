@@ -1,23 +1,34 @@
 import { useState } from 'react'
 import axios from 'axios'
+import { useLocation } from 'react-router-dom'
+import useProfile from '@hooks/useProfile'
 
 const PhotoAdd = () => {
+  const location = useLocation()
+  const postDetailEdit = location.state?.postDetailEdit
+  const token = localStorage.getItem('access_token')
+  const { profile } = useProfile(token || '')
   const [thumbnail1, setThumbnail1] = useState<File | null>(null)
   const [thumbnail2, setThumbnail2] = useState<File | null>(null)
-  const [content, setContent] = useState('')
-  const token = localStorage.getItem('access_token')
+  const [imageUrl1, setImageUrl1] = useState<string | null>(
+    postDetailEdit?.presignedUrls[0] || null,
+  )
+  const [imageUrl2, setImageUrl2] = useState<string | null>(
+    postDetailEdit?.presignedUrls[1] || null,
+  )
+  const [content, setContent] = useState(postDetailEdit?.content || '')
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     setFile: React.Dispatch<React.SetStateAction<File | null>>,
+    setImageUrl: React.Dispatch<React.SetStateAction<string | null>>,
   ) => {
     if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0])
+      const file = e.target.files[0]
+      setFile(file)
+      setImageUrl(URL.createObjectURL(file)) // 미리보기 URL 설정
     }
   }
-
-  const truncateFileName = (name: string) =>
-    name.length > 20 ? `${name.slice(0, 20)}...` : name
 
   const handleSubmit = async () => {
     if (!thumbnail1 || !thumbnail2 || !content) {
@@ -26,22 +37,39 @@ const PhotoAdd = () => {
     }
 
     try {
-      const response = await axios.post(
-        'https://www.skypedia.shop/api/v1/select-post?memberId=4',
-        {
-          content: content,
-          uploads: [
-            { originalFileName: thumbnail1.name, contentType: thumbnail1.type },
-            { originalFileName: thumbnail2.name, contentType: thumbnail2.type },
-          ],
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+      const uploadData = {
+        content: content,
+        uploads: [
+          { originalFileName: thumbnail1.name, contentType: thumbnail1.type },
+          { originalFileName: thumbnail2.name, contentType: thumbnail2.type },
+        ],
+      }
+
+      let response
+
+      // postDetailEdit이 있으면 PUT 요청, 없으면 POST 요청
+      if (postDetailEdit) {
+        response = await axios.put(
+          `https://www.skypedia.shop/api/v1/select-post/${postDetailEdit.selectPostId}?memberId=${profile?.id}`,
+          uploadData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        },
-      )
+        )
+      } else {
+        response = await axios.post(
+          `https://www.skypedia.shop/api/v1/select-post?memberId=${profile?.id}`,
+          uploadData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+      }
 
       console.log('서버 응답:', response.data)
 
@@ -85,50 +113,68 @@ const PhotoAdd = () => {
   }
 
   return (
-    <div className='flex flex-col gap-4'>
-      <div className='flex flex-col flex-[4] relative gap-4'>
+    <div className='flex flex-col gap-4 w-[90%] mx-auto'>
+      <div className='flex flex-col relative gap-4'>
         <div>
-          <div className='flex flex-col w-full mx-20 pr-10 gap-7 items-start'>
-            <p className='font-bold text-lg'>사진 2장을 선택해주세요</p>
-            <div className='flex gap-8 justify-center w-[90%] h-[30vh]'>
-              <div className='flex align-center justify-center bg-lightGray w-[80%] rounded-lg'>
+          <div className='flex flex-col w-full gap-7 justify-center'>
+            <p className='flex font-bold text-lg'>사진 2장을 선택해주세요</p>
+            <div className='flex gap-8 justify-center w-full'>
+              <div className='flex justify-center items-center bg-lightGray w-full h-[40vh] rounded-lg overflow-hidden'>
                 <input
                   type='file'
                   accept='image/*'
-                  onChange={(e) => handleFileChange(e, setThumbnail1)}
+                  onChange={(e) =>
+                    handleFileChange(e, setThumbnail1, setImageUrl1)
+                  }
                   className='hidden'
                   id='thumbnail1'
                 />
                 <label
                   htmlFor='thumbnail1'
-                  className='cursor-pointer'
+                  className='cursor-pointer font-bold text-darkGray w-full h-full flex justify-center items-center'
                 >
-                  {thumbnail1
-                    ? truncateFileName(thumbnail1.name)
-                    : '썸네일 사진 추가'}
+                  {imageUrl1 ? (
+                    <img
+                      src={imageUrl1}
+                      alt='썸네일 미리보기'
+                      className='object-cover w-full h-full rounded-lg'
+                    />
+                  ) : (
+                    '첫번째 사진 업로드'
+                  )}
                 </label>
               </div>
-              <div className='flex align-center justify-center bg-lightGray w-[80%] rounded-lg'>
+
+              <div className='flex justify-center items-center bg-lightGray w-full h-[40vh] rounded-lg overflow-hidden'>
                 <input
                   type='file'
                   accept='image/*'
-                  onChange={(e) => handleFileChange(e, setThumbnail2)}
+                  onChange={(e) =>
+                    handleFileChange(e, setThumbnail2, setImageUrl2)
+                  }
                   className='hidden'
                   id='thumbnail2'
                 />
                 <label
                   htmlFor='thumbnail2'
-                  className='cursor-pointer'
+                  className='cursor-pointer font-bold text-darkGray w-full h-full flex justify-center items-center'
                 >
-                  {thumbnail2
-                    ? truncateFileName(thumbnail2.name)
-                    : '썸네일 사진 추가'}
+                  {imageUrl2 ? (
+                    <img
+                      src={imageUrl2}
+                      alt='썸네일 미리보기'
+                      className='object-cover w-full h-full rounded-lg'
+                    />
+                  ) : (
+                    '두번째 사진 업로드'
+                  )}
                 </label>
               </div>
             </div>
-            <p className='font-bold text-lg'>내용을 입력하세요</p>
+
+            <p className='flex font-bold text-lg'>내용을 입력하세요</p>
             <textarea
-              className='rounded-lg border w-[92%] py-3 focus:outline-none'
+              className='rounded-lg border w-full py-3 px-3 focus:outline-none'
               value={content}
               onChange={(e) => setContent(e.target.value)}
             ></textarea>
