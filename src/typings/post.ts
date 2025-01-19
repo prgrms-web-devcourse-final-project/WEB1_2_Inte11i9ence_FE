@@ -4,47 +4,47 @@ export interface AllPostData {
   id: number
   title: string
   content: string
-  author: Author;
+  author: Author
   views: number
   likes: number
   replies: number
   category: string
   rating?: number
+  comments?: Comment[]
   postedAt: string
   photoUrl?: string | null
 }
 
 // 특정 게시글 - 작성자 타입 정의
 export interface Author {
-  username: string;
-  profileUrl: string;
+  username: string
+  profileUrl: string
 }
 
 // 특정 게시글 - 댓글 타입 정의
 export interface Comment {
-  author?: Author;
-  time: string;
-  content: string;
+  author?: Author
+  time: string
+  content: string
   // replies?: Reply[];
 }
 
 export interface Reply {
-  nickname: string;
-  time: string;
-  content: string;
+  nickname: string
+  time: string
+  content: string
 }
 //
 // 카테고리 (지역) 타입 정의
 export interface CategoryData {
-  name: string,
+  name: string
   description: string
 }
 
 // API 응답 타입 정의
 export interface PostApiResponse {
-  message: string
-  result: AllPostData[] // result는 AllPostData 배열
-  nextPostUrl: string | null
+  posts: AllPostData[] // result는 AllPostData 배열
+  nextUri: string | null
 }
 
 // 특정 게시글 조회 응답 타입

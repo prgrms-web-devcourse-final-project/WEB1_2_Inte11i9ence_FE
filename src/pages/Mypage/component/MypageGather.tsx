@@ -3,35 +3,56 @@ import DropdownSelector from '@/components/DropdownSelector'
 import { PostApiResponse } from '@/typings/post'
 import axios from 'axios'
 import PostItem from '../../PostListPage/PostItem'
-import { myPosts } from './mockdata'
+import useProfile from '@/hooks/useProfile'
 
 const MypageGather = () => {
-  // 상태 타입을 PostApiResponse로 설정
   const [myPost, setMyPost] = useState<PostApiResponse | null>(null)
-  const [selectedView, setSelectedView] = useState('posts') // 선택된 보기 상태
+  const [selectedView, setSelectedView] = useState('posts')
+  const [errorMessage, setErrorMessage] = useState('')
 
   const options = [
     { value: 'posts', label: '작성한 글' },
     { value: 'scrap', label: '스크랩' },
   ]
 
-  useEffect(() => {
-    // const fetchMyPost = async () => {
-    //   try {
-    //     const response = await axios.get(
-    //       selectedView === 'posts'
-    //         ? '/api/v1/posts/chaejeong'
-    //         : '/api/v1/posts/scrap',
-    //     )
+  const token = localStorage.getItem('access_token')
+  const { profile, isLoading } = useProfile(token || '')
 
-    //     setMyPost(response.data)
-    //   } catch (error) {
-    //     console.error('error', error)
-    //   }
-    // }
-    // fetchMyPost()
-    setMyPost(myPosts)
-  }, [selectedView])
+  useEffect(() => {
+    const fetchMyPost = async () => {
+      if (!profile?.username) {
+        console.error('Profile username is undefined')
+        return
+      }
+
+      try {
+        const response = await axios.get(
+          selectedView === 'posts'
+            ? `https://www.skypedia.shop/api/v1/posts/${profile.username}`
+            : 'https://www.skypedia.shop/api/v1/posts/scrap',
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        )
+        setMyPost(response.data)
+        setErrorMessage('')
+      } catch (error) {
+        console.error('Error fetching posts:', error)
+        setMyPost(null)
+        setErrorMessage('목록이 존재하지 않습니다')
+      }
+    }
+
+    if (!isLoading && profile?.username) {
+      fetchMyPost()
+    }
+  }, [selectedView, profile?.username, token, isLoading])
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className='flex flex-col items-end'>
@@ -43,24 +64,25 @@ const MypageGather = () => {
         />
       </div>
       <div className='mt-4 w-full px-[50px]'>
-        {selectedView === 'posts' && (
+        {errorMessage && <div className='text-darkGray'>{errorMessage}</div>}{' '}
+        {selectedView === 'posts' && myPost?.posts && (
           <div className='flex flex-col gap-4'>
-            {myPost?.result?.map((post) => (
+            {myPost.posts.map((post) => (
               <div
                 key={post.id}
-                className='relative z-1000 '
+                className='relative z-1000'
               >
                 <PostItem post={post} />
               </div>
             ))}
           </div>
         )}
-        {selectedView === 'scrap' && (
+        {selectedView === 'scrap' && myPost?.posts && (
           <div className='flex flex-col gap-4'>
-            {myPost?.result?.map((post) => (
+            {myPost.posts.map((post) => (
               <div
                 key={post.id}
-                className='relative z-1000 '
+                className='relative z-1000'
               >
                 <PostItem post={post} />
               </div>

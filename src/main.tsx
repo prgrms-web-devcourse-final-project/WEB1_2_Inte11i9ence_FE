@@ -8,6 +8,11 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 //  무한 스크롤 구현 위한 QueryClient 인스턴스 생성
 const queryClient = new QueryClient();
 
+import 'aos/dist/aos.css'
+import AOS from 'aos'
+
+AOS.init()
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>

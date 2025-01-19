@@ -125,10 +125,10 @@ const PostListPage = () => {
       { value: 'latest', label: '최신순' },
       { value: 'likes', label: '인기순' },
       { value: 'title', label: '제목순' },
-    ];
+    ]
 
     if (selectedCategory === '리뷰') {
-      options.push({ value: 'rating', label: '별점순' });
+      options.push({ value: 'rating', label: '별점순' })
     }
 
     return options;
