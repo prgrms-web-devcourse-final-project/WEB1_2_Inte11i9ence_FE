@@ -28,8 +28,8 @@ const Navigation = () => {
   const closeModal = () => setModalOpen(false)
 
   return (
-    <div>
-      <div className='fixed bg-white top-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-xl h-16 text-black text-base flex justify-between items-center z-50 px-12'>
+    <div className='bg-white'>
+      <div className='fixed bg-white top-0 left-1/2 transform -translate-x-1/2 w-full px-[10%] h-16 text-black text-base flex justify-between items-center z-50 px-12'>
         <div className='flex justify-center align-center gap-5'>
           <div className=''>
             <Link to='/'>
