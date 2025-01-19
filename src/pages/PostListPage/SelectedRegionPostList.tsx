@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import PostItem from './PostItem';
 import { useState } from 'react';
-import { postData } from '@/temporaryData/allPostData';
+import { AllPostData,CategoryData } from '@/typings/post';
 import DropdownSelector from '@/components/DropdownSelector';
 import RegionDropdown from '@/components/RegionDropdown';
 import { useMemo, useEffect } from 'react';
@@ -24,7 +24,8 @@ import JejuImg from '@/assets/jpg/제주도.jpg';
 import ChungbukImg from '@/assets/jpg/충청북도.jpg';
 import ChungnamImg from '@/assets/jpg/충청남도.jpg';
 import axios from 'axios';
-import { categoryData } from '@/temporaryData/categoryData';
+import { useInfiniteQuery } from 'react-query';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const SelectedRegionPostList = () => {
     const { id } = useParams();
@@ -35,11 +36,10 @@ const SelectedRegionPostList = () => {
     const [secondCategory, setSecondCategory] = useState(id ? decodeURIComponent(id) : '지역 전체');
     const [isSeconedCategoryOpen, setIsSeconedCategoryOpen] = useState(true)  //2번 드롭다운 표시 여부
     const [sortType, setSortType] = useState('latest');                     //정렬 방식
-    const [error, setError] = useState<string | null>(null);                //에러 메시지
-    const [detailposts, setDetailPosts] = useState<any[]>([]);              //포스트 데이터
-    const [regionInfo, setRegionInfo] = useState<any[]>([]);                //전체 지역 정보
-    const [selectedRegionInfo, setSelectedRegionInfo] = useState('');       //선택된 지역
+    const [regionList, setRegionList] = useState<CategoryData[]>([]);       //전체 지역 정보
+    const [selectedRegionInfo, setSelectedRegionInfo] = useState({});       //선택된 지역
 
+    // 지역명 디코딩
     useEffect(() => {
         if (id) {
             // 디코딩한 id를 상세 지역 선택 카테고리로 설정
@@ -50,68 +50,101 @@ const SelectedRegionPostList = () => {
         }
     }, [id]);
 
-        // 포스트, 지역 정보 가져오기 
-        // const getAllDataInfo = async (category: string) => {
-        //     try {
-        //         // 병렬로 API 호출
-        //         const [postsResponse, regionResponse] = await Promise.all([
-        //             axios.get(
-        //                 'api/v1/posts'
-        //                 // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
-        //                 // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/posts`
-        //             ),
-        //             axios.get(
-        //                 'api/v1/category'
-        //                 // 연결 확인한 목서버 주소, 요청 제한으로 인해 주석 처리
-        //                 // `https://189bbcf2-b5c2-4dc4-8590-f889d9ed6579.mock.pstmn.io/api/v1/category`
-        //             )
-        //         ]);
+    // 전체 지역 정보 가져오기
+    useEffect(()=>{
+        const fetchCategoryList = async ()=> {
+            const token = localStorage.getItem('access_token')
+            if (!token) {
+              throw new Error('토큰이 없습니다.');
+            }
+        const response = await axios.get(`https://www.skypedia.shop/api/v1/post-category`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
         
-        //         // 지역 정보 설정
-        //         if (regionResponse.data) {
-        //             setRegionInfo(regionResponse.data);
-        //             if (category !== '지역 전체') {
-        //                 const currentRegion = regionResponse.data.find(
-        //                     (region: { name: string }) => region.name === category
-        //                 );
-        //                 setSelectedRegionInfo(currentRegion ? currentRegion.description : '');
-        //             }
-        //         }
-        
-        //         // 포스트 데이터 필터링 및 설정
-        //         if (postsResponse.data) {
-        //             const filteredPosts = postsResponse.data.filter(
-        //                 (post: { category: string }) => 
-        //                     post.category === category
-        //             );
-        //             setDetailPosts(filteredPosts);
-        //         }
-        //     } catch (error) {
-        //         console.error('데이터 로딩 실패:', error);
-        //         setError('데이터를 불러오는데 실패했습니다.');
-        //     }
-        // };
+        }
+        } )  
+        setRegionList(response.data)
+    }
+    fetchCategoryList();
+    },[])
 
-        // useEffect(() => {
-        //     getAllDataInfo(secondCategory);
-        // }, [secondCategory]);
+    // 선택한 지역의 정보 가져오기
+    useEffect(()=>{
+        const fetchCategory = async () =>{
+          const token = localStorage.getItem('access_token')
+              if (!token) {
+                throw new Error('토큰이 없습니다.');
+              }
+          const response = await axios.get(`https://www.skypedia.shop/api/v1/post-category/${secondCategory}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+      
+          }
+        } ) 
+        setSelectedRegionInfo(response.data)
+        }
+        fetchCategory();
+      },[secondCategory])
 
-    // 클라이언트 데이터로 대체
-    const getAllDataInfo = async (category: string) => {
-        const currentRegion = categoryData.find(
-            (region) => region.name === category
-        );
-        setSelectedRegionInfo(currentRegion ? currentRegion.description : '');
-
-        const filteredPosts = postData.filter(
-            (post) => post.category === category
-        );
-        setDetailPosts(filteredPosts);
+        // 전체 포스트 가져오기 
+    const fetchPosts = async ({pageParam = 0,}) => {
+        const token = localStorage.getItem('access_token')
+            if (!token) {
+                throw new Error('토큰이 없습니다.');
+              }
+            let endpoint = `https://www.skypedia.shop/api/v1/posts?page=${pageParam}`;
+            if (sortType !== 'latest') {
+                endpoint += `&order=${sortType}`; 
+            }
+            if (secondCategory !== '지역 전체'){
+                endpoint += `&category=${secondCategory}`
+            }
+            try {
+                const response = await axios.get(endpoint, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                      },
+                });
+                return response.data.posts; // 포스트 반환
+              } catch (error) {
+                console.error('포스트 조회 실패:', error);
+                return []; // 오류 발생 시 빈 배열 반환
+              }
     }
 
-    useEffect(() => {
-        getAllDataInfo(secondCategory);
-    }, [secondCategory]);
+        const {
+            // 무한스크롤
+                  data,
+                  fetchNextPage,
+                  hasNextPage,
+                  status,
+                  refetch
+                } = useInfiniteQuery(['posts', sortType, secondCategory], fetchPosts, {
+                  getNextPageParam: (lastPage,pages) => {
+                    if(lastPage.length === 10) {
+                      return pages.length;
+                    } 
+                      return undefined;
+                  },
+                  enabled: !!secondCategory, // secondCategory가 있을 때만 쿼리 실행
+                })
+
+        // sortType 변경될 때마다 refetch 실행
+        useEffect(() => {
+            if (secondCategory) {
+            refetch();
+            }
+        }, [sortType, secondCategory, refetch]);
+
+        const filteredPosts = useMemo(() => {
+          if (!data?.pages) {return []};
+             return data.pages
+               .flat()
+               .filter((post) => post.category !== '공지' && post.category !== '자유' && post.category !== '리뷰');
+        }, [data]);
 
     // 1번 드롭다운 change 이벤트 핸들러
     const handleCategory = async (selected: string) => {
@@ -134,92 +167,30 @@ const SelectedRegionPostList = () => {
         if (selected === '지역 전체') {
             navigate('/postlist/region');
         } else {
-            await getAllDataInfo(selected);
+            // await fetchPosts(selected);
             navigate(`/postlist/region/${encodeURIComponent(selected)}`);
         }
     };
 
-    // 3번 드롭다운 : 정렬 방식
-    // 좋아요(likes), 제목순(title), 별점순(rating)
-    // 실제 서버 연결 시 해당 코드 사용 (API 변경)
-    // const sortHandler = async (selected: string) => {
-    //     try {
-    //         setSortType(selected);
-    //         const response = await axios.get(`https://26de9924-f2e0-4ef3-a959-02a7b8ce62ab.mock.pstmn.io/api/v1/posts?category=${secondCategory}&order=${selected}`);
-    //         if (response.data && response.data.result) {
-    //             setDetailPosts(response.data.result);
-    //             console.log(`3번 카테고리 변경: 데이터 로딩 성공:`, detailposts);
-    //         }
-        
-    //     } catch (error) {
-    //         console.error('3번 카테고리 변경: 데이터 로딩 실패:', error);
-    //         setError('정렬 실패');
-    //     }
-    // }
-
     const options = [
         { value: '전체', label: '전체' },
-        // { value: '공지', label: '공지' },
         { value: '자유', label: '자유' },
         { value: '지역', label: '지역' },
         { value: '리뷰', label: '리뷰' },
     ]
 
-    const regionOptions = [
-        // categoryData.map((region) => ({
-        //     value: region.name,
-        //     label: region.name
-        // }))
-        { value: '지역 전체', label: '지역 전체' },
-        { value: '강원도', label: '강원도' },
-        { value: '경기도', label: '경기도' },
-        { value: '경상남도', label: '경상남도' },
-        { value: '경상북도', label: '경상북도' },
-        { value: '광주', label: '광주' },
-        { value: '대구', label: '대구' },
-        { value: '대전', label: '대전' },
-        { value: '부산', label: '부산' },
-        { value: '서울', label: '서울' },
-        { value: '세종', label: '세종' },
-        { value: '울산', label: '울산' },
-        { value: '인천', label: '인천' },
-        { value: '전라남도', label: '전라남도' },
-        { value: '전라북도', label: '전라북도' },
-        { value: '제주도', label: '제주도' },
-        { value: '충청남도', label: '충청남도' },
-        { value: '충청북도', label: '충청북도' },
-    ]
+    const regionOptions = 
+    regionList
+    .map((category)=>({value: category.name, label: category.name}))
+    .filter((region)=> region.value !== '공지' && region.value !== '자유' && region.value !== '리뷰'&& region.value !== '도쿄')
+
+    regionOptions.unshift({ value: '지역 전체', label: '지역 전체' });
 
     const sortingOptions = [
         { value: 'latest', label: '최신순' },
         { value: 'likes', label: '인기순' },
         { value: 'title', label: '제목순' },
-        // { value: 'rating', label: '별점순' }
     ]
-
-    // 클라이언트 정렬 로직 (API 실패 시)
-    const sortedPosts = useMemo(() => {
-        const sorted = [...detailposts];
-        
-        switch(sortType) {
-            case 'latest':
-                return sorted.sort((a, b) => 
-                    new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()
-                );
-            case 'likes':
-                return sorted.sort((a, b) => b.likes - a.likes);
-            case 'title':
-                return sorted.sort((a, b) => 
-                    a.title.localeCompare(b.title)
-                );
-            case 'rating':
-                return sorted.sort((a, b) => 
-                    (b.rating || 0) - (a.rating || 0)
-                );
-            default:
-                return sorted;
-        }
-    }, [detailposts, sortType]);
 
     const sortHandler = (selected: string) => {
         setSortType(selected);  // 정렬 타입 상태 업데이트
@@ -255,24 +226,24 @@ const SelectedRegionPostList = () => {
         <div>
             
             <div
-    className='relative h-[23rem] w-full bg-cover bg-center'
-    style={{ backgroundImage: regionInfoImg() }}
->
-    {/* 배경 오버레이 */}
-    <div className='absolute inset-0 bg-black bg-opacity-30'></div>
-    
-    {/* 컨텐츠 */}
-    <div className='relative z-10 h-full flex flex-col items-center justify-center p-8'>
-        <div className='bg-white/90 rounded-3xl p-8 shadow-lg w-[50rem] backdrop-blur-sm'>
-            <h1 className='font-bold text-4xl mb-6 text-darkBlue'>
-                {secondCategory}
-            </h1>
-            <p className='text-lg leading-relaxed text-darkGray'>
-                {selectedRegionInfo}
-            </p>
-        </div>
-    </div>
-</div>
+            className='relative h-[23rem] w-full bg-cover bg-center'
+            style={{ backgroundImage: regionInfoImg() }}
+            >
+            {/* 배경 오버레이 */}
+            <div className='absolute inset-0 bg-black bg-opacity-30'></div>
+            
+            {/* 컨텐츠 */}
+            <div className='relative z-10 h-full flex flex-col items-center justify-center p-8'>
+                <div className='bg-white/90 rounded-3xl p-8 shadow-lg w-[50rem] backdrop-blur-sm'>
+                    <h1 className='font-bold text-4xl mb-6 text-darkBlue'>
+                        {secondCategory}
+                    </h1>
+                        <p className='text-lg leading-relaxed text-darkGray'>
+                            {selectedRegionInfo.description}
+                        </p>
+                    </div>
+                </div>
+            </div>
             
             {/* 카테고리 선택 드롭다운 */}
             <div className='flex w-[87%] mx-auto justify-between mt-10'>
@@ -301,18 +272,31 @@ const SelectedRegionPostList = () => {
                 </div>
                 
         </div>
-        <div className='flex flex-col  my-8 mx-12 '>
-            {/* 선택한 카테고리를 기반으로 한 포스트 아이템 리스트 */}
-            {detailposts.length === 0 ? (
-                <div className='flex justify-center items-center h-32 text-darkGray'>
-                    해당하는 게시물이 없습니다.
-                </div>
-            ) : (
-                sortedPosts.map((post) => (
-                    <PostItem key={post.id} post={post} />
-                ))
-            )}
+         <InfiniteScroll
+        dataLength={filteredPosts.length}
+        next={fetchNextPage}
+        hasMore={!!hasNextPage}
+        loader={<h4>데이터를 불러오는 중입니다...</h4>}
+        endMessage={<p>모든 게시물을 불러왔습니다.</p>}
+      >
+         <div className='flex flex-col my-8 mx-12'>
+          {status === 'loading' && (
+            <div className='flex justify-center items-center h-32 text-darkGray'>
+              로딩 중...
+            </div>
+          )}
+          {status === 'error' && (
+            <div className='flex justify-center items-center h-32 text-darkGray'>
+              게시글 조회 실패
+            </div>
+          )}
+          {status !== 'loading' && status !== 'error' && (
+            filteredPosts.map((post: AllPostData) => (
+              <PostItem key={post.id} post={post} />
+            ))
+          )}
         </div>
+      </InfiniteScroll>
         </div>
     );
 };
