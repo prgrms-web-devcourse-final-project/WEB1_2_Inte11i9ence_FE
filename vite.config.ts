@@ -5,6 +5,15 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // define: {
+  //   global: {},
+  // },
+  optimizeDeps: {
+    include: ['sockjs-client'],
+  },
+  build: {
+    target: 'ESNext',
+  },
   plugins: [react(), svgr()],
   resolve: {
     alias: {
@@ -17,6 +26,7 @@ export default defineConfig({
       '@store': path.resolve(__dirname, './src/store'),
       '@typings': path.resolve(__dirname, './src/typings'),
       '@utils': path.resolve(__dirname, './src/utils'),
+      'sockjs-client': 'sockjs-client/dist/sockjs.js',
     },
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },

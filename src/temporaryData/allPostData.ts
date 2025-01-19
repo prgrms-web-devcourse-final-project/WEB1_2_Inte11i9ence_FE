@@ -30,7 +30,8 @@ export const commentData = [
     
    ]
 
-export const postData: AllPostData[] = [
+export
+ const postData: AllPostData[] = [
 
        // "전체 게시글 조회" 데이터
         {
