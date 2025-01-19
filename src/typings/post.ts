@@ -4,15 +4,14 @@ export interface AllPostData {
   id: number
   title: string
   content: string
-  photoUrl?: string | null
   author: Author;
-  likes: number
   views: number
-  postedAt: string
+  likes: number
   replies: number
   category: string
   rating?: number
-  comments: Comment[];
+  postedAt: string
+  photoUrl?: string | null
 }
 
 // 특정 게시글 - 작성자 타입 정의
